@@ -5,7 +5,8 @@ html {
 }
 
 :root {
---o1: color(display-p3 1 0.5042 0.1451);
+--o1: color(display-p3 1 0 0);
+--o2: color(display-p3 0.7 0 0);
 }
 
 
@@ -73,14 +74,15 @@ p {
 }
 
 a {
-  color: var(--o2);
+  color: var(--o1);
   text-underline-offset: .15em;
   text-decoration: underline;
   text-decoration-thickness: .1em;
 }
 
 a:hover {
-  color: var(--o3);
+  color: var(--o2);
+  transition: color 0.4s ease-in-out;
 }
 
 ul {
@@ -128,8 +130,6 @@ em {
 .logo {
   width: 3rem;
   height: 3rem;
-  color: blue;
-  border-color: blue;
   border-width: 1px;
 }
 
