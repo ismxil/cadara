@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Midnight Sans Bold';
+  src: url('assets/MidnightSansRDPro-12Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Midnight Sans Regular';
+  src: url('assets/MidnightSansRDPro-36Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Base Styles */
+:root {
+  --brand-black: #111111;
+  --brand-red: #ff3b3b;
+}
+
+body {
+  background-color: var(--brand-black);
+  color: var(--brand-red);
+  position: relative;
+}
+
+/* Custom Text Effects */
+h1 {
+  font-variant-ligatures: discretionary-ligatures;
+  text-shadow: 0 0 20px rgba(255, 59, 59, 0.1);
+}
+
+/* Animation for the main content appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Hover effects for nav items */
+nav li:hover .border-dotted {
+  border-color: rgba(255, 59, 59, 0.8);
+  border-bottom-width: 2px;
+}
