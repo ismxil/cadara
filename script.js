@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.color = textColor;
         });
         
-        // Update SVG icons
-        const svgPaths = document.querySelectorAll('svg path');
+        // Update SVG icons (exclude logo)
+        const svgPaths = document.querySelectorAll('svg:not(.logo) path');
         svgPaths.forEach(path => {
             path.setAttribute('fill', textColor);
         });

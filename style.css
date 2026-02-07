@@ -12,6 +12,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Flecha';
+  src: url('assets/flecha-black.otf') format('opentype');
+  font-weight: bold;
+  font-style: bold;
+}
+
 /* Base Styles */
 :root {
   --brand-black: #111111;
