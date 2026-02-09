@@ -11,6 +11,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Hamburger menu functionality
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const navOverlay = document.getElementById('nav-overlay');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    function openMenu() {
+        if (navOverlay) {
+            navOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            navOverlay.classList.add('opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+            
+            // Animate nav items in (from bottom to top appearance)
+            navItems.forEach(item => {
+                item.classList.remove('translate-y-8', 'opacity-0');
+                item.classList.add('translate-y-0', 'opacity-100');
+            });
+        }
+    }
+
+    function closeMenu() {
+        if (navOverlay) {
+            // Animate nav items out (slide down and fade)
+            navItems.forEach((item, index) => {
+                item.style.transitionDelay = `${(navItems.length - index - 1) * 50}ms`;
+                item.classList.remove('translate-y-0', 'opacity-100');
+                item.classList.add('translate-y-8', 'opacity-0');
+            });
+            
+            // Close overlay after animation
+            setTimeout(() => {
+                navOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+                navOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = '';
+                
+                // Reset transition delays
+                navItems.forEach(item => {
+                    item.style.transitionDelay = '';
+                });
+            }, 350);
+        }
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', openMenu);
+    }
+
+    if (menuClose) {
+        menuClose.addEventListener('click', closeMenu);
+    }
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navOverlay && !navOverlay.classList.contains('opacity-0')) {
+            closeMenu();
+        }
+    });
+
     // Color randomizer functionality
     const colorRandomizer = document.getElementById('color-randomizer');
     

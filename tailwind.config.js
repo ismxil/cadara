@@ -5,6 +5,7 @@ tailwind.config = {
                 brand: {
                     black: '#111111',
                     red: '#FF3B3B',
+                    white: '#FFFFFF',
                 }
             },
             fontFamily: {
