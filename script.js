@@ -69,36 +69,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Color randomizer functionality
+    // Color randomizer functionality — both main page and menu buttons
     const colorRandomizer = document.getElementById('color-randomizer');
+    const menuColorRandomizer = document.getElementById('menu-color-randomizer');
+
+    // Time-aware color system
+    // Before 4pm: light backgrounds, dark text (day mode)
+    // From 4pm:   dark backgrounds, light text (night mode)
+    function isNightMode() {
+        return new Date().getHours() >= 16;
+    }
+
+    // Curated color presets — day (light bg, dark text) and night (dark bg, light text)
+    const dayPresets = [
+        { text: '#111111', bg: '#FF3B3B' },   // Red bg, dark text
+        { text: '#2660A4', bg: '#FFF3DE' },   // Cream bg, blue text
+        { text: '#F76C5E', bg: '#F5D547' },   // Yellow bg, coral text
+        { text: '#0A0A0A', bg: '#E63946' },   // Red bg, black text
+        { text: '#1B4332', bg: '#D8F3DC' },   // Mint bg, forest text
+        { text: '#5A189A', bg: '#E0AAFF' },   // Lavender bg, purple text
+    ];
+
+    const nightPresets = [
+        { text: '#FF3B3B', bg: '#111111' },   // Original — dark bg, red text
+        { text: '#F5D547', bg: '#F76C5E' },   // Coral bg, yellow text
+        { text: '#E0AAFF', bg: '#10002B' },   // Deep purple bg, lavender text
+        { text: '#D8F3DC', bg: '#1B4332' },   // Forest bg, mint text
+        { text: '#FFF3DE', bg: '#2660A4' },   // Blue bg, cream text
+        { text: '#F76C5E', bg: '#1A1A2E' },   // Dark navy bg, coral text
+    ];
+
+    let presetIndex = 0;
     
     if (colorRandomizer) {
         colorRandomizer.addEventListener('click', (e) => {
             e.preventDefault();
-            randomizeColors();
+            cycleColors();
         });
     }
 
-    function randomizeColors() {
-        // Generate a random hue (0-360)
-        const hue = Math.floor(Math.random() * 360);
-        
-        // Create complementary color (opposite on color wheel)
-        const complementaryHue = (hue + 180) % 360;
-        
-        // Generate vibrant text color with high saturation and lightness
-        const textColor = `hsl(${hue}, 70%, 55%)`;
-        
-        // Generate dark background with same hue but low lightness
-        const bgColor = `hsl(${complementaryHue}, 25%, 8%)`;
-        
+    if (menuColorRandomizer) {
+        menuColorRandomizer.addEventListener('click', (e) => {
+            e.preventDefault();
+            cycleColors();
+        });
+    }
+
+    function cycleColors() {
+        let textColor, bgColor;
+        const night = isNightMode();
+        const presets = night ? nightPresets : dayPresets;
+
+        if (presetIndex < presets.length) {
+            // Cycle through curated presets first
+            const preset = presets[presetIndex];
+            textColor = preset.text;
+            bgColor = preset.bg;
+            presetIndex++;
+        } else {
+            // After all presets, generate random colors respecting time of day
+            const hue = Math.floor(Math.random() * 360);
+            const complementaryHue = (hue + 180) % 360;
+
+            if (night) {
+                // Night: dark bg, light/vibrant text
+                textColor = `hsl(${hue}, 70%, 55%)`;
+                bgColor = `hsl(${complementaryHue}, 25%, 8%)`;
+            } else {
+                // Day: light bg, dark text
+                textColor = `hsl(${hue}, 60%, 25%)`;
+                bgColor = `hsl(${complementaryHue}, 40%, 90%)`;
+            }
+        }
+
+        applyColors(textColor, bgColor);
+    }
+
+    function applyColors(textColor, bgColor) {
         // Apply colors to CSS custom properties
         document.documentElement.style.setProperty('--brand-red', textColor);
         document.documentElement.style.setProperty('--brand-black', bgColor);
         
-        // Also update body directly for immediate effect
+        // Update body directly for immediate effect
         document.body.style.backgroundColor = bgColor;
         document.body.style.color = textColor;
+
+        // Update the nav overlay background so it stays in sync
+        if (navOverlay) {
+            navOverlay.style.backgroundColor = bgColor;
+        }
         
         // Update all elements that use the brand colors
         const allTextElements = document.querySelectorAll('h1, p, a, span, nav, footer');
@@ -119,6 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
             border.style.opacity = '0.5';
         });
 
-        console.log(`Colors randomized! Text: ${textColor}, Background: ${bgColor}`);
+        console.log(`Colors applied! Text: ${textColor}, Background: ${bgColor}`);
     }
 });

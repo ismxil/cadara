@@ -58,3 +58,32 @@ nav li:hover .border-dotted {
   border-color: rgba(255, 59, 59, 0.8);
   border-bottom-width: 2px;
 }
+
+/* Highlight link - underline with wavy hover */
+.highlight-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-style: solid;
+  transition:
+    text-decoration-style 0.3s ease,
+    text-underline-offset 0.3s ease;
+}
+
+.highlight-link:hover {
+  text-decoration-style: wavy;
+  text-underline-offset: 4px;
+  animation: wave-nudge 0.4s ease forwards;
+}
+
+@keyframes wave-nudge {
+  0% {
+    text-underline-offset: 3px;
+  }
+  50% {
+    text-underline-offset: 5px;
+  }
+  100% {
+    text-underline-offset: 4px;
+  }
+}
