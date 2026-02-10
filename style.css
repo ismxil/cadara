@@ -21,8 +21,8 @@
 
 /* Base Styles */
 :root {
-  --brand-black: #111111;
-  --brand-red: #ff3b3b;
+  --brand-black: #fff3de;
+  --brand-red: #2660a4;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
 /* Custom Text Effects */
 h1 {
   font-variant-ligatures: discretionary-ligatures;
-  text-shadow: 0 0 20px rgba(255, 59, 59, 0.1);
+  text-shadow: 0 0 20px rgba(38, 96, 164, 0.1);
 }
 
 /* Animation for the main content appearance */
@@ -55,8 +55,8 @@ main {
 
 /* Hover effects for nav items */
 nav li:hover .border-dotted {
-  border-color: rgba(255, 59, 59, 0.8);
-  border-bottom-width: 2px;
+  border-color: currentColor;
+  border-bottom-width: 1px;
 }
 
 /* Highlight link - underline with wavy hover */

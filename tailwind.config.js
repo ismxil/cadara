@@ -3,8 +3,8 @@ tailwind.config = {
         extend: {
             colors: {
                 brand: {
-                    black: '#111111',
-                    red: '#FF3B3B',
+                    black: '#FFF3DE',
+                    red: '#2660A4',
                     white: '#FFFFFF',
                 }
             },

@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Curated color presets — day (light bg, dark text) and night (dark bg, light text)
     const dayPresets = [
+        { text: '#2660A4', bg: '#FFF3DE' },   // Cream bg, blue text (default)
         { text: '#111111', bg: '#FF3B3B' },   // Red bg, dark text
-        { text: '#2660A4', bg: '#FFF3DE' },   // Cream bg, blue text
         { text: '#F76C5E', bg: '#F5D547' },   // Yellow bg, coral text
         { text: '#0A0A0A', bg: '#E63946' },   // Red bg, black text
         { text: '#1B4332', bg: '#D8F3DC' },   // Mint bg, forest text
@@ -91,15 +91,25 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const nightPresets = [
+        { text: '#FFF3DE', bg: '#2660A4' },   // Blue bg, cream text (default inverse)
         { text: '#FF3B3B', bg: '#111111' },   // Original — dark bg, red text
         { text: '#F5D547', bg: '#F76C5E' },   // Coral bg, yellow text
         { text: '#E0AAFF', bg: '#10002B' },   // Deep purple bg, lavender text
         { text: '#D8F3DC', bg: '#1B4332' },   // Forest bg, mint text
-        { text: '#FFF3DE', bg: '#2660A4' },   // Blue bg, cream text
         { text: '#F76C5E', bg: '#1A1A2E' },   // Dark navy bg, coral text
     ];
 
     let presetIndex = 0;
+
+    // Restore saved colors from sessionStorage (persists across navigation, clears on refresh)
+    const savedText = sessionStorage.getItem('colorText');
+    const savedBg = sessionStorage.getItem('colorBg');
+    const savedIndex = sessionStorage.getItem('colorIndex');
+    
+    if (savedText && savedBg) {
+        applyColors(savedText, savedBg);
+        presetIndex = savedIndex ? parseInt(savedIndex, 10) : 0;
+    }
     
     if (colorRandomizer) {
         colorRandomizer.addEventListener('click', (e) => {
@@ -141,6 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgColor = `hsl(${complementaryHue}, 40%, 90%)`;
             }
         }
+
+        // Save to sessionStorage so colors persist across page navigation
+        sessionStorage.setItem('colorText', textColor);
+        sessionStorage.setItem('colorBg', bgColor);
+        sessionStorage.setItem('colorIndex', presetIndex.toString());
 
         applyColors(textColor, bgColor);
     }
