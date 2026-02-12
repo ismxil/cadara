@@ -34,23 +34,18 @@ body {
 /* Custom Text Effects */
 h1 {
   font-variant-ligatures: discretionary-ligatures;
-  text-shadow: 0 0 20px rgba(38, 96, 164, 0.1);
+  text-shadow: 0 0 20px color-mix(in srgb, currentColor 10%, transparent);
 }
 
 /* Animation for the main content appearance */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
 main {
-  animation: fadeIn 1s ease-out forwards;
+  animation: fadeIn 1s ease-out;
 }
 
 /* Highlight link - underline with wavy hover */

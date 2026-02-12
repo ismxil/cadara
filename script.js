@@ -86,6 +86,9 @@ function applyPalette(palette) {
     if (passwordOverlay) {
         passwordOverlay.style.backgroundColor = palette.bg;
         passwordOverlay.style.color = palette.fg;
+        // Sync the sticky header background inside the overlay
+        const stickyHeader = passwordOverlay.querySelector('.sticky');
+        if (stickyHeader) stickyHeader.style.backgroundColor = palette.bg;
     }
 
     // Update cursors to match new foreground color

@@ -43,9 +43,9 @@
         <!-- Mobile Navigation Overlay -->
         <div id="nav-overlay"
             class="fixed inset-0 bg-brand-black z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="h-full flex flex-col">
+            <div class="h-full flex flex-col max-w-sm mx-auto">
                 <!-- Header with Logo and Close Button -->
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center mt-12">
                     <a href="index.html" class="flex justify-center items-center">
                         <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor"
@@ -77,31 +77,31 @@
                         <li class="flex items-end justify-between group">
                             <a href="about.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
-                            <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">I</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="work.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
-                            <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">II</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="expertise.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
-                            <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">III</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="play.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
-                            <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">IV</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="thought.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
-                            <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">V</span>
                         </li>
                     </ul>
@@ -235,10 +235,10 @@
 
         <!-- Password Overlay -->
         <div id="password-overlay"
-            class="fixed inset-0 bg-brand-black z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="h-full flex flex-col max-w-sm mx-auto">
-                <!-- Header with Logo and Close -->
-                <div class="flex justify-between items-center">
+            class="fixed inset-0 bg-brand-black z-50 opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto">
+            <!-- Fixed Header -->
+            <div class="sticky top-0 z-10 bg-brand-black">
+                <div class="max-w-sm mx-auto flex justify-between items-center mt-12">
                     <div class="flex justify-center items-center">
                         <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor"
@@ -261,8 +261,10 @@
                             class="w-6 h-0.5 bg-current transition-all duration-300 ease-in-out -rotate-45 absolute"></span>
                     </button>
                 </div>
+            </div>
 
-                <!-- Password Form -->
+            <!-- Password Form -->
+            <div class="max-w-sm mx-auto px-4">
                 <div class="flex flex-col items-center w-full mt-[25vh]">
                     <svg class="w-12 h-12 mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="5" y="11" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5" />
@@ -302,31 +304,31 @@
                 <li class="flex items-end justify-between group">
                     <a href="about.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
-                    <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">I</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="work.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
-                    <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">II</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="expertise.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
-                    <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">III</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="play.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
-                    <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">IV</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="thought.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
-                    <div class="flex-grow border-b border-dotted border-current/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">V</span>
                 </li>
             </ul>
@@ -425,6 +427,10 @@
                 const fg = getComputedStyle(document.documentElement).getPropertyValue('--brand-red').trim();
                 overlay.style.backgroundColor = bg || '';
                 overlay.style.color = fg || '';
+                // Sync sticky header bg
+                const stickyHeader = overlay.querySelector('.sticky');
+                if (stickyHeader) stickyHeader.style.backgroundColor = bg || '';
+                overlay.scrollTop = 0;
                 overlay.style.opacity = '1';
                 overlay.style.pointerEvents = 'auto';
                 document.body.style.overflow = 'hidden';
