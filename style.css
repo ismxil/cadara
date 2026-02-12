@@ -48,6 +48,11 @@ main {
   animation: fadeIn 1s ease-out;
 }
 
+/* Project card hover overlay */
+.project-overlay {
+  background: color-mix(in srgb, var(--brand-black) 80%, transparent);
+}
+
 /* Highlight link - underline with wavy hover */
 .highlight-link {
   text-decoration: underline;
