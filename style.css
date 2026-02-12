@@ -53,12 +53,6 @@ main {
   animation: fadeIn 1s ease-out forwards;
 }
 
-/* Hover effects for nav items */
-nav li:hover .border-dotted {
-  border-color: currentColor;
-  border-bottom-width: 1px;
-}
-
 /* Highlight link - underline with wavy hover */
 .highlight-link {
   text-decoration: underline;
@@ -85,5 +79,48 @@ nav li:hover .border-dotted {
   }
   100% {
     text-underline-offset: 4px;
+  }
+}
+
+/* Hero text letter animation */
+.hero-line {
+  display: inline-block;
+}
+
+.hero-char {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(1);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.2s ease-out;
+  will-change: transform, opacity;
+}
+
+.hero-char.revealed {
+  opacity: 1;
+}
+
+/* Password overlay shake animation */
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
   }
 }

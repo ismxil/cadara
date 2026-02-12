@@ -11,7 +11,7 @@
 </head>
 
 <body
-    class="bg-brand-black text-brand-red font-serif selection:bg-brand-red selection:text-brand-black min-h-screen p-8">
+    class="bg-brand-black text-brand-red font-serif selection:bg-brand-red selection:text-brand-black min-h-screen px-4">
 
     <main class="max-w-sm mx-auto">
 
@@ -45,8 +45,8 @@
             class="fixed inset-0 bg-brand-black z-50 opacity-0 pointer-events-none transition-opacity duration-300">
             <div class="h-full flex flex-col">
                 <!-- Header with Logo and Close Button -->
-                <div class="flex justify-between items-center ">
-                    <div class="flex justify-center items-center">
+                <div class="flex justify-between items-center">
+                    <a href="index.html" class="flex justify-center items-center">
                         <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor"
                                 stroke-width="2.48974" />
@@ -59,7 +59,7 @@
                                 d="M20.8605 30.2672L22.5437 30.4788C22.7748 30.5077 22.8643 30.791 22.6966 30.948L21.4593 32.1087L21.7782 33.7749C21.8216 34.0024 21.5816 34.1764 21.3792 34.0649L19.8929 33.2469L18.4066 34.0652C18.2042 34.1766 17.9639 34.0025 18.0076 33.7752L18.3265 32.1089L17.0891 30.948C16.9215 30.7907 17.0112 30.5077 17.2421 30.4788L18.9253 30.2672L19.6464 28.7322C19.7451 28.5221 20.0408 28.5221 20.1395 28.7322L20.8605 30.2672Z"
                                 fill="currentColor" />
                         </svg>
-                    </div>
+                    </a>
                     <!-- Close Button -->
                     <button id="menu-close" class="relative w-8 h-8 flex flex-col justify-center items-center"
                         aria-label="Close Menu">
@@ -77,31 +77,31 @@
                         <li class="flex items-end justify-between group">
                             <a href="about.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
-                            <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">I</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="work.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
-                            <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">II</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="expertise.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
-                            <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">III</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="play.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
-                            <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">IV</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="thought.html"
                                 class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
-                            <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                            <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm">V</span>
                         </li>
                     </ul>
@@ -195,22 +195,29 @@
                 <p>I'm Ahmad, a product designer who's spent the past decade deep in fintech and banking, figuring out
                     how to make complex
                     financial products feel simple.
-                    I started at <a href="https://protechadvance.com/" class="highlight-link">NCK Technology</a>, a
+                    I started at <a href="https://protechadvance.com/" target="_blank" class="highlight-link">NCK
+                        Technology</a>, a
                     boutique tech
                     firm where I helped build financial
                     products for banks
-                    like <a href="https://www.fidelitybank.ng/" class="highlight-link">Fidelity</a>,
-                    <a href="https://www.accessbankplc.com/" class="highlight-link">Access Bank</a>, and <a
-                        href="https://www.ubagroup.com/"><span class="highlight-link">UBA</span></a>. That
+                    like <a href="https://www.fidelitybank.ng/" target="_blank" class="highlight-link">Fidelity</a>,
+                    <a href="https://www.accessbankplc.com/" target="_blank" class="highlight-link">Access Bank</a>, and
+                    <a href="https://www.ubagroup.com/" target="_blank"><span class="highlight-link">UBA</span></a>.
+                    That
                     foundation shaped how I think
                     about design at scale. From
                     there, I moved to
-                    <a href="https://gomoney.ng/" class="highlight-link">Gomoney</a> and <a href="https://sterling.ng/"
-                        class="highlight-link">Sterling Bank</a> as Lead Designer, then went on to
-                    work with <a href="https://www.lemfi.com/"><span class="highlight-link">Lemfi</span></a>,
-                    and <a href="https://www.accenture.com/en-us"><span class="highlight-link">Accenture</span></a>
-                    in Berlin, helping brand like like <a href="https://www.db.com/" class="highlight-link">Deutsche
-                        Bank</a>, <a href="https://www.motel-one.com/en/"><span class="highlight-link">Motel
+                    <a href="https://gomoney.global/" target="_blank" class="highlight-link">Gomoney</a> and <a
+                        href="https://sterling.ng/" target="_blank" class="highlight-link">Sterling Bank</a> as Lead
+                    Designer, then went on to
+                    work with <a href="https://www.lemfi.com/" target="_blank"><span
+                            class="highlight-link">Lemfi</span></a>,
+                    and <a href="https://www.accenture.com/us-en/about/accenture-song-index" target="_blank"><span
+                            class="highlight-link">Accenture</span></a>
+                    in Berlin, helping brand like like <a href="https://www.db.com/" target="_blank"
+                        class="highlight-link">Deutsche
+                        Bank</a>, <a href="https://www.motel-one.com/en/" target="_blank"><span
+                            class="highlight-link">Motel
                             One</span></a> improving their digital experience. Each one of these experiences has
                     sharpened my understanding of what it takes to ship products that actually works.
                 </p>
@@ -221,7 +228,7 @@
         </div>
 
         <!-- Quote -->
-        <blockquote class="border-l-2 border-brand-red/30 pl-6 my-12 opacity-80">
+        <blockquote class="border-l-2 border-current/30 pl-6 my-12 opacity-80">
             <p class="text-xl">"The best way to predict the future is to design it."</p>
             <cite class="block mt-2 text-x not-italic opacity-60">— Buckminster Fuller</cite>
         </blockquote>
@@ -237,7 +244,7 @@
                         Bank</a>
                 </div>
                 <div class="flex items-end justify-between group">
-                    <span class="font-mono text-sm opacity-60">Contract, Present</span>
+                    <span class="font-mono text-sm opacity-90">Contract, Present</span>
                 </div>
             </div>
 
@@ -297,31 +304,31 @@
                 <li class="flex items-end justify-between group">
                     <a href="about.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
-                    <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">I</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="work.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
-                    <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">II</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="expertise.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
-                    <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">III</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="play.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
-                    <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">IV</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="thought.html"
                         class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
-                    <div class="flex-grow border-b border-dotted border-brand-red/50 mx-2 mb-1"></div>
+                    <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm">V</span>
                 </li>
             </ul>
@@ -383,7 +390,7 @@
         </div>
 
         <!-- Footer Info -->
-        <footer class="mt-16 opacity-80 text-center">
+        <footer class="my-16 opacity-80 text-center">
             <p class="text-xs text-center font-mono uppercase tracking-widest mb-2">(c) 2026</p>
             <div class="flex justify-center items-center mt-4">
                 <a href="#" id="color-randomizer" class="hover:scale-110 transition-transform duration-200"

@@ -3,8 +3,8 @@ tailwind.config = {
         extend: {
             colors: {
                 brand: {
-                    black: '#FFF3DE',
-                    red: '#2660A4',
+                    black: 'var(--brand-black, #FFF3DE)',
+                    red: 'var(--brand-red, #2660A4)',
                     white: '#FFFFFF',
                 }
             },
@@ -12,7 +12,6 @@ tailwind.config = {
                 serif: ['"Midnight Sans Regular"', 'sans-serif'],
                 display: ['"Midnight Sans Bold"', 'sans-serif'],
                 mono: ['"Space Mono"', 'monospace'],
-                flecha: ['"Flecha"', 'serif'],
             }
         }
     }
