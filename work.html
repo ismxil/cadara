@@ -191,42 +191,46 @@
 
                 <div class="group cursor-pointer project-card" data-url="https://lemfi.com">
                     <div
-                        class="aspect-video overflow-hidden border-2 border-current hover:opacity-90 transition-opacity">
+                        class="aspect-video overflow-hidden border-2 hover:border-4 border-current hover:opacity-90 transition-all">
                         <img src="assets/lemfi.png" alt="Lemfi Card App" class="w-full h-full object-cover">
                     </div>
                     <div class="flex justify-between">
                         <p class="text-sm mt-2 opacity-70">Lemfi Card App</p>
-                        <span class="text-sm mt-2 opacity-50">lemfi.com</span>
+                        <a href="https://lemfi.com" target="_blank"
+                            class="text-sm mt-2 opacity-50 hover:opacity-100 transition-opacity project-link">lemfi.com</a>
                     </div>
                 </div>
                 <div class="group cursor-pointer project-card" data-url="https://gomoney.global">
                     <div
-                        class="aspect-video overflow-hidden border-2 border-current hover:opacity-90 transition-opacity">
+                        class="aspect-video overflow-hidden border-2 hover:border-4 border-current hover:opacity-90 transition-all">
                         <img src="assets/gomoney.png" alt="Gomoney" class="w-full h-full object-cover">
                     </div>
                     <div class="flex justify-between">
                         <p class="text-sm mt-2 opacity-70">Gomoney</p>
-                        <span class="text-sm mt-2 opacity-50">gomoney.global</span>
+                        <a href="https://gomoney.global" target="_blank"
+                            class="text-sm mt-2 opacity-50 hover:opacity-100 transition-opacity project-link">gomoney.global</a>
                     </div>
                 </div>
                 <div class="group cursor-pointer project-card" data-url="https://cadanapay.com">
                     <div
-                        class="aspect-video overflow-hidden border-2 border-current hover:opacity-90 transition-opacity">
+                        class="aspect-video overflow-hidden border-2 hover:border-4 border-current hover:opacity-90 transition-all">
                         <img src="assets/cadana.png" alt="Cadana" class="w-full h-full object-cover">
                     </div>
                     <div class="flex justify-between">
                         <p class="text-sm mt-2 opacity-70">Cadana</p>
-                        <span class="text-sm mt-2 opacity-50">cadanapay.com</span>
+                        <a href="https://cadanapay.com" target="_blank"
+                            class="text-sm mt-2 opacity-50 hover:opacity-100 transition-opacity project-link">cadanapay.com</a>
                     </div>
                 </div>
                 <div class="group cursor-pointer project-card" data-url="https://mezovest.com">
                     <div
-                        class="aspect-video overflow-hidden border-2 border-current hover:opacity-90 transition-opacity">
+                        class="aspect-video overflow-hidden border-2 hover:border-4 border-current hover:opacity-90 transition-all">
                         <img src="assets/mezovest.png" alt="Mezovest" class="w-full h-full object-cover">
                     </div>
                     <div class="flex justify-between">
                         <p class="text-sm mt-2 opacity-70">Mezovest</p>
-                        <span class="text-sm mt-2 opacity-50">mezovest.com</span>
+                        <a href="https://mezovest.com" target="_blank"
+                            class="text-sm mt-2 opacity-50 hover:opacity-100 transition-opacity project-link">mezovest.com</a>
                     </div>
                 </div>
 
@@ -280,7 +284,7 @@
                             class="font-display text-sm uppercase tracking-widest opacity-60 block mb-3">Password</label>
                         <div class="relative">
                             <input type="password" id="project-password"
-                                class="w-full bg-transparent border-[3px] border-current rounded-full px-6 py-3 font-mono text-sm tracking-wider outline-none focus:opacity-100 opacity-70 transition-opacity"
+                                class="w-full bg-transparent border-[3px] border-current px-6 py-3 font-mono text-sm tracking-wider outline-none focus:opacity-100 opacity-70 transition-opacity"
                                 placeholder="Enter Password" autocomplete="off">
                         </div>
                         <p id="password-error"
@@ -289,7 +293,7 @@
                             Incorrect password. Try again.
                         </p>
                         <button id="password-submit"
-                            class="w-full mt-4 border-[3px] border-current rounded-full px-6 py-3 font-display text-xl uppercase tracking-widest font-bold hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-200 shadow-[3px_3px_0_currentColor]">
+                            class="w-full mt-4 border-[3px] border-current px-6 py-3 font-display text-xl uppercase tracking-widest font-bold hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-200 shadow-[3px_3px_0_currentColor]">
                             Submit
                         </button>
                     </div>
@@ -463,6 +467,8 @@
             // Project card clicks
             document.querySelectorAll('.project-card').forEach(card => {
                 card.addEventListener('click', (e) => {
+                    // Don't open overlay if clicking the direct external link
+                    if (e.target.closest('.project-link')) return;
                     const url = card.dataset.url;
                     const name = card.querySelector('p').textContent;
                     openOverlay(name, url);
