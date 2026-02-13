@@ -138,23 +138,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         allSpans.push(...spans);
+    });
 
-        // Lock each character's natural width after fonts render
+    // Lock each character's width to its natural glyph width
+    function lockCharWidths() {
+        allSpans.forEach(span => {
+            // Clear any previously locked width so we measure the natural size
+            span.style.width = '';
+            span.style.minWidth = '';
+        });
+        // Let the browser reflow, then measure and lock
         requestAnimationFrame(() => {
-            spans.forEach(span => {
+            allSpans.forEach(span => {
                 const w = span.getBoundingClientRect().width;
                 span.style.width = w + 'px';
+                span.style.minWidth = w + 'px';
                 span.style.textAlign = 'center';
                 span.style.overflow = 'hidden';
             });
         });
+    }
+
+    // Lock widths after fonts load, and re-lock on resize
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(lockCharWidths);
+    } else {
+        requestAnimationFrame(lockCharWidths);
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(lockCharWidths, 150);
     });
 
-    // Scramble on hover — single listener for both lines
+    // Scramble on hover — single listener for both lines (md: and up only)
     if (heroText) {
         let scrambleInterval = null;
 
         heroText.addEventListener('mouseenter', () => {
+            if (window.innerWidth < 768) return;
             if (scrambleInterval) return;
             const iterations = new Array(allSpans.length).fill(0);
             const maxIterations = 6;
