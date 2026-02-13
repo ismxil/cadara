@@ -10,6 +10,7 @@ const lightPalettes = [
 ];
 
 const darkPalettes = [
+    { bg: '#191919', fg: '#4d7cc7' },
     { bg: '#1a1a2e', fg: '#e94560' },
     { bg: '#0f0e17', fg: '#ff8906' },
     { bg: '#2b2d42', fg: '#edf2f4' },
@@ -33,6 +34,11 @@ function isDarkHours() {
 function getTimeAwarePalette() {
     const pool = isDarkHours() ? darkPalettes : lightPalettes;
     return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// Return the default palette for the current time of day (first item in each pool)
+function getDefaultPalette() {
+    return isDarkHours() ? darkPalettes[0] : lightPalettes[0];
 }
 
 // Generate a cursor SVG data URI — outline in fgColor, inner fill in bgColor (matches cursor.svg)
@@ -76,6 +82,11 @@ function applyPalette(palette) {
     document.body.style.backgroundColor = palette.bg;
     document.body.style.color = palette.fg;
 
+    // Update particle color
+    if (window.particleSystem) {
+        window.particleSystem.color = palette.fg;
+    }
+
     // Sync any overlays that are present on the page
     const navOverlay = document.getElementById('nav-overlay');
     if (navOverlay) {
@@ -99,15 +110,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Hero text letter-by-letter reveal animation ---
     const heroLines = document.querySelectorAll('.hero-line');
+    const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+    const heroText = document.getElementById('hero-text');
+    let allSpans = [];
+
     heroLines.forEach((line, lineIndex) => {
         const text = line.getAttribute('data-text');
         if (!text) return;
 
         line.textContent = '';
+
+        const spans = [];
         text.split('').forEach((char, charIndex) => {
             const span = document.createElement('span');
             span.classList.add('hero-char');
+            span.style.display = 'inline-block';
             span.textContent = char === ' ' ? '\u00A0' : char;
+            span.dataset.original = char === ' ' ? '\u00A0' : char;
 
             const delay = lineIndex * 300 + charIndex * 80;
             setTimeout(() => {
@@ -115,8 +134,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }, delay);
 
             line.appendChild(span);
+            spans.push(span);
+        });
+
+        allSpans.push(...spans);
+
+        // Lock each character's natural width after fonts render
+        requestAnimationFrame(() => {
+            spans.forEach(span => {
+                const w = span.getBoundingClientRect().width;
+                span.style.width = w + 'px';
+                span.style.textAlign = 'center';
+                span.style.overflow = 'hidden';
+            });
         });
     });
+
+    // Scramble on hover — single listener for both lines
+    if (heroText) {
+        let scrambleInterval = null;
+
+        heroText.addEventListener('mouseenter', () => {
+            if (scrambleInterval) return;
+            const iterations = new Array(allSpans.length).fill(0);
+            const maxIterations = 6;
+
+            scrambleInterval = setInterval(() => {
+                let allDone = true;
+                allSpans.forEach((span, i) => {
+                    if (span.dataset.original === '\u00A0') return;
+                    if (iterations[i] < maxIterations + i * 2) {
+                        span.textContent = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                        iterations[i]++;
+                        allDone = false;
+                    } else {
+                        span.textContent = span.dataset.original;
+                    }
+                });
+                if (allDone) {
+                    clearInterval(scrambleInterval);
+                    scrambleInterval = null;
+                }
+            }, 40);
+        });
+    }
 
     // --- Hamburger menu toggle (subpages) ---
     const menuToggle = document.getElementById('menu-toggle');
@@ -180,15 +241,261 @@ document.addEventListener('DOMContentLoaded', () => {
             applyPalette(palette);
         } catch (_) {
             sessionStorage.removeItem('activePalette');
-            // Apply a time-appropriate palette on first visit
-            const palette = getTimeAwarePalette();
+            // Apply the default palette for this time of day
+            const palette = getDefaultPalette();
             applyPalette(palette);
             sessionStorage.setItem('activePalette', JSON.stringify(palette));
         }
     } else {
-        // First visit — automatically set a time-appropriate palette
-        const palette = getTimeAwarePalette();
+        // First visit — apply the default palette for this time of day
+        const palette = getDefaultPalette();
         applyPalette(palette);
         sessionStorage.setItem('activePalette', JSON.stringify(palette));
     }
+
+    // --- Particle cursor trail ---
+    initParticles();
+
+    // --- Background ambient particle network ---
+    initBackgroundParticles();
 });
+
+// Lightweight particle trail that follows the cursor
+function initParticles() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: -100, y: -100 };
+    let lastMouse = { x: -100, y: -100 };
+    let animationId;
+
+    const system = {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--brand-red').trim() || '#2660A4',
+        maxParticles: 80,
+        spawnRate: 3, // particles per move event
+    };
+    window.particleSystem = system;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+        const num = parseInt(hex, 16);
+        return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+    }
+
+    function spawnParticle(x, y) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 1.5 + 0.5;
+        particles.push({
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 0.5,
+            life: 1,
+            decay: Math.random() * 0.02 + 0.015,
+            size: Math.random() * 3 + 1.5,
+        });
+    }
+
+    function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const rgb = hexToRgb(system.color);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= p.decay;
+            p.size *= 0.98;
+
+            if (p.life <= 0 || p.size < 0.3) {
+                particles.splice(i, 1);
+                continue;
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${p.life * 0.6})`;
+            ctx.fill();
+        }
+
+        animationId = requestAnimationFrame(update);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+
+        // Only spawn if mouse moved enough
+        const dx = mouse.x - lastMouse.x;
+        const dy = mouse.y - lastMouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 3) {
+            const count = Math.min(system.spawnRate, system.maxParticles - particles.length);
+            for (let i = 0; i < count; i++) {
+                spawnParticle(
+                    mouse.x + (Math.random() - 0.5) * 4,
+                    mouse.y + (Math.random() - 0.5) * 4
+                );
+            }
+            lastMouse.x = mouse.x;
+            lastMouse.y = mouse.y;
+        }
+
+        // Cap particle count
+        while (particles.length > system.maxParticles) {
+            particles.shift();
+        }
+    });
+
+    update();
+}
+
+// Ambient background particle network — floating dots connected by lines
+function initBackgroundParticles() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'bg-particle-canvas';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;';
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    const config = {
+        count: 50,
+        maxSpeed: 0.4,
+        connectionDist: 120,
+        mouseRadius: 150,
+        mouseRepel: 0.02,
+        particleSize: 3.5,
+        opacity: 0.25,
+        lineOpacity: 0.12,
+    };
+
+    let width, height;
+    let mouse = { x: -9999, y: -9999 };
+    let bgParticles = [];
+
+    function getColor() {
+        return getComputedStyle(document.documentElement).getPropertyValue('--brand-red').trim() || '#2660A4';
+    }
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+        const num = parseInt(hex, 16);
+        return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+    }
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    function createParticle() {
+        return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * config.maxSpeed * 2,
+            vy: (Math.random() - 0.5) * config.maxSpeed * 2,
+            size: Math.random() * config.particleSize + 0.8,
+        };
+    }
+
+    function init() {
+        resize();
+        bgParticles = [];
+        for (let i = 0; i < config.count; i++) {
+            bgParticles.push(createParticle());
+        }
+    }
+
+    function update() {
+        ctx.clearRect(0, 0, width, height);
+        const rgb = hexToRgb(getColor());
+
+        for (let i = 0; i < bgParticles.length; i++) {
+            const p = bgParticles[i];
+
+            // Mouse repulsion
+            const dx = p.x - mouse.x;
+            const dy = p.y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < config.mouseRadius && dist > 0) {
+                const force = (config.mouseRadius - dist) / config.mouseRadius;
+                p.vx += (dx / dist) * force * config.mouseRepel;
+                p.vy += (dy / dist) * force * config.mouseRepel;
+            }
+
+            // Clamp speed
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > config.maxSpeed) {
+                p.vx = (p.vx / speed) * config.maxSpeed;
+                p.vy = (p.vy / speed) * config.maxSpeed;
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Wrap around edges
+            if (p.x < -10) p.x = width + 10;
+            if (p.x > width + 10) p.x = -10;
+            if (p.y < -10) p.y = height + 10;
+            if (p.y > height + 10) p.y = -10;
+
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${config.opacity})`;
+            ctx.fill();
+
+            // Draw connections
+            for (let j = i + 1; j < bgParticles.length; j++) {
+                const p2 = bgParticles[j];
+                const cdx = p.x - p2.x;
+                const cdy = p.y - p2.y;
+                const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
+
+                if (cdist < config.connectionDist) {
+                    const alpha = (1 - cdist / config.connectionDist) * config.lineOpacity;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    document.addEventListener('mouseleave', () => {
+        mouse.x = -9999;
+        mouse.y = -9999;
+    });
+
+    window.addEventListener('resize', () => {
+        resize();
+    });
+
+    init();
+    update();
+}
