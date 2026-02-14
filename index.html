@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadara — Design Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-brand-black text-white font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-50 px-6 md:px-12 lg:px-20 h-20 md:h-28 flex justify-between items-center bg-brand-black/90 backdrop-blur-xl border-b border-white/5">
+        <a href="index.html" class="font-bold text-3xl md:text-4xl lg:text-5xl tracking-tight text-white">CADARA<span
+                class="text-brand-blue">.</span></a>
+        <ul class="hidden lg:flex gap-10 list-none">
+            <li><a href="services.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">Services</a>
+            </li>
+            <li><a href="work.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">Work</a>
+            </li>
+            <li><a href="process.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">Process</a>
+            </li>
+            <li><a href="about.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">About</a>
+            </li>
+        </ul>
+        <a href="#contact"
+            class="inline-flex items-center gap-2 bg-brand-blue text-white px-6 py-3 rounded-full text-sm uppercase tracking-widest font-bold hover:bg-brand-blue-hover transition-all">
+            Start Project
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+        class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-32 pb-20 relative overflow-hidden">
+        <div
+            class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-brand-blue/10 to-transparent pointer-events-none blur-3xl">
+        </div>
+
+        <p class="text-brand-blue text-sm md:text-base uppercase tracking-[0.3em] font-bold mb-8">Design Studio — Since
+            2014</p>
+
+        <h1
+            class="font-display text-6xl sm:text-7xl md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-[0.85] tracking-tight max-w-7xl mb-8">
+            YOUR RELIABLE<br>
+            <span class="text-brand-blue">WEBSITE</span><br>
+            DESIGN PARTNER
+        </h1>
+
+        <p class="text-lg md:text-xl lg:text-2xl text-white/50 max-w-2xl leading-relaxed mb-12">
+            Drive growth with design & narratives that go beyond mere creativity to solve real problems and truly
+            connect with your audience.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#contact"
+                class="inline-flex items-center justify-center gap-3 bg-brand-blue text-white px-8 py-4 rounded-full text-base uppercase tracking-widest font-bold hover:bg-brand-blue-hover transition-all">
+                Get Started
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 10h12M10 4l6 6-6 6" />
+                </svg>
+            </a>
+            <a href="#work"
+                class="inline-flex items-center justify-center gap-3 bg-white/5 text-white px-8 py-4 rounded-full text-base uppercase tracking-widest font-bold border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all">
+                View Work
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-white text-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">WHAT WE PROVIDE</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-6 max-w-5xl">
+            FOR YOUR<br>BUSINESS NEEDS
+        </h2>
+        <p class="text-lg md:text-xl text-brand-gray-500 max-w-xl mb-16">Comprehensive design services to grow your
+            business, from brand strategy to product development.</p>
+
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+            <!-- Web Design -->
+            <a href="#"
+                class="group p-8 md:p-10 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-12 h-12 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="4" y="8" width="40" height="28" rx="2" />
+                        <path d="M4 16h40" />
+                        <path d="M20 36v4M28 36v4M16 40h16" />
+                    </svg>
+                    <svg class="w-8 h-8 text-brand-gray-400 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-2xl md:text-3xl mb-4 group-hover:text-white transition-colors">Web Design</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-6 transition-colors">Custom
+                    websites from landing pages to e-commerce platforms — built to establish your online presence and
+                    drive conversions.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">E-commerce</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Corporate</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">One-pager</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Promo</span>
+                </div>
+            </a>
+
+            <!-- App Design -->
+            <a href="#"
+                class="group p-8 md:p-10 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-12 h-12 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="12" y="4" width="24" height="40" rx="3" />
+                        <path d="M20 8h8" />
+                        <circle cx="24" cy="38" r="2" />
+                    </svg>
+                    <svg class="w-8 h-8 text-brand-gray-400 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-2xl md:text-3xl mb-4 group-hover:text-white transition-colors">App Design</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-6 transition-colors">
+                    Intuitive and engaging applications with robust functionality to drive results across mobile and web
+                    platforms.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">UX/UI</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Mobile
+                        App</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Web
+                        App</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Product</span>
+                </div>
+            </a>
+
+            <!-- Branding -->
+            <a href="#"
+                class="group p-8 md:p-10 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-12 h-12 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M24 4L4 14v20l20 10 20-10V14L24 4z" />
+                        <path d="M4 14l20 10 20-10M24 44V24" />
+                    </svg>
+                    <svg class="w-8 h-8 text-brand-gray-400 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-2xl md:text-3xl mb-4 group-hover:text-white transition-colors">Branding</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-6 transition-colors">Creating
+                    compelling brand stories and impactful visual identities that set you apart from competitors.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Logo
+                        Design</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Brandbook</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Identity</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Rebranding</span>
+                </div>
+            </a>
+
+            <!-- Development -->
+            <a href="#"
+                class="group p-8 md:p-10 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-12 h-12 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 16l-8 8 8 8M34 16l8 8-8 8M28 8l-8 32" />
+                    </svg>
+                    <svg class="w-8 h-8 text-brand-gray-400 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-2xl md:text-3xl mb-4 group-hover:text-white transition-colors">Development
+                </h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-6 transition-colors">
+                    Full-stack development services with industry experts to deliver customized solutions for your
+                    success.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Frontend</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">Backend</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">QA</span>
+                    <span
+                        class="px-3 py-1 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-xs uppercase tracking-wider rounded-full transition-colors">DevOps</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Work Section -->
+    <section id="work" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">FEATURED WORK</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-6 text-white">
+            OUR LATEST<br>PROJECTS
+        </h2>
+        <p class="text-lg md:text-xl text-white/50 max-w-xl mb-16">A selection of recent work across branding, web, and
+            mobile design.</p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <!-- Project 1 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-brand-blue to-blue-600">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">Web Design</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Strike</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Project 2 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-slate-800 to-slate-900">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">Branding</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Kordie</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Project 3 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-purple-800 to-purple-950">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">App Design</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Small Town Witches</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Project 4 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-emerald-700 to-emerald-900">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">Web Design</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Bao Solutions</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Project 5 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-amber-600 to-orange-700">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">Branding</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Kuthban</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Project 6 -->
+            <a href="#"
+                class="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-rose-700 to-rose-900">
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <p class="text-white/60 text-xs uppercase tracking-widest mb-2">Dashboard</p>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white">Orus Dashboards</h3>
+                </div>
+                <div
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H8M17 7v9" />
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-12 text-center">
+            <a href="#"
+                class="inline-flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold hover:text-brand-blue transition-colors">
+                View All Projects
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Collaboration Process -->
+    <section id="process" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-white text-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">HOW WE WORK</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-6">
+            COLLABORATION<br>PROCESS
+        </h2>
+        <p class="text-lg md:text-xl text-brand-gray-500 max-w-xl mb-16">A streamlined process designed for clarity,
+            efficiency, and outstanding results.</p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Step 1 -->
+            <div
+                class="relative p-8 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 group hover:border-brand-blue transition-all">
+                <div
+                    class="absolute -top-4 -left-2 w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg">
+                    01</div>
+                <div class="pt-6">
+                    <svg class="w-10 h-10 text-brand-blue mb-6" viewBox="0 0 40 40" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="4" y="6" width="32" height="28" rx="2" />
+                        <path d="M4 14h32" />
+                        <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+                        <circle cx="16" cy="10" r="1.5" fill="currentColor" />
+                    </svg>
+                    <h4 class="font-bold text-xl mb-3">Schedule a Call</h4>
+                    <p class="text-brand-gray-500 leading-relaxed">Book a call with us to discuss your needs, and we'll
+                        provide personalized support.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div
+                class="relative p-8 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 group hover:border-brand-blue transition-all">
+                <div
+                    class="absolute -top-4 -left-2 w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg">
+                    02</div>
+                <div class="pt-6">
+                    <svg class="w-10 h-10 text-brand-blue mb-6" viewBox="0 0 40 40" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <circle cx="20" cy="20" r="16" />
+                        <path d="M20 12v8l6 4" />
+                    </svg>
+                    <h4 class="font-bold text-xl mb-3">Online Briefing</h4>
+                    <p class="text-brand-gray-500 leading-relaxed">Before the project begins, we discuss the project
+                        details, goals, and requirements.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div
+                class="relative p-8 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 group hover:border-brand-blue transition-all">
+                <div
+                    class="absolute -top-4 -left-2 w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg">
+                    03</div>
+                <div class="pt-6">
+                    <svg class="w-10 h-10 text-brand-blue mb-6" viewBox="0 0 40 40" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M8 8h24v24H8z" />
+                        <path d="M14 16h12M14 22h8M14 28h10" />
+                    </svg>
+                    <h4 class="font-bold text-xl mb-3">Free Estimation</h4>
+                    <p class="text-brand-gray-500 leading-relaxed">A document outlining the scope of work and time
+                        estimates for each task or phase.</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div
+                class="relative p-8 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 group hover:border-brand-blue transition-all">
+                <div
+                    class="absolute -top-4 -left-2 w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg">
+                    04</div>
+                <div class="pt-6">
+                    <svg class="w-10 h-10 text-brand-blue mb-6" viewBox="0 0 40 40" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M20 4l16 8v16l-16 8-16-8V12l16-8z" />
+                        <path d="M20 20v16M4 12l16 8 16-8" />
+                    </svg>
+                    <h4 class="font-bold text-xl mb-3">Work Together</h4>
+                    <p class="text-brand-gray-500 leading-relaxed">We'll collaborate closely, keeping you informed at
+                        every stage of the project.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="about" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+            <div>
+                <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">ABOUT CADARA</p>
+                <h2
+                    class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-8">
+                    WHY CADARA<br>IS YOUR<br>BEST CHOICE
+                </h2>
+                <p class="text-lg md:text-xl text-white/50 leading-relaxed mb-8">
+                    Cadara Design Studio is a boutique agency creating innovative, effective, and sustainable design
+                    solutions that help clients stand out and achieve their business goals.
+                </p>
+                <p class="text-lg md:text-xl text-white/50 leading-relaxed">
+                    Since 2014, we've been designing brands, web and mobile apps across <span
+                        class="text-white font-bold">35+ industries</span> in <span class="text-white font-bold">35
+                        countries</span>.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/01</div>
+                    <p class="text-white/70 leading-relaxed">Business-focused design for a competitive advantage</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/02</div>
+                    <p class="text-white/70 leading-relaxed">Strategies combining design, marketing, and consulting</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/03</div>
+                    <p class="text-white/70 leading-relaxed">Extensive industry experience to meet your unique goals</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/04</div>
+                    <p class="text-white/70 leading-relaxed">Data-driven insights that shape smart decisions</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/05</div>
+                    <p class="text-white/70 leading-relaxed">Full transparency across every stage of the process</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                    <div class="text-brand-blue text-xs uppercase tracking-widest font-bold mb-4">/06</div>
+                    <p class="text-white/70 leading-relaxed">An expert team focused on delivering quality and results
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-gray-50 text-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">RECOGNITION</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-16">
+            AWARDS WE ARE<br>PROUD OF
+        </h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+                class="p-8 bg-white rounded-2xl border border-brand-gray-100 text-center hover:border-brand-blue hover:shadow-lg transition-all">
+                <div class="font-display text-5xl md:text-6xl font-bold text-brand-blue mb-4">29</div>
+                <p class="font-bold text-lg mb-2">Awwwards</p>
+                <p class="text-sm text-brand-gray-500">Site Of The Day · Honorable Mention · Mobile Excellence</p>
+            </div>
+            <div
+                class="p-8 bg-white rounded-2xl border border-brand-gray-100 text-center hover:border-brand-blue hover:shadow-lg transition-all">
+                <div class="font-display text-5xl md:text-6xl font-bold text-brand-blue mb-4">29</div>
+                <p class="font-bold text-lg mb-2">CSSDA</p>
+                <p class="text-sm text-brand-gray-500">Website Of The Day · Special Kudos · Best UI/UX Design</p>
+            </div>
+            <div
+                class="p-8 bg-white rounded-2xl border border-brand-gray-100 text-center hover:border-brand-blue hover:shadow-lg transition-all">
+                <div class="font-display text-5xl md:text-6xl font-bold text-brand-blue mb-4">60</div>
+                <p class="font-bold text-lg mb-2">Behance</p>
+                <p class="text-sm text-brand-gray-500">Best of Behance · Featured in UI/UX · Logo · XD</p>
+            </div>
+            <div
+                class="p-8 bg-white rounded-2xl border border-brand-gray-100 text-center hover:border-brand-blue hover:shadow-lg transition-all">
+                <div class="font-display text-5xl md:text-6xl font-bold text-brand-blue mb-4">50+</div>
+                <p class="font-bold text-lg mb-2">Others</p>
+                <p class="text-sm text-brand-gray-500">CSSWinner · CSSNectar · WebGuru · Design Nominees</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">CLIENT TESTIMONIALS</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-8">
+            CLIENTS SPEAK<br>ABOUT US
+        </h2>
+        <p class="text-lg md:text-xl text-white/50 max-w-xl mb-16">Hear from the people we've partnered with to deliver
+            results.</p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Testimonial 1 -->
+            <div class="p-8 bg-white/5 rounded-2xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                <div class="flex gap-1 mb-6">
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                </div>
+                <p class="text-xl font-bold text-white mb-4">"We were satisfied with the design work and collaboration"
+                </p>
+                <p class="text-white/60 leading-relaxed mb-6">Enhanced our visual identity and made us stand out from
+                    competitors. Improved accessibility and UX across devices. Delivered on time with great
+                    professionalism.</p>
+                <div class="flex items-center gap-4 pt-6 border-t border-white/10">
+                    <div
+                        class="w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold">
+                        OT</div>
+                    <div>
+                        <p class="font-bold">Oleksii Tyshkevych</p>
+                        <p class="text-sm text-white/50">COO, Mulwi Shopping Feeds</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="p-8 bg-white/5 rounded-2xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                <div class="flex gap-1 mb-6">
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                </div>
+                <p class="text-xl font-bold text-white mb-4">"They ensure all promises are kept"</p>
+                <p class="text-white/60 leading-relaxed mb-6">Reduced our rental flow from six steps to three,
+                    increasing conversions and lowering bounce rate. Strong project management and deep understanding of
+                    our needs.</p>
+                <div class="flex items-center gap-4 pt-6 border-t border-white/10">
+                    <div
+                        class="w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold">
+                        BR</div>
+                    <div>
+                        <p class="font-bold">Bart Roessink</p>
+                        <p class="text-sm text-white/50">Executive, Bikago</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="p-8 bg-white/5 rounded-2xl border border-white/10 hover:border-brand-blue/50 transition-all">
+                <div class="flex gap-1 mb-6">
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                    <svg class="w-5 h-5 text-brand-blue" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" />
+                    </svg>
+                </div>
+                <p class="text-xl font-bold text-white mb-4">"Their work brought our brand to life"</p>
+                <p class="text-white/60 leading-relaxed mb-6">Meticulous research, strategic approach, and outstanding
+                    design skills shaped our identity. Seamless project management through virtual meetings and email.
+                </p>
+                <div class="flex items-center gap-4 pt-6 border-t border-white/10">
+                    <div
+                        class="w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold">
+                        CL</div>
+                    <div>
+                        <p class="font-bold">Community Lead</p>
+                        <p class="text-sm text-white/50">Head of Community, ReFund $RFD</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-6 bg-white/5 rounded-xl text-center border border-white/10">
+                <p class="text-sm text-white/50 mb-2">Top Logo Design Company</p>
+                <p class="font-bold text-brand-blue">Clutch</p>
+            </div>
+            <div class="p-6 bg-white/5 rounded-xl text-center border border-white/10">
+                <p class="text-sm text-white/50 mb-2">Top Digital Design Company</p>
+                <p class="font-bold text-brand-blue">Clutch</p>
+            </div>
+            <div class="p-6 bg-white/5 rounded-xl text-center border border-white/10">
+                <p class="text-sm text-white/50 mb-2">Clutch Global Leader</p>
+                <p class="font-bold text-brand-blue">Clutch</p>
+            </div>
+            <div class="p-6 bg-white/5 rounded-xl text-center border border-white/10">
+                <p class="text-sm text-white/50 mb-2">Top Web Design Company</p>
+                <p class="font-bold text-brand-blue">GoodFirms</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-white text-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">RECENT CONTENT</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-6">
+            INSIGHTS WORTH<br>SHARING
+        </h2>
+        <p class="text-lg md:text-xl text-brand-gray-500 max-w-xl mb-16">Thoughts on design, strategy, and building
+            successful digital products.</p>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <a href="#" class="group">
+                <div
+                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-brand-blue to-blue-600 mb-6 overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center p-8">
+                        <span class="text-white/30 font-display text-6xl font-bold">01</span>
+                    </div>
+                </div>
+                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Design</p>
+                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
+                    Web Design and Development: Why Both Matter for Performance-Driven Brands</h3>
+            </a>
+
+            <a href="#" class="group">
+                <div
+                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 mb-6 overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center p-8">
+                        <span class="text-white/30 font-display text-6xl font-bold">02</span>
+                    </div>
+                </div>
+                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Strategy</p>
+                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
+                    Launching Products Faster with Lean UX and Lean Startup Approach</h3>
+            </a>
+
+            <a href="#" class="group">
+                <div
+                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-emerald-700 to-emerald-900 mb-6 overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center p-8">
+                        <span class="text-white/30 font-display text-6xl font-bold">03</span>
+                    </div>
+                </div>
+                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Accessibility</p>
+                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
+                    The European Accessibility Act: What You Need to Know</h3>
+            </a>
+        </div>
+
+        <div class="mt-12">
+            <a href="#"
+                class="inline-flex items-center gap-3 text-brand-black text-sm uppercase tracking-widest font-bold hover:text-brand-blue transition-colors">
+                View All Articles
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-gray-50 text-brand-black">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">FAQ</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-16">
+            FREQUENTLY ASKED<br>QUESTIONS
+        </h2>
+
+        <div class="max-w-4xl space-y-4">
+            <details class="group p-6 md:p-8 bg-white rounded-2xl border border-brand-gray-100 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-lg md:text-xl list-none">
+                    How is Cadara different from other agencies?
+                    <svg class="w-6 h-6 text-brand-blue transform group-open:rotate-45 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </summary>
+                <p class="mt-6 text-brand-gray-600 leading-relaxed">We blend creativity with performance, storytelling
+                    with data, and rapid experimentation with radical collaboration. Whether you're a startup, SME, or
+                    large corporation, we offer unique engagement models and can seamlessly integrate with your
+                    marketing team or work on a contract basis.</p>
+            </details>
+
+            <details class="group p-6 md:p-8 bg-white rounded-2xl border border-brand-gray-100 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-lg md:text-xl list-none">
+                    How much does it cost to work with Cadara?
+                    <svg class="w-6 h-6 text-brand-blue transform group-open:rotate-45 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </summary>
+                <p class="mt-6 text-brand-gray-600 leading-relaxed">Our project costs vary depending on complexity,
+                    growth stage, and scope. We provide transparent, tailored pricing with no hidden fees. Contact us
+                    for a personalized quote based on your specific needs.</p>
+            </details>
+
+            <details class="group p-6 md:p-8 bg-white rounded-2xl border border-brand-gray-100 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-lg md:text-xl list-none">
+                    What is the first step to start a project?
+                    <svg class="w-6 h-6 text-brand-blue transform group-open:rotate-45 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </summary>
+                <p class="mt-6 text-brand-gray-600 leading-relaxed">Simply reach out through our contact form or book a
+                    meeting. Our strategists will meet with you—no sales talk, just a discussion about your needs and
+                    goals. We'll create a tailored plan and provide a detailed proposal.</p>
+            </details>
+
+            <details class="group p-6 md:p-8 bg-white rounded-2xl border border-brand-gray-100 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-lg md:text-xl list-none">
+                    Can Cadara handle large-scale projects?
+                    <svg class="w-6 h-6 text-brand-blue transform group-open:rotate-45 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </summary>
+                <p class="mt-6 text-brand-gray-600 leading-relaxed">Absolutely. Our extensive network of global
+                    professionals allows us to scale up for large projects while maintaining the agility and efficiency
+                    of a small team.</p>
+            </details>
+
+            <details class="group p-6 md:p-8 bg-white rounded-2xl border border-brand-gray-100 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-lg md:text-xl list-none">
+                    What is Cadara's approach to client collaboration?
+                    <svg class="w-6 h-6 text-brand-blue transform group-open:rotate-45 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </summary>
+                <p class="mt-6 text-brand-gray-600 leading-relaxed">We prioritize direct communication and transparency.
+                    Clients are involved in every step of the process through our client portals, ensuring their vision
+                    is realized accurately. We also offer ongoing support and maintenance to ensure your brand continues
+                    to thrive.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+            <div>
+                <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">LET'S TALK</p>
+                <h2
+                    class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-8">
+                    HAVE A PROJECT?<br>LET'S DISCUSS
+                </h2>
+                <p class="text-lg md:text-xl text-white/50 leading-relaxed mb-10">
+                    Let's create something extraordinary together. We'd love to hear about your vision.
+                </p>
+
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-white/40 text-sm uppercase tracking-widest mb-2">Email</p>
+                        <a href="mailto:hello@cadara.design"
+                            class="text-2xl md:text-3xl font-bold hover:text-brand-blue transition-colors">hello@cadara.design</a>
+                    </div>
+                    <div>
+                        <p class="text-white/40 text-sm uppercase tracking-widest mb-2">Schedule</p>
+                        <a href="#"
+                            class="inline-flex items-center gap-3 text-xl font-bold hover:text-brand-blue transition-colors">
+                            Book a 30-min call
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H8M17 7v9" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <form class="space-y-6">
+                <div>
+                    <input type="text" placeholder="Your Name *"
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-brand-blue transition-colors">
+                </div>
+                <div>
+                    <input type="email" placeholder="Your Email *"
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-brand-blue transition-colors">
+                </div>
+                <div>
+                    <input type="text" placeholder="Company (Optional)"
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-brand-blue transition-colors">
+                </div>
+                <div>
+                    <textarea rows="4" placeholder="Tell us about your project *"
+                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-brand-blue transition-colors resize-none"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full inline-flex items-center justify-center gap-3 bg-brand-blue text-white px-8 py-4 rounded-full text-base uppercase tracking-widest font-bold hover:bg-brand-blue-hover transition-all">
+                    Send Message
+                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 10h12M10 4l6 6-6 6" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-10 md:py-12 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+            <a href="index.html" class="font-bold text-3xl md:text-4xl lg:text-5xl">CADARA<span
+                    class="text-brand-blue">.</span></a>
+
+            <ul class="flex gap-8 list-none flex-wrap justify-center">
+                <li><a href="https://behance.net" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Behance</a>
+                </li>
+                <li><a href="https://linkedin.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">LinkedIn</a>
+                </li>
+                <li><a href="https://instagram.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Instagram</a>
+                </li>
+                <li><a href="https://dribbble.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Dribbble</a>
+                </li>
+            </ul>
+
+            <div class="text-sm text-white/40">&copy; 2026 Cadara Design Studio</div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

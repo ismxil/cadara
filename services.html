@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services — Cadara Design Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-brand-black text-white font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-50 px-6 md:px-12 lg:px-20 h-20 md:h-28 flex justify-between items-center bg-brand-black/90 backdrop-blur-xl border-b border-white/5">
+        <a href="index.html" class="font-bold text-3xl md:text-4xl lg:text-5xl tracking-tight text-white">CADARA<span
+                class="text-brand-blue">.</span></a>
+        <ul class="hidden lg:flex gap-10 list-none">
+            <li><a href="services.html"
+                    class="text-white text-sm uppercase tracking-widest font-medium transition-colors">Services</a>
+            </li>
+            <li><a href="work.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">Work</a>
+            </li>
+            <li><a href="process.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">Process</a>
+            </li>
+            <li><a href="about.html"
+                    class="text-white/60 hover:text-white text-sm uppercase tracking-widest font-medium transition-colors">About</a>
+            </li>
+        </ul>
+        <a href="index.html#contact"
+            class="inline-flex items-center gap-2 bg-brand-blue text-white px-6 py-3 rounded-full text-sm uppercase tracking-widest font-bold hover:bg-brand-blue-hover transition-all">
+            Start Project
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+        class="min-h-[60vh] flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-40 pb-20 relative overflow-hidden">
+        <div
+            class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-brand-blue/10 to-transparent pointer-events-none blur-3xl">
+        </div>
+
+        <p class="text-brand-blue text-sm md:text-base uppercase tracking-[0.3em] font-bold mb-8">OUR SERVICES</p>
+
+        <h1
+            class="font-display text-6xl sm:text-7xl md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-[0.85] tracking-tight max-w-7xl mb-8">
+            WHAT WE<br>
+            <span class="text-brand-blue">PROVIDE</span>
+        </h1>
+
+        <p class="text-lg md:text-xl lg:text-2xl text-white/50 max-w-2xl leading-relaxed">
+            Comprehensive design services to grow your business, from brand strategy to product development.
+        </p>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-white text-brand-black">
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+            <!-- Web Design -->
+            <div
+                class="group p-8 md:p-12 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-16 h-16 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="4" y="8" width="40" height="28" rx="2" />
+                        <path d="M4 16h40" />
+                        <path d="M20 36v4M28 36v4M16 40h16" />
+                    </svg>
+                    <span class="text-brand-blue group-hover:text-white text-sm font-bold tracking-widest">/01</span>
+                </div>
+                <h3 class="font-bold text-3xl md:text-4xl mb-6 group-hover:text-white transition-colors">Web Design</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-8 text-lg transition-colors">
+                    Custom websites from landing pages to e-commerce platforms — built to establish your online presence
+                    and drive conversions. We create digital experiences that captivate and convert.</p>
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">E-commerce</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Corporate</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">One-pager</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Promo</span>
+                </div>
+                <ul class="space-y-3 text-brand-gray-600 group-hover:text-white/70 transition-colors">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Responsive Design
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        SEO Optimization
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        CMS Integration
+                    </li>
+                </ul>
+            </div>
+
+            <!-- App Design -->
+            <div
+                class="group p-8 md:p-12 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-16 h-16 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="12" y="4" width="24" height="40" rx="3" />
+                        <path d="M20 8h8" />
+                        <circle cx="24" cy="38" r="2" />
+                    </svg>
+                    <span class="text-brand-blue group-hover:text-white text-sm font-bold tracking-widest">/02</span>
+                </div>
+                <h3 class="font-bold text-3xl md:text-4xl mb-6 group-hover:text-white transition-colors">App Design</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-8 text-lg transition-colors">
+                    Intuitive and engaging applications with robust functionality to drive results across mobile and web
+                    platforms. User-centered design that delivers exceptional experiences.</p>
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">UX/UI</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Mobile
+                        App</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Web
+                        App</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Product</span>
+                </div>
+                <ul class="space-y-3 text-brand-gray-600 group-hover:text-white/70 transition-colors">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        User Research
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Interactive Prototypes
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Design Systems
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Branding -->
+            <div
+                class="group p-8 md:p-12 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-16 h-16 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M24 4L4 14v20l20 10 20-10V14L24 4z" />
+                        <path d="M4 14l20 10 20-10M24 44V24" />
+                    </svg>
+                    <span class="text-brand-blue group-hover:text-white text-sm font-bold tracking-widest">/03</span>
+                </div>
+                <h3 class="font-bold text-3xl md:text-4xl mb-6 group-hover:text-white transition-colors">Branding</h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-8 text-lg transition-colors">
+                    Creating compelling brand stories and impactful visual identities that set you apart from
+                    competitors. Strategic branding that resonates with your audience.</p>
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Logo
+                        Design</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Brandbook</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Identity</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Rebranding</span>
+                </div>
+                <ul class="space-y-3 text-brand-gray-600 group-hover:text-white/70 transition-colors">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Brand Strategy
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Visual Identity
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Brand Guidelines
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Development -->
+            <div
+                class="group p-8 md:p-12 bg-brand-gray-50 rounded-2xl border border-brand-gray-100 hover:border-brand-blue hover:bg-brand-blue transition-all duration-300">
+                <div class="flex items-start justify-between mb-8">
+                    <svg class="w-16 h-16 text-brand-blue group-hover:text-white transition-colors" viewBox="0 0 48 48"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 16l-8 8 8 8M34 16l8 8-8 8M28 8l-8 32" />
+                    </svg>
+                    <span class="text-brand-blue group-hover:text-white text-sm font-bold tracking-widest">/04</span>
+                </div>
+                <h3 class="font-bold text-3xl md:text-4xl mb-6 group-hover:text-white transition-colors">Development
+                </h3>
+                <p class="text-brand-gray-500 group-hover:text-white/70 leading-relaxed mb-8 text-lg transition-colors">
+                    Full-stack development services with industry experts to deliver customized solutions for your
+                    success. Clean code, scalable architecture, and modern technologies.</p>
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Frontend</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">Backend</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">QA</span>
+                    <span
+                        class="px-4 py-2 bg-brand-gray-100 group-hover:bg-white/10 text-brand-gray-600 group-hover:text-white/80 text-sm uppercase tracking-wider rounded-full transition-colors">DevOps</span>
+                </div>
+                <ul class="space-y-3 text-brand-gray-600 group-hover:text-white/70 transition-colors">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Custom Development
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        API Integration
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-brand-blue group-hover:text-white" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Performance Optimization
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black text-white text-center">
+        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-8">READY TO START?</p>
+        <h2
+            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight mb-8">
+            LET'S CREATE<br>SOMETHING GREAT
+        </h2>
+        <p class="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12">
+            We'd love to hear about your project. Get in touch and let's discuss how we can help.
+        </p>
+        <a href="index.html#contact"
+            class="inline-flex items-center justify-center gap-3 bg-brand-blue text-white px-10 py-5 rounded-full text-lg uppercase tracking-widest font-bold hover:bg-brand-blue-hover transition-all">
+            Start Your Project
+            <svg class="w-6 h-6" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 10h12M10 4l6 6-6 6" />
+            </svg>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-10 md:py-12 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+            <a href="index.html" class="font-bold text-3xl md:text-4xl lg:text-5xl">CADARA<span
+                    class="text-brand-blue">.</span></a>
+
+            <ul class="flex gap-8 list-none flex-wrap justify-center">
+                <li><a href="https://behance.net" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Behance</a>
+                </li>
+                <li><a href="https://linkedin.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">LinkedIn</a>
+                </li>
+                <li><a href="https://instagram.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Instagram</a>
+                </li>
+                <li><a href="https://dribbble.com" target="_blank"
+                        class="text-white/50 hover:text-brand-blue text-sm uppercase tracking-widest transition-colors">Dribbble</a>
+                </li>
+            </ul>
+
+            <div class="text-sm text-white/40">&copy; 2026 Cadara Design Studio</div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

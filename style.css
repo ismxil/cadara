@@ -1,0 +1,130 @@
+@font-face {
+  font-family: 'Midnight Sans Bold';
+  src: url('assets/MidnightSansRDPro-12Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Midnight Sans Regular';
+  src: url('assets/MidnightSansRDPro-36Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flecha';
+  src: url('assets/flecha-black.otf') format('opentype');
+  font-weight: bold;
+  font-style: bold;
+}
+
+/* Base Styles */
+:root {
+  --brand-blue: #0040EB;
+  --brand-black: #090D0E;
+  --brand-white: #FFFFFF;
+}
+
+body {
+  position: relative;
+}
+
+/* Custom Text Effects */
+h1 {
+  font-variant-ligatures: discretionary-ligatures;
+  text-shadow: 0 0 20px color-mix(in srgb, currentColor 10%, transparent);
+}
+
+/* Display font is always uppercase */
+.font-display {
+  text-transform: uppercase;
+}
+
+/* Animation for the main content appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+main {
+  animation: fadeIn 1s ease-out;
+}
+
+/* Project card hover overlay */
+.project-overlay {
+  background: color-mix(in srgb, var(--brand-black) 80%, transparent);
+}
+
+/* Highlight link - underline with wavy hover */
+.highlight-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-style: solid;
+  transition:
+    text-decoration-style 0.3s ease,
+    text-underline-offset 0.3s ease;
+}
+
+.highlight-link:hover {
+  text-decoration-style: wavy;
+  text-underline-offset: 4px;
+  animation: wave-nudge 0.4s ease forwards;
+}
+
+@keyframes wave-nudge {
+  0% {
+    text-underline-offset: 3px;
+  }
+  50% {
+    text-underline-offset: 5px;
+  }
+  100% {
+    text-underline-offset: 4px;
+  }
+}
+
+/* Hero text letter animation */
+.hero-line {
+  display: inline-block;
+}
+
+.hero-char {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(1);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.2s ease-out;
+  will-change: transform, opacity;
+}
+
+.hero-char.revealed {
+  opacity: 1;
+}
+
+/* Password overlay shake animation */
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
