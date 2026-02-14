@@ -108,6 +108,24 @@ function applyPalette(palette) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- Nav scroll transition ---
+    const mainNav = document.getElementById('main-nav');
+    if (mainNav) {
+        const scrollThreshold = 80;
+        let lastScrolled = false;
+
+        function handleNavScroll() {
+            const scrolled = window.scrollY > scrollThreshold;
+            if (scrolled !== lastScrolled) {
+                mainNav.classList.toggle('nav-scrolled', scrolled);
+                lastScrolled = scrolled;
+            }
+        }
+
+        window.addEventListener('scroll', handleNavScroll, { passive: true });
+        handleNavScroll(); // Check initial state
+    }
+
     // --- Hero text letter-by-letter reveal animation ---
     const heroLines = document.querySelectorAll('.hero-line');
     const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';

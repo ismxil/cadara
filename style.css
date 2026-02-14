@@ -21,13 +21,24 @@
 
 /* Base Styles */
 :root {
-  --brand-blue: #0040EB;
-  --brand-black: #090D0E;
-  --brand-white: #FFFFFF;
+  --brand-blue: #0040eb;
+  --brand-black: #090d0e;
+  --brand-white: #ffffff;
 }
 
 body {
   position: relative;
+}
+
+/* ── Navigation scroll states ── */
+#main-nav {
+  background: transparent;
+}
+
+#main-nav.nav-scrolled {
+  background: rgba(9, 13, 14, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Custom Text Effects */
