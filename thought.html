@@ -75,33 +75,33 @@
                     <ul class="space-y-4">
                         <li class="flex items-end justify-between group">
                             <a href="about.html"
-                                class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">About</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                            <span class="font-mono text-sm">I</span>
+                            <span class="font-mono text-sm md:text-lg">I</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="work.html"
-                                class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Work</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                            <span class="font-mono text-sm">II</span>
+                            <span class="font-mono text-sm md:text-lg">II</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="expertise.html"
-                                class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Expertise</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                            <span class="font-mono text-sm">III</span>
+                            <span class="font-mono text-sm md:text-lg">III</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="play.html"
-                                class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                            <span class="font-mono text-sm">IV</span>
+                            <span class="font-mono text-sm md:text-lg">IV</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="thought.html"
-                                class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                            <span class="font-mono text-sm">V</span>
+                            <span class="font-mono text-sm md:text-lg">V</span>
                         </li>
                     </ul>
                 </nav>
@@ -188,63 +188,63 @@
         <section class="mb-16">
             <h2 class="text-2xl font-bold mb-8 opacity-80">Recents</h2>
 
-            <div class="space-y-8">
-                <!-- Blog Entry -->
+            <!-- Loading State -->
+            <div id="blog-loading" class="py-8 text-center">
+                <div
+                    class="inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mb-3">
+                </div>
+                <p class="font-mono text-xs uppercase tracking-widest opacity-50">Loading posts...</p>
+            </div>
+
+            <!-- Blog entries populated from RSS -->
+            <div id="blog-entries" class="space-y-8"></div>
+
+            <!-- Fallback entries (shown if RSS fails) -->
+            <div id="blog-fallback" class="space-y-8 hidden">
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2025</span>
                     <div>
-                        <a href="https://wandarer.com/p/bees" target="_blank"
+                        <a href="article.html?slug=bees"
                             class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">Bees</a>
-                        <p class="text-sm opacity-70">Why the best designers I know are like bees.
-                        </p>
+                        <p class="text-sm opacity-70">Why the best designers I know are like bees.</p>
                     </div>
                 </article>
-
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2025</span>
                     <div>
-                        <a href="https://wandarer.com/p/off-boarding-is-as-important-as-onboarding" target="_blank"
+                        <a href="article.html?slug=off-boarding-is-as-important-as-onboarding"
                             class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">Offboarding,
-                            in product.
-                        </a>
+                            in product.</a>
                         <p class="text-sm opacity-70">The risk, approach and what to look out for in your offboarding.
                         </p>
                     </div>
                 </article>
-
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2025</span>
                     <div>
-                        <a href="https://wandarer.com/p/why-are-we-doing-this" target="_blank"
+                        <a href="article.html?slug=why-are-we-doing-this"
                             class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">Product and
-                            souls.
-                        </a>
+                            souls.</a>
                         <p class="text-sm opacity-70">Why are products lacking soul.</p>
                     </div>
                 </article>
-
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2024</span>
                     <div>
-                        <a href="https://wandarer.com/p/scrolljacking" target="_blank"
-                            class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">Scrolljacking.
-                        </a>
-                        <p class="text-sm opacity-70">It seem appealing, but can be deadly.
-                        </p>
+                        <a href="article.html?slug=scrolljacking"
+                            class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">Scrolljacking.</a>
+                        <p class="text-sm opacity-70">It seem appealing, but can be deadly.</p>
                     </div>
                 </article>
-
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2022</span>
                     <div>
-                        <a href="https://wandarer.com/p/ux-is-not-ui" target="_blank"
-                            class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">UX is not UI.
-                        </a>
-                        <p class="text-sm opacity-70">If we only deliver the UI then what is UX.
-                        </p>
+                        <a href="article.html?slug=ux-is-not-ui"
+                            class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">UX is not
+                            UI.</a>
+                        <p class="text-sm opacity-70">If we only deliver the UI then what is UX.</p>
                     </div>
                 </article>
-
             </div>
         </section>
         <!-- Navigation Section -->
@@ -252,33 +252,33 @@
             <ul class="space-y-4">
                 <li class="flex items-end justify-between group">
                     <a href="about.html"
-                        class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">About</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">About</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                    <span class="font-mono text-sm">I</span>
+                    <span class="font-mono text-sm md:text-lg">I</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="work.html"
-                        class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Work</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Work</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                    <span class="font-mono text-sm">II</span>
+                    <span class="font-mono text-sm md:text-lg">II</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="expertise.html"
-                        class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Expertise</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Expertise</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                    <span class="font-mono text-sm">III</span>
+                    <span class="font-mono text-sm md:text-lg">III</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="play.html"
-                        class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Play</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                    <span class="font-mono text-sm">IV</span>
+                    <span class="font-mono text-sm md:text-lg">IV</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="thought.html"
-                        class="uppercase tracking-widest text-sm md:text-base font-bold transition-all duration-300 group-hover:pl-2">Thought</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                    <span class="font-mono text-sm">V</span>
+                    <span class="font-mono text-sm md:text-lg">V</span>
                 </li>
             </ul>
         </nav>
@@ -355,6 +355,44 @@
     </main>
 
     <script src="script.js"></script>
+    <script src="blog-cache.js"></script>
+    <script>
+        (function () {
+            BlogCache.getArticles(function (articles, meta) {
+                if (!articles) {
+                    showFallback();
+                    return;
+                }
+                renderPosts(articles);
+            });
+
+            function renderPosts(articles) {
+                const container = document.getElementById('blog-entries');
+                const loading = document.getElementById('blog-loading');
+
+                let html = '';
+                articles.forEach(function (a) {
+                    html += `
+                        <article class="flex gap-6">
+                            <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">${a.year}</span>
+                            <div>
+                                <a href="article.html?slug=${a.slug}"
+                                    class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">${a.title}</a>
+                                <p class="text-sm opacity-70">${a.description}</p>
+                            </div>
+                        </article>`;
+                });
+
+                loading.classList.add('hidden');
+                container.innerHTML = html;
+            }
+
+            function showFallback() {
+                document.getElementById('blog-loading').classList.add('hidden');
+                document.getElementById('blog-fallback').classList.remove('hidden');
+            }
+        })();
+    </script>
 </body>
 
 </html>
