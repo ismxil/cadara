@@ -522,3 +522,8 @@ function initBackgroundParticles() {
     init();
     update();
 }
+
+// ── Page transition: reveal body when ready ──
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('page-ready');
+});
