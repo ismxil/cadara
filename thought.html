@@ -188,19 +188,11 @@
         <section class="mb-16">
             <h2 class="text-2xl font-bold mb-8 opacity-80">Recents</h2>
 
-            <!-- Loading State -->
-            <div id="blog-loading" class="py-8 text-center">
-                <div
-                    class="inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mb-3">
-                </div>
-                <p class="font-mono text-xs uppercase tracking-widest opacity-50">Loading posts...</p>
-            </div>
+            <!-- Blog entries populated from RSS (replaces fallback when ready) -->
+            <div id="blog-entries" class="space-y-8 hidden"></div>
 
-            <!-- Blog entries populated from RSS -->
-            <div id="blog-entries" class="space-y-8"></div>
-
-            <!-- Fallback entries (shown if RSS fails) -->
-            <div id="blog-fallback" class="space-y-8 hidden">
+            <!-- Static entries shown instantly, replaced when RSS loads -->
+            <div id="blog-fallback" class="space-y-8">
                 <article class="flex gap-6">
                     <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">2025</span>
                     <div>
@@ -358,39 +350,26 @@
     <script src="blog-cache.js"></script>
     <script>
         (function () {
-            BlogCache.getArticles(function (articles, meta) {
-                if (!articles) {
-                    showFallback();
-                    return;
-                }
-                renderPosts(articles);
-            });
+            BlogCache.getArticles(function (articles) {
+                if (!articles || articles.length === 0) return; // keep fallback as-is
+                var container = document.getElementById('blog-entries');
+                var fallback = document.getElementById('blog-fallback');
 
-            function renderPosts(articles) {
-                const container = document.getElementById('blog-entries');
-                const loading = document.getElementById('blog-loading');
-
-                let html = '';
+                var html = '';
                 articles.forEach(function (a) {
-                    html += `
-                        <article class="flex gap-6">
-                            <span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">${a.year}</span>
-                            <div>
-                                <a href="article.html?slug=${a.slug}"
-                                    class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">${a.title}</a>
-                                <p class="text-sm opacity-70">${a.description}</p>
-                            </div>
-                        </article>`;
+                    html += '<article class="flex gap-6">' +
+                        '<span class="font-mono text-sm opacity-50 w-12 flex-shrink-0">' + a.year + '</span>' +
+                        '<div>' +
+                        '<a href="article.html?slug=' + a.slug + '"' +
+                        ' class="text-2xl font-semibold hover:opacity-70 transition-opacity block mb-1">' + a.title + '</a>' +
+                        '<p class="text-sm opacity-70">' + a.description + '</p>' +
+                        '</div></article>';
                 });
 
-                loading.classList.add('hidden');
                 container.innerHTML = html;
-            }
-
-            function showFallback() {
-                document.getElementById('blog-loading').classList.add('hidden');
-                document.getElementById('blog-fallback').classList.remove('hidden');
-            }
+                container.classList.remove('hidden');
+                fallback.classList.add('hidden');
+            });
         })();
     </script>
 </body>
