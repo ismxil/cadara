@@ -13,19 +13,22 @@
 <body class="bg-brand-black text-white font-sans antialiased">
 
     <!-- Navigation -->
-    <nav id="main-nav"
-        class="fixed top-0 w-full z-50 px-6 md:px-12 lg:px-20 transition-all duration-500 ease-in-out nav-scrolled">
+    <nav id="main-nav" class="fixed top-0 w-full z-50 px-6 md:px-12 md:pt-8 md:pb-8
+         lg:px-20 transition-all duration-500 ease-in-out nav-scrolled">
         <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Logo -->
             <a href="index.html" id="nav-logo"
-                class="font-display font-bold text-2xl md:text-3xl lg:text-4xl tracking-tight text-white transition-all duration-500">
+                class="font-display font-bold text-2xl md:text-xl lg:text-8xl tracking-tight text-white transition-all duration-500">
                 CADARA<span class="text-brand-blue">.</span>
             </a>
+
+            <!-- Desktop Nav Items -->
             <div class="hidden md:flex items-center gap-6 lg:gap-8">
                 <a href="work.html"
-                    class="font-display text-white/70 hover:text-white text-lg md:text-xl font-medium transition-colors tracking-wide">Work</a>
+                    class="font-display text-white/70 hover:text-white text-lg md:text-6xl font-medium transition-colors tracking-wide">Work</a>
                 <div class="relative group">
                     <button
-                        class="font-display text-white/70 hover:text-white text-lg md:text-xl font-medium transition-colors tracking-wide flex items-center gap-1">
+                        class="font-display text-white hover:text-white text-lg md:text-6xl font-medium transition-colors tracking-wide flex items-center gap-1">
                         Capabilities
                         <svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
@@ -35,17 +38,17 @@
                     <div
                         class="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-full right-0 mt-2 bg-brand-black border border-white/10 rounded-lg py-2 min-w-[200px] transition-all duration-200 z-50">
                         <a href="services.html"
-                            class="block px-4 py-2 text-base text-white/60 hover:text-white hover:bg-white/5 transition-colors">Services</a>
+                            class="block px-4 py-2 text-base md:text-2xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">Services</a>
                         <a href="process.html"
-                            class="block px-4 py-2 text-base text-white/60 hover:text-white hover:bg-white/5 transition-colors">Process</a>
+                            class="block px-4 py-2 text-base md:text-2xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">Process</a>
                     </div>
                 </div>
                 <a href="contact.html"
-                    class="font-display text-white/70 hover:text-white text-lg md:text-xl font-medium transition-colors tracking-wide">Contact</a>
-                <button id="menu-toggle"
-                    class="font-display text-white/70 hover:text-white text-lg md:text-xl font-medium transition-colors tracking-wide">Menu<span
-                        class="text-sm ml-0.5">+</span></button>
+                    class="font-display text-white/70 hover:text-white text-lg md:text-6xl font-medium transition-colors tracking-wide">Contact</a>
+
             </div>
+
+            <!-- Mobile Hamburger -->
             <button id="mobile-menu-btn" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5"
                 aria-label="Open menu">
                 <span class="mobile-hamburger-line w-6 h-0.5 bg-white rounded-full transition-all duration-300"></span>
@@ -54,7 +57,6 @@
                     class="mobile-hamburger-line w-4 h-0.5 bg-white rounded-full transition-all duration-300 self-end"></span>
             </button>
         </div>
-        <div class="w-full h-px bg-white/10"></div>
     </nav>
 
     <!-- Mobile Menu Overlay -->
@@ -76,21 +78,21 @@
             <a href="services.html"
                 class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Services</a>
             <a href="process.html"
-                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Process</a>
+                class="font-display text-4xl sm:text-5xl font-bold text-white hover:text-white transition-colors mobile-nav-item">Process</a>
             <a href="about.html"
                 class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">About</a>
             <a href="contact.html"
                 class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Contact</a>
         </div>
         <div class="px-6 pb-8 flex gap-6">
-            <a href="https://instagram.com" target="_blank" rel="noopener"
+            <a href="https://instagram.com/cadarastudio" target="_blank" rel="noopener"
                 class="text-white/40 hover:text-white text-sm transition-colors">Instagram</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener"
+            <a href="https://x.com/cadarastudio" target="_blank" rel="noopener"
+                class="text-white/40 hover:text-white text-sm transition-colors">X</a>
+            <a href="https://linkedin.com/company/cadarastudio" target="_blank" rel="noopener"
                 class="text-white/40 hover:text-white text-sm transition-colors">LinkedIn</a>
-            <a href="https://behance.net" target="_blank" rel="noopener"
+            <a href="https://behance.net/cadara" target="_blank" rel="noopener"
                 class="text-white/40 hover:text-white text-sm transition-colors">Behance</a>
-            <a href="https://dribbble.com" target="_blank" rel="noopener"
-                class="text-white/40 hover:text-white text-sm transition-colors">Dribbble</a>
         </div>
     </div>
 
@@ -419,14 +421,14 @@
             <div>
                 <p class="text-white/40 text-sm mb-4">Follow us</p>
                 <ul class="space-y-2 list-none">
-                    <li><a href="https://instagram.com" target="_blank" rel="noopener"
+                    <li><a href="https://instagram.com/cadarastudio" target="_blank" rel="noopener"
                             class="text-white hover:text-white/60 text-sm transition-colors">Instagram</a></li>
-                    <li><a href="https://linkedin.com" target="_blank" rel="noopener"
+                    <li><a href="https://x.com/cadarastudio" target="_blank" rel="noopener"
+                            class="text-white hover:text-white/60 text-sm transition-colors">X</a></li>
+                    <li><a href="https://linkedin.com/company/cadarastudio" target="_blank" rel="noopener"
                             class="text-white hover:text-white/60 text-sm transition-colors">LinkedIn</a></li>
-                    <li><a href="https://behance.net" target="_blank" rel="noopener"
+                    <li><a href="https://behance.net/cadara" target="_blank" rel="noopener"
                             class="text-white hover:text-white/60 text-sm transition-colors">Behance</a></li>
-                    <li><a href="https://dribbble.com" target="_blank" rel="noopener"
-                            class="text-white hover:text-white/60 text-sm transition-colors">Dribbble</a></li>
                 </ul>
             </div>
         </div>
