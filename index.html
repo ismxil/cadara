@@ -17,24 +17,23 @@
         <div class="flex justify-between items-center h-16 md:h-20">
             <!-- Logo -->
             <a href="index.html" id="nav-logo"
-                class="font-bold text-2xl md:text-3xl lg:text-4xl tracking-tight text-white transition-all duration-500">
+                class="font-display font-bold text-2xl md:text-3xl lg:text-4xl tracking-tight text-white transition-all duration-500">
                 CADARA<span class="text-brand-blue">.</span>
             </a>
 
-            <!-- Nav Items -->
-            <div class="flex items-center gap-6 md:gap-8">
+            <!-- Desktop Nav Items -->
+            <div class="hidden md:flex items-center gap-6 lg:gap-8">
                 <a href="work.html"
-                    class="text-white/70 hover:text-white text-sm font-medium transition-colors">Work</a>
+                    class="font-display text-white/70 hover:text-white text-sm font-medium transition-colors">Work</a>
                 <div class="relative group">
                     <button
-                        class="text-white/70 hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
+                        class="font-display text-white/70 hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
                         Capabilities
                         <svg class="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <!-- Dropdown -->
                     <div
                         class="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-full right-0 mt-2 bg-brand-black border border-white/10 rounded-lg py-2 min-w-[180px] transition-all duration-200 z-50">
                         <a href="services.html"
@@ -43,16 +42,61 @@
                             class="block px-4 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors">Process</a>
                     </div>
                 </div>
-                <a href="#contact"
-                    class="text-white/70 hover:text-white text-sm font-medium transition-colors">Contact</a>
+                <a href="contact.html"
+                    class="font-display text-white/70 hover:text-white text-sm font-medium transition-colors">Contact</a>
                 <button id="menu-toggle"
-                    class="text-white/70 hover:text-white text-sm font-medium transition-colors">Menu<span
+                    class="font-display text-white/70 hover:text-white text-sm font-medium transition-colors">Menu<span
                         class="text-xs">+</span></button>
             </div>
+
+            <!-- Mobile Hamburger -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5"
+                aria-label="Open menu">
+                <span class="mobile-hamburger-line w-6 h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                <span class="mobile-hamburger-line w-6 h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                <span
+                    class="mobile-hamburger-line w-4 h-0.5 bg-white rounded-full transition-all duration-300 self-end"></span>
+            </button>
         </div>
-        <!-- Bottom border line -->
         <div class="w-full h-px bg-white/10"></div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 z-[60] bg-brand-black flex flex-col opacity-0 pointer-events-none transition-opacity duration-300 md:hidden">
+        <div class="flex justify-between items-center h-16 px-6">
+            <a href="index.html" class="font-display font-bold text-2xl tracking-tight text-white">
+                CADARA<span class="text-brand-blue">.</span>
+            </a>
+            <button id="mobile-menu-close" class="w-8 h-8 flex items-center justify-center" aria-label="Close menu">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex-1 flex flex-col justify-center px-6 gap-6">
+            <a href="work.html"
+                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Work</a>
+            <a href="services.html"
+                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Services</a>
+            <a href="process.html"
+                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Process</a>
+            <a href="about.html"
+                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">About</a>
+            <a href="contact.html"
+                class="font-display text-4xl sm:text-5xl font-bold text-white/80 hover:text-white transition-colors mobile-nav-item">Contact</a>
+        </div>
+        <div class="px-6 pb-8 flex gap-6">
+            <a href="https://instagram.com" target="_blank" rel="noopener"
+                class="text-white/40 hover:text-white text-sm transition-colors">Instagram</a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener"
+                class="text-white/40 hover:text-white text-sm transition-colors">LinkedIn</a>
+            <a href="https://behance.net" target="_blank" rel="noopener"
+                class="text-white/40 hover:text-white text-sm transition-colors">Behance</a>
+            <a href="https://dribbble.com" target="_blank" rel="noopener"
+                class="text-white/40 hover:text-white text-sm transition-colors">Dribbble</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section
@@ -605,64 +649,6 @@
         </div>
     </section>
 
-    <!-- Insights Section -->
-    <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-white text-brand-black">
-        <p class="text-brand-blue text-sm uppercase tracking-[0.3em] font-bold mb-6">RECENT CONTENT</p>
-        <h2
-            class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.9] tracking-tight mb-6">
-            INSIGHTS WORTH<br>SHARING
-        </h2>
-        <p class="text-lg md:text-xl text-brand-gray-500 max-w-xl mb-16">Thoughts on design, strategy, and building
-            successful digital products.</p>
-
-        <div class="grid md:grid-cols-3 gap-6">
-            <a href="#" class="group">
-                <div
-                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-brand-blue to-blue-600 mb-6 overflow-hidden">
-                    <div class="w-full h-full flex items-center justify-center p-8">
-                        <span class="text-white/30 font-display text-6xl font-bold">01</span>
-                    </div>
-                </div>
-                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Design</p>
-                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
-                    Web Design and Development: Why Both Matter for Performance-Driven Brands</h3>
-            </a>
-
-            <a href="#" class="group">
-                <div
-                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 mb-6 overflow-hidden">
-                    <div class="w-full h-full flex items-center justify-center p-8">
-                        <span class="text-white/30 font-display text-6xl font-bold">02</span>
-                    </div>
-                </div>
-                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Strategy</p>
-                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
-                    Launching Products Faster with Lean UX and Lean Startup Approach</h3>
-            </a>
-
-            <a href="#" class="group">
-                <div
-                    class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-emerald-700 to-emerald-900 mb-6 overflow-hidden">
-                    <div class="w-full h-full flex items-center justify-center p-8">
-                        <span class="text-white/30 font-display text-6xl font-bold">03</span>
-                    </div>
-                </div>
-                <p class="text-brand-blue text-xs uppercase tracking-widest mb-3">Insight · Accessibility</p>
-                <h3 class="font-bold text-xl md:text-2xl group-hover:text-brand-blue transition-colors leading-tight">
-                    The European Accessibility Act: What You Need to Know</h3>
-            </a>
-        </div>
-
-        <div class="mt-12">
-            <a href="#"
-                class="inline-flex items-center gap-3 text-brand-black text-sm uppercase tracking-widest font-bold hover:text-brand-blue transition-colors">
-                View All Articles
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-            </a>
-        </div>
-    </section>
 
     <!-- FAQ Section -->
     <section class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-brand-black text-white">
@@ -884,7 +870,8 @@
                 <ul class="space-y-2 list-none">
                     <li><a href="process.html"
                             class="text-white hover:text-white/60 text-sm transition-colors">Process</a></li>
-                    <li><a href="#contact" class="text-white hover:text-white/60 text-sm transition-colors">Contact</a>
+                    <li><a href="contact.html"
+                            class="text-white hover:text-white/60 text-sm transition-colors">Contact</a>
                     </li>
                 </ul>
             </div>
