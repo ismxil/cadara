@@ -219,8 +219,19 @@
 
                 <!-- Project Header -->
                 <header class="mb-8">
-                    <h1 id="project-title"
-                        class="font-display text-5xl md:text-6xl font-black uppercase tracking-tight mb-4"></h1>
+                    <div class="flex items-baseline justify-between gap-4 mb-4">
+                        <h1 id="project-title"
+                            class="font-display uppercase tracking-widest text-lg md:text-2xl"></h1>
+                        <a id="project-url" href="#" target="_blank"
+                            class="hidden items-baseline gap-1.5 font-display uppercase tracking-widest text-lg md:text-2xl opacity-70 hover:opacity-100 transition-opacity duration-200 shrink-0">
+                            <span id="project-url-text"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M7 17L17 7M7 7h10v10" />
+                            </svg>
+                        </a>
+                    </div>
                     <div id="project-meta" class="space-y-2 mb-6">
                         <div id="project-services" class="hidden">
                             <span class="font-display text-xs uppercase tracking-widest opacity-50">Services</span>
@@ -245,15 +256,6 @@
                         <span class="font-display text-xs uppercase tracking-widest opacity-50">Challenges</span>
                         <p id="project-challenges-text" class="text-sm mt-0.5"></p>
                     </div>
-                    <!-- Visit Site Link -->
-                    <a id="project-url" href="#" target="_blank"
-                        class="hidden inline-flex items-center gap-2 border-2 border-current px-5 py-2.5 font-display text-sm uppercase tracking-widest hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 shadow-[2px_2px_0_currentColor]">
-                        Visit Live Site
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
-                        </svg>
-                    </a>
                 </header>
 
                 <!-- Notion Page Content -->
@@ -444,8 +446,17 @@
                 // URL
                 if (meta.url) {
                     var urlEl = document.getElementById('project-url');
-                    urlEl.href = meta.url.startsWith('http') ? meta.url : 'https://' + meta.url;
+                    var fullUrl = meta.url.startsWith('http') ? meta.url : 'https://' + meta.url;
+                    urlEl.href = fullUrl;
+                    // Show clean domain as link text
+                    try {
+                        var domain = new URL(fullUrl).hostname.replace(/^www\./, '');
+                        document.getElementById('project-url-text').textContent = domain;
+                    } catch (e) {
+                        document.getElementById('project-url-text').textContent = meta.url;
+                    }
                     urlEl.classList.remove('hidden');
+                    urlEl.classList.add('inline-flex');
                 }
 
                 // Render Notion blocks
