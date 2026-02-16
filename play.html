@@ -188,7 +188,19 @@
         <!-- Project Grid -->
         <div class="space-y-8 mb-24">
             <div id="shot-grid" class="grid grid-cols-1 md:grid-cols-1 gap-12">
-                <!-- Dynamic Dribbble shots populated via JS -->
+                <!-- Loading skeletons -->
+                <div class="shot-skeleton">
+                    <div class="aspect-[4/3] border-2 border-current opacity-20 animate-pulse"></div>
+                    <div class="h-6 w-2/3 mt-3 border-2 border-current opacity-10 animate-pulse"></div>
+                </div>
+                <div class="shot-skeleton">
+                    <div class="aspect-[4/3] border-2 border-current opacity-20 animate-pulse"></div>
+                    <div class="h-6 w-1/2 mt-3 border-2 border-current opacity-10 animate-pulse"></div>
+                </div>
+                <div class="shot-skeleton">
+                    <div class="aspect-[4/3] border-2 border-current opacity-20 animate-pulse"></div>
+                    <div class="h-6 w-3/5 mt-3 border-2 border-current opacity-10 animate-pulse"></div>
+                </div>
             </div>
         </div>
 
@@ -362,20 +374,28 @@
 
             var arrowSvg = '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" viewBox="0 0 32 32"><path d="M3.22329 18.1591C2.95929 17.8291 2.89329 14.6281 3.22329 14.1991C3.61929 13.7041 5.46729 13.9681 6.19329 13.9681L23.2873 13.9681L21.1753 10.9321C20.8783 10.4701 20.1853 9.71107 20.2513 9.08407C20.3173 8.52307 21.0103 8.09407 21.5053 7.83007C22.0333 7.53307 22.5283 6.93907 23.1883 7.00507C23.9473 7.07107 24.6073 8.55607 24.9703 9.08407L28.7983 14.8921C29.0623 15.2881 29.4253 15.7171 29.4253 16.1461C29.4253 16.9051 28.4353 18.0931 28.0723 18.6541L24.2773 24.4291C24.0463 24.8251 23.7823 25.3201 23.2873 25.4521C22.6603 25.6171 22.0663 25.0231 21.4393 24.6601C20.9443 24.3631 20.3173 24.0001 20.2513 23.4721C20.1853 22.8781 20.9113 22.0531 21.2413 21.5581L23.3533 18.3571L4.64229 18.3571C4.08129 18.3571 3.42129 18.3571 3.22329 18.1591Z" fill="currentColor"/></svg>';
 
+            function esc(str) {
+                var d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML;
+            }
+
             function buildCard(shot, index) {
                 var card = document.createElement('div');
                 card.className = 'cursor-pointer shot-card';
                 card.dataset.index = index;
+                var title = esc(shot.title);
+                var loadAttr = index < 2 ? 'eager' : 'lazy';
                 card.innerHTML =
                     '<div class="group relative aspect-[4/3] overflow-hidden border-2 hover:border-4 border-current transition-all">' +
-                    '<img src="' + shot.image + '" alt="' + shot.title + '" class="w-full h-full object-cover" loading="lazy">' +
+                    '<img src="' + shot.image + '" alt="' + title + '" class="w-full h-full object-cover" loading="' + loadAttr + '">' +
                     '<div class="absolute inset-0 project-overlay flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">' +
                     '<span class="font-display text-sm uppercase tracking-widest font-bold text-brand-red">View Shot</span>' +
                     arrowSvg +
                     '</div>' +
                     '</div>' +
                     '<div class="mt-3">' +
-                    '<p class="font-display uppercase tracking-widest text-lg md:text-2xl">' + shot.title + '</p>' +
+                    '<p class="font-display uppercase tracking-widest text-lg md:text-2xl">' + title + '</p>' +
                     '</div>';
                 return card;
             }

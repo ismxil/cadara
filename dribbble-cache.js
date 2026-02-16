@@ -8,6 +8,8 @@ window.DribbbleCache = (function () {
     var API_BASE = 'https://notion-proxy.ismxilahmad.workers.dev';
     var CACHE_KEY = 'dribbble_shots';
     var CACHE_TS_KEY = 'dribbble_shots_ts';
+    var CACHE_VERSION_KEY = 'dribbble_cache_v';
+    var CACHE_VERSION = 2; // Bump when data format changes
     var CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
     /**
@@ -15,6 +17,14 @@ window.DribbbleCache = (function () {
      * refreshes in background if stale.
      */
     function getShots(onReady) {
+        // Clear stale cache from old versions
+        var ver = parseInt(localStorage.getItem(CACHE_VERSION_KEY) || '0', 10);
+        if (ver < CACHE_VERSION) {
+            localStorage.removeItem(CACHE_KEY);
+            localStorage.removeItem(CACHE_TS_KEY);
+            localStorage.setItem(CACHE_VERSION_KEY, String(CACHE_VERSION));
+        }
+
         var cached = readCache();
         if (cached) {
             onReady(cached, { fromCache: true });

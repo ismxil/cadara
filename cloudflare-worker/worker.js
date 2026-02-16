@@ -102,67 +102,78 @@ async function fetchDribbbleShots() {
   if (!resp.ok) return [];
   const html = await resp.text();
 
-  const shots = [];
-  // Match shot cards — Dribbble uses image tags with data from userupload CDN
-  // Pattern: shot link + image src + title
-const shotRegex = /href="(\/shots\/(\d+)-([^"]*?))"[^>]*>.*?<img[^>]*src="([^"]+(?:cdn\.dribbble\.com)[^"]+)"[^>]*alt="([^"]*)"/gs;
-  let match;
-  while ((match = shotRegex.exec(html)) !== null) {
-    const shotPath = match[1];
-    const shotId = match[2];
-    const slug = match[3];
-    const imageUrl = match[4];
-    const altText = match[5];
-
-    // Skip duplicates
-    if (shots.some(s => s.id === shotId)) continue;
-
-    // Derive clean title from URL slug (more reliable than alt text which includes tags)
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim() || altText.split(/\s{2,}/)[0] || 'Untitled';
-
-    // Skip duplicates
-    if (shots.some(s => s.id === shotId)) continue;
-
-    // Get hi-res URL — replace resize params for full image
-    const hiresUrl = imageUrl.replace(/\?.*$/, '');
-
-    shots.push({
-      id: shotId,
-      title: title,
-      url: 'https://dribbble.com' + shotPath,
-      image: imageUrl,
-      image_hires: hiresUrl,
-    });
-  }
-
-  // Fallback: try a simpler pattern if the regex above didn't match
-  if (shots.length === 0) {
-    const imgRegex = /src="(https:\/\/cdn\.dribbble\.com\/userupload\/[^"]+)"[^>]*alt="([^"]*)"/g;
-    const linkRegex = /href="(\/shots\/(\d+)[^"]*)"/g;
-    const images = [];
-    const links = [];
-    let m;
-    while ((m = imgRegex.exec(html)) !== null) {
-      images.push({ src: m[1], alt: m[2] });
-    }
-    while ((m = linkRegex.exec(html)) !== null) {
-      if (!links.some(l => l.id === m[2])) {
-        links.push({ href: m[1], id: m[2] });
+  // Strategy 1: Parse the embedded JSON (var newestShots = [...])
+  // This gives us proper titles, IDs, and paths
+  let shotList = [];
+  const jsonStart = html.indexOf('var newestShots');
+  if (jsonStart !== -1) {
+    const arrStart = html.indexOf('[', jsonStart);
+    if (arrStart !== -1) {
+      // Find the matching closing bracket by counting depth
+      let depth = 0;
+      let arrEnd = -1;
+      for (let i = arrStart; i < html.length; i++) {
+        if (html[i] === '[') depth++;
+        else if (html[i] === ']') { depth--; if (depth === 0) { arrEnd = i; break; } }
+      }
+      if (arrEnd !== -1) {
+        try { shotList = JSON.parse(html.substring(arrStart, arrEnd + 1)); } catch (e) { /* fall through */ }
       }
     }
-    // Pair them up
-    const count = Math.min(images.length, links.length);
-    for (let i = 0; i < count; i++) {
-      shots.push({
-        id: links[i].id,
-        title: images[i].alt || 'Untitled',
-        url: 'https://dribbble.com' + links[i].href,
-        image: images[i].src,
-        image_hires: images[i].src.replace(/\?.*$/, ''),
-      });
-    }
   }
 
+  // Build a map of shot ID → image URL by finding images within each shot's <li> block
+  // Each shot lives in <li id="screenshot-{id}"> ... <img data-src="..."> ... </li>
+  const imageMap = {};
+  const liRegex = /<li[^>]*id="screenshot-(\d+)"[\s\S]*?<\/li>/g;
+  let liMatch;
+  while ((liMatch = liRegex.exec(html)) !== null) {
+    const shotId = liMatch[1];
+    const liBlock = liMatch[0];
+    // Prefer data-src (lazy loaded real image) over src (placeholder gif)
+    const dataSrcMatch = liBlock.match(/data-src="([^"]*cdn\.dribbble\.com[^"]*)"/);
+    const srcMatch = liBlock.match(/<img[^>]*src="(https:\/\/cdn\.dribbble\.com[^"]*)"/);
+    const imgUrl = dataSrcMatch ? dataSrcMatch[1].replace(/&amp;/g, '&') : (srcMatch ? srcMatch[1] : null);
+    if (imgUrl) imageMap[shotId] = imgUrl;
+  }
+
+  if (shotList.length > 0) {
+    // Use the structured JSON data — it has proper titles
+    return shotList.map(s => {
+      const id = String(s.id);
+      const imgUrl = imageMap[id] || '';
+      // Thumbnail: use 400x300 for fast grid loading
+      const thumb = imgUrl.replace(/resize=\d+x\d+/, 'resize=800x600');
+      // Hi-res: strip all params for original
+      const hires = imgUrl.replace(/\?.*$/, '');
+      return {
+        id: id,
+        title: s.title || 'Untitled',
+        url: 'https://dribbble.com' + (s.path || '/shots/' + id),
+        image: thumb || imgUrl,
+        image_hires: hires,
+      };
+    }).filter(s => s.image);
+  }
+
+  // Fallback: pair links with images if JSON wasn't found
+  const linkRegex = /href="(\/shots\/(\d+)-([^"]*?))"/g;
+  const shots = [];
+  let m;
+  while ((m = linkRegex.exec(html)) !== null) {
+    const id = m[2];
+    if (shots.some(s => s.id === id)) continue;
+    const imgUrl = imageMap[id];
+    if (!imgUrl) continue;
+    const title = m[3].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
+    shots.push({
+      id: id,
+      title: title || 'Untitled',
+      url: 'https://dribbble.com' + m[1],
+      image: imgUrl.replace(/resize=\d+x\d+/, 'resize=800x600'),
+      image_hires: imgUrl.replace(/\?.*$/, ''),
+    });
+  }
   return shots;
 }
 
