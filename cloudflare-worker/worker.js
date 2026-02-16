@@ -56,6 +56,7 @@ function parsePage(page) {
   const name = titleArr.map(t => t.plain_text).join('').trim();
 
   const services = (props['Services ']?.multi_select || []).map(s => s.name);
+  const description = (props.Description?.rich_text || []).map(t => t.plain_text).join('');
   const industries = (props.Industries?.multi_select || []).map(s => s.name);
   const role = (props.Role?.rich_text || []).map(t => t.plain_text).join('');
   const outcome = (props.Outcome?.rich_text || []).map(t => t.plain_text).join('');
@@ -77,6 +78,7 @@ function parsePage(page) {
     slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
     cover,
     services,
+    description,
     industries,
     role,
     outcome,

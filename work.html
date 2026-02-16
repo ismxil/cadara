@@ -385,7 +385,7 @@
                 var name = project.name || 'Untitled';
                 var url = project.url || '';
                 var id = project.id || '';
-                var services = (project.services || []).join(' · ');
+                var description = project.description || '';
 
                 var card = document.createElement('div');
                 card.className = 'cursor-pointer project-card';
@@ -404,7 +404,7 @@
                     '<p class="font-display uppercase tracking-widest text-lg md:text-2xl">' + name + '</p>' +
                     (url ? '<a href="' + (url.startsWith('http') ? url : 'https://' + url) + '" target="_blank" class="inline-flex items-center gap-1.5 text-sm opacity-50 hover:opacity-100 transition-opacity project-link whitespace-nowrap">' + url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></a>' : '') +
                     '</div>' +
-                    (services ? '<p class="text-xs opacity-40 mt-1">' + services + '</p>' : '') +
+                    (description ? '<p class="text-xs opacity-40 mt-1">' + description + '</p>' : '') +
                     '</div>';
                 return card;
             }
