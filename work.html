@@ -399,12 +399,12 @@
                     arrowSvg +
                     '</div>' +
                     '</div>' +
-                    '<div class="flex items-baseline justify-between gap-4 mt-3">' +
-                    '<div>' +
+                    '<div class="mt-3">' +
+                    '<div class="flex items-start justify-between gap-4">' +
                     '<p class="font-display uppercase tracking-widest text-lg md:text-2xl">' + name + '</p>' +
-                    (services ? '<p class="text-xs opacity-40 mt-1">' + services + '</p>' : '') +
-                    '</div>' +
                     (url ? '<a href="' + (url.startsWith('http') ? url : 'https://' + url) + '" target="_blank" class="inline-flex items-center gap-1.5 text-sm opacity-50 hover:opacity-100 transition-opacity project-link whitespace-nowrap">' + url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></a>' : '') +
+                    '</div>' +
+                    (services ? '<p class="text-xs opacity-40 mt-1">' + services + '</p>' : '') +
                     '</div>';
                 return card;
             }
