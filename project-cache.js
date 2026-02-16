@@ -92,9 +92,13 @@ window.ProjectCache = (function () {
     async function fetchProjects() {
         try {
             var resp = await fetch(API_BASE + '/projects');
-            if (!resp.ok) return null;
+            if (!resp.ok) {
+                console.warn('ProjectCache: /projects returned', resp.status);
+                return null;
+            }
             var data = await resp.json();
             var projects = data.projects || [];
+            console.log('ProjectCache: fetched', projects.length, 'projects');
             if (projects.length > 0) {
                 writeCache(CACHE_KEY, projects, CACHE_TS_KEY);
             }

@@ -326,22 +326,42 @@
 
             if (!projectId) { showError(); return; }
 
-            // Load project metadata + blocks in parallel
+            // Load project metadata + blocks, render when both ready
             var meta = null;
             var blocks = null;
-            var metaDone = false;
-            var blocksDone = false;
+            var metaLoaded = false;
+            var blocksLoaded = false;
+            var rendered = false;
 
-            ProjectCache.getProject(projectId, function (data) {
-                meta = data;
-                metaDone = true;
-                if (blocksDone) render();
+            function tryRender() {
+                if (rendered) return;
+                if (!metaLoaded || !blocksLoaded) return;
+                rendered = true;
+                if (!meta) { showError(); return; }
+                render();
+            }
+
+            ProjectCache.getProjects(function (projects) {
+                if (!projects) {
+                    meta = null;
+                    metaLoaded = true;
+                    tryRender();
+                    return;
+                }
+                for (var i = 0; i < projects.length; i++) {
+                    if (projects[i].id === projectId) {
+                        meta = projects[i];
+                        break;
+                    }
+                }
+                metaLoaded = true;
+                tryRender();
             });
 
             ProjectCache.getBlocks(projectId, function (data) {
                 blocks = data;
-                blocksDone = true;
-                if (metaDone) render();
+                blocksLoaded = true;
+                tryRender();
             });
 
             // Populate "More projects"
@@ -647,6 +667,7 @@
             }
 
             function showError() {
+                console.error('Project load failed. ID:', projectId, 'meta:', meta, 'blocks:', blocks, 'metaLoaded:', metaLoaded, 'blocksLoaded:', blocksLoaded);
                 document.getElementById('project-loading').classList.add('hidden');
                 document.getElementById('project-error').classList.remove('hidden');
             }

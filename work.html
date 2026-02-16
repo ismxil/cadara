@@ -463,8 +463,9 @@
 
             function handleSubmit() {
                 if (input.value === PASSWORD) {
+                    var targetId = pendingId;
                     closeOverlay();
-                    window.location.href = 'project.html?id=' + pendingId;
+                    window.location.href = 'project.html?id=' + targetId;
                 } else {
                     showError();
                 }
