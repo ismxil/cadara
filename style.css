@@ -445,3 +445,31 @@ main {
   font-weight: 700;
   background: color-mix(in srgb, currentColor 5%, transparent);
 }
+
+/* ================================
+   Lightbox Styles
+   ================================ */
+
+.lightbox-image {
+  transition: opacity 0.2s ease;
+}
+
+#lightbox button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+#lightbox-prev,
+#lightbox-next {
+  width: 48px;
+  height: 48px;
+  border: 2px solid currentColor;
+  border-radius: 0;
+}
+
+#lightbox-prev:hover,
+#lightbox-next:hover {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}

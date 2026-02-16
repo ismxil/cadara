@@ -8,6 +8,7 @@
  *   GET /projects          → List all projects from the database
  *   GET /projects/:id      → Get a single project page metadata
  *   GET /blocks/:id        → Get page content blocks (recursive)
+ *   GET /dribbble          → Scrape Dribbble shots for the profile
  * 
  * Environment variable required:
  *   NOTION_TOKEN (set via `wrangler secret put NOTION_TOKEN`)
@@ -88,6 +89,83 @@ function parsePage(page) {
   };
 }
 
+// Scrape Dribbble profile page to extract shot data
+const DRIBBBLE_USER = 'ismxil';
+async function fetchDribbbleShots() {
+  const url = `https://dribbble.com/${DRIBBBLE_USER}`;
+  const resp = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml',
+    },
+  });
+  if (!resp.ok) return [];
+  const html = await resp.text();
+
+  const shots = [];
+  // Match shot cards — Dribbble uses image tags with data from userupload CDN
+  // Pattern: shot link + image src + title
+const shotRegex = /href="(\/shots\/(\d+)-([^"]*?))"[^>]*>.*?<img[^>]*src="([^"]+(?:cdn\.dribbble\.com)[^"]+)"[^>]*alt="([^"]*)"/gs;
+  let match;
+  while ((match = shotRegex.exec(html)) !== null) {
+    const shotPath = match[1];
+    const shotId = match[2];
+    const slug = match[3];
+    const imageUrl = match[4];
+    const altText = match[5];
+
+    // Skip duplicates
+    if (shots.some(s => s.id === shotId)) continue;
+
+    // Derive clean title from URL slug (more reliable than alt text which includes tags)
+    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim() || altText.split(/\s{2,}/)[0] || 'Untitled';
+
+    // Skip duplicates
+    if (shots.some(s => s.id === shotId)) continue;
+
+    // Get hi-res URL — replace resize params for full image
+    const hiresUrl = imageUrl.replace(/\?.*$/, '');
+
+    shots.push({
+      id: shotId,
+      title: title,
+      url: 'https://dribbble.com' + shotPath,
+      image: imageUrl,
+      image_hires: hiresUrl,
+    });
+  }
+
+  // Fallback: try a simpler pattern if the regex above didn't match
+  if (shots.length === 0) {
+    const imgRegex = /src="(https:\/\/cdn\.dribbble\.com\/userupload\/[^"]+)"[^>]*alt="([^"]*)"/g;
+    const linkRegex = /href="(\/shots\/(\d+)[^"]*)"/g;
+    const images = [];
+    const links = [];
+    let m;
+    while ((m = imgRegex.exec(html)) !== null) {
+      images.push({ src: m[1], alt: m[2] });
+    }
+    while ((m = linkRegex.exec(html)) !== null) {
+      if (!links.some(l => l.id === m[2])) {
+        links.push({ href: m[1], id: m[2] });
+      }
+    }
+    // Pair them up
+    const count = Math.min(images.length, links.length);
+    for (let i = 0; i < count; i++) {
+      shots.push({
+        id: links[i].id,
+        title: images[i].alt || 'Untitled',
+        url: 'https://dribbble.com' + links[i].href,
+        image: images[i].src,
+        image_hires: images[i].src.replace(/\?.*$/, ''),
+      });
+    }
+  }
+
+  return shots;
+}
+
 // Recursively fetch all blocks for a page
 async function fetchAllBlocks(blockId) {
   let allBlocks = [];
@@ -130,6 +208,14 @@ export default {
     }
 
     try {
+      // GET /dribbble — scrape Dribbble shots
+      if (path === '/dribbble' && request.method === 'GET') {
+        const shots = await fetchDribbbleShots();
+        return new Response(JSON.stringify({ shots }), {
+          headers: { ...cors, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' }
+        });
+      }
+
       // GET /projects — list all projects
       if (path === '/projects' && request.method === 'GET') {
         const resp = await notionFetch(`/databases/${DATABASE_ID}/query`, 'POST', {});
