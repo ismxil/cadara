@@ -2,34 +2,34 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/cadaranew-logo.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expertise | Ismail Ahmad</title>
+    <title>Expertise | Cadara Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="tailwind.config.js"></script>
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <style>body{opacity:1!important;transition:none!important}*{animation:none!important;transition:none!important}
+        /* ── Randomize button: icon uses page background color ── */
+        #color-randomizer svg path {
+            fill: var(--brand-black, #FFF3DE);
+        }
+    </style>
 </head>
 
-<body
+<body style="opacity:1"
     class="bg-brand-black text-brand-red font-serif selection:bg-brand-red selection:text-brand-black min-h-screen px-4">
 
     <main class="max-w-sm mx-auto">
         <!-- NAV Starts here-->
         <!-- Header with Logo and Hamburger Menu -->
         <div class="flex justify-between items-center mt-12">
-            <a href="index.html" class="flex justify-center items-center">
-                <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor" stroke-width="2.48974" />
-                    <path d="M19.703 1.3706L7.38959 33.6143" stroke="currentColor" stroke-width="2.48974" />
-                    <path d="M18.6145 7.31771L33.1972 32.5316" stroke="currentColor" stroke-width="6.90648" />
-                    <path
-                        d="M14.122 14.4752C6.64759 15.2002 1.24487 17.2957 1.24487 19.7676C1.24487 22.8405 9.59363 25.3316 19.8924 25.3316C30.1911 25.3316 38.5398 22.8405 38.5398 19.7676C38.5398 17.2701 33.0246 15.1569 25.4299 14.4531"
-                        stroke="currentColor" stroke-width="2.48974" />
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M20.8605 30.2672L22.5437 30.4788C22.7748 30.5077 22.8643 30.791 22.6966 30.948L21.4593 32.1087L21.7782 33.7749C21.8216 34.0024 21.5816 34.1764 21.3792 34.0649L19.8929 33.2469L18.4066 34.0652C18.2042 34.1766 17.9639 34.0025 18.0076 33.7752L18.3265 32.1089L17.0891 30.948C16.9215 30.7907 17.0112 30.5077 17.2421 30.4788L18.9253 30.2672L19.6464 28.7322C19.7451 28.5221 20.0408 28.5221 20.1395 28.7322L20.8605 30.2672Z"
-                        fill="currentColor" />
-                </svg>
-            </a>
+            <a href="index.html" class="flex items-center gap-3 group relative z-50">
+                    <div id="main-logo-container"
+                        class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-current transition-transform duration-500 ">
+                    </div>
+                </a>
             <!-- Hamburger Menu Button -->
             <button id="menu-toggle" class="relative w-8 h-8 flex flex-col justify-center items-center group"
                 aria-label="Toggle Menu">
@@ -46,18 +46,7 @@
                 <!-- Header with Logo and Close Button -->
                 <div class="flex justify-between items-center mt-12">
                     <a href="index.html" class="flex justify-center items-center">
-                        <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor"
-                                stroke-width="2.48974" />
-                            <path d="M19.703 1.3706L7.38959 33.6143" stroke="currentColor" stroke-width="2.48974" />
-                            <path d="M18.6145 7.31771L33.1972 32.5316" stroke="currentColor" stroke-width="6.90648" />
-                            <path
-                                d="M14.122 14.4752C6.64759 15.2002 1.24487 17.2957 1.24487 19.7676C1.24487 22.8405 9.59363 25.3316 19.8924 25.3316C30.1911 25.3316 38.5398 22.8405 38.5398 19.7676C38.5398 17.2701 33.0246 15.1569 25.4299 14.4531"
-                                stroke="currentColor" stroke-width="2.48974" />
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M20.8605 30.2672L22.5437 30.4788C22.7748 30.5077 22.8643 30.791 22.6966 30.948L21.4593 32.1087L21.7782 33.7749C21.8216 34.0024 21.5816 34.1764 21.3792 34.0649L19.8929 33.2469L18.4066 34.0652C18.2042 34.1766 17.9639 34.0025 18.0076 33.7752L18.3265 32.1089L17.0891 30.948C16.9215 30.7907 17.0112 30.5077 17.2421 30.4788L18.9253 30.2672L19.6464 28.7322C19.7451 28.5221 20.0408 28.5221 20.1395 28.7322L20.8605 30.2672Z"
-                                fill="currentColor" />
-                        </svg>
+                        <div id="nav-overlay-logo" class="w-8 h-8 flex items-center justify-center text-current"></div>
                     </a>
                     <!-- Close Button -->
                     <button id="menu-close" class="relative w-8 h-8 flex flex-col justify-center items-center"
@@ -93,13 +82,13 @@
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="play.html"
-                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Contact</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm md:text-lg">IV</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="thought.html"
-                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Blog</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm md:text-lg">V</span>
                         </li>
@@ -111,7 +100,7 @@
                     style="transition-delay: 100ms;">
                     <div class="flex justify-center gap-6 mt-6">
                         <!-- LinkedIn -->
-                        <a href="https://linkedin.com/in/ismxil" target="_blank"
+                        <a href="https://linkedin.com/company/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="LinkedIn">
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path fill="currentColor"
@@ -119,28 +108,28 @@
                             </svg>
                         </a>
                         <!-- Behance -->
-                        <a href="https://www.behance.net/ismxil" target="_blank"
+                        <a href="https://behance.net/cadara" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="Behance">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
                             </svg>
                         </a>
                         <!-- Instagram -->
-                        <a href="https://www.instagram.com/ismxilahmad" target="_blank"
+                        <a href="https://instagram.com/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="Instagram">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
                             </svg>
                         </a>
                         <!-- X -->
-                        <a href="https://www.x.com/ismxilahmad" target="_blank"
+                        <a href="https://x.com/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="X">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                             </svg>
                         </a>
                         <!-- GitHub -->
-                        <a href="https://github.com/ismxil" target="_blank"
+                        <a href="https://github.com/cadara-studio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="GitHub">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -148,7 +137,7 @@
                             </svg>
                         </a>
                         <!-- Email -->
-                        <a href="mailto:work@ismailahmad.com"
+                        <a href="mailto:cadarastudio@gmail.com"
                             class="hover:scale-110 transition-transform duration-200" aria-label="Email">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -253,13 +242,13 @@
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="play.html"
-                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Contact</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm md:text-lg">IV</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="thought.html"
-                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Blog</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm md:text-lg">V</span>
                 </li>
@@ -271,7 +260,7 @@
             <div class="font-display text-12xl md:text-4xl font-black uppercase tracking-normal leading-none mb-2">
                 <div class="flex justify-center gap-6 mt-6">
                     <!-- LinkedIn -->
-                    <a href="https://linkedin.com/in/ismxil" target="_blank"
+                    <a href="https://linkedin.com/company/cadarastudio" target="_blank"
                         class="hover:scale-110 transition-transform duration-200" aria-label="LinkedIn">
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path fill="currentColor"
@@ -279,28 +268,28 @@
                         </svg>
                     </a>
                     <!-- Behance -->
-                    <a href="https://www.behance.net/ismxil" target="_blank"
+                    <a href="https://behance.net/cadara" target="_blank"
                         class="hover:scale-110 transition-transform duration-200" aria-label="Behance">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
                         </svg>
                     </a>
                     <!-- Instagram -->
-                    <a href="https://www.instagram.com/ismxilahmad" target="_blank"
+                    <a href="https://instagram.com/cadarastudio" target="_blank"
                         class="hover:scale-110 transition-transform duration-200" aria-label="Instagram">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
                         </svg>
                     </a>
                     <!-- X -->
-                    <a href="https://www.x.com/ismxilahmad" target="_blank"
+                    <a href="https://x.com/cadarastudio" target="_blank"
                         class="hover:scale-110 transition-transform duration-200" aria-label="X">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                         </svg>
                     </a>
                     <!-- GitHub -->
-                    <a href="https://github.com/ismxil" target="_blank"
+                    <a href="https://github.com/cadara-studio" target="_blank"
                         class="hover:scale-110 transition-transform duration-200" aria-label="GitHub">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -308,7 +297,7 @@
                         </svg>
                     </a>
                     <!-- Email -->
-                    <a href="mailto:work@ismailahmad.com"
+                    <a href="mailto:cadarastudio@gmail.com"
                         class="hover:scale-110 transition-transform duration-200" aria-label="Email">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -334,9 +323,10 @@
         </footer>
     </main>
 
+    <!-- scripts removed for capture -->
     <script src="script.js"></script>
-    <script src="blog-cache.js"></script>
-    <script>BlogCache.getArticles(function () { });</script>
+    <!-- <script src="blog-cache.js"></script> -->
+    <!-- <script>BlogCache.getArticles(function () { });</script> -->
 </body>
 
 </html>

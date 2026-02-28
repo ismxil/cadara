@@ -523,7 +523,114 @@ function initBackgroundParticles() {
     update();
 }
 
+// Global SVG Logo Injector
+function injectLogo(selector) {
+    var containers = document.querySelectorAll(selector);
+    if (containers.length === 0) return;
+    fetch('assets/cadaranew-logo.svg')
+        .then(function (r) { return r.text(); })
+        .then(function (raw) {
+            var colored = raw.replace('<path d=', '<path fill="currentColor" d=');
+            containers.forEach(function(container) {
+                container.innerHTML = colored;
+                var svg = container.querySelector('svg');
+                if (svg) {
+                    svg.setAttribute('class', 'w-full h-full object-contain');
+                    svg.removeAttribute('width');
+                    svg.removeAttribute('height');
+                }
+            });
+        })
+        .catch(function () {});
+}
+
+function initMainLogo() {
+    injectLogo('#main-logo-container, #nav-overlay-logo');
+}
+
 // ── Page transition: reveal body when ready ──
 document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add('page-ready');
+    initMainLogo();
+});
+
+// ── Draggable Project Marquee ──
+document.addEventListener('DOMContentLoaded', () => {
+    const shotGrid = document.getElementById('shot-grid');
+    if (!shotGrid) return;
+    
+    let isDown = false;
+    let startX;
+    
+    shotGrid.addEventListener('mousedown', (e) => {
+        isDown = true;
+        shotGrid.style.cursor = 'grabbing';
+        const scrollers = shotGrid.querySelectorAll('.shot-marquee-content');
+        scrollers.forEach(s => s.style.animationPlayState = 'paused');
+        startX = e.pageX - shotGrid.offsetLeft;
+    });
+    
+    shotGrid.addEventListener('mouseleave', () => {
+        if (!isDown) return;
+        isDown = false;
+        shotGrid.style.cursor = '';
+        const scrollers = shotGrid.querySelectorAll('.shot-marquee-content');
+        scrollers.forEach(s => s.style.animationPlayState = 'running');
+    });
+    
+    shotGrid.addEventListener('mouseup', () => {
+        isDown = false;
+        shotGrid.style.cursor = '';
+        const scrollers = shotGrid.querySelectorAll('.shot-marquee-content');
+        scrollers.forEach(s => s.style.animationPlayState = 'running');
+    });
+    
+    shotGrid.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - shotGrid.offsetLeft;
+        const scrollers = shotGrid.querySelectorAll('.shot-marquee-content');
+        scrollers.forEach(s => {
+            const style = window.getComputedStyle(s);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            const currentX = matrix.m41;
+            s.style.transform = `translateX(${currentX + (x - startX)}px)`;
+        });
+        startX = x;
+    });
+});
+
+// ── Draggable Process Carousel ──
+document.addEventListener('DOMContentLoaded', () => {
+    const processCarousel = document.getElementById('process-carousel');
+    if (!processCarousel) return;
+    
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    processCarousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        processCarousel.style.scrollSnapType = 'none'; // Disable snap while dragging
+        startX = e.pageX - processCarousel.offsetLeft;
+        scrollLeft = processCarousel.scrollLeft;
+    });
+    
+    processCarousel.addEventListener('mouseleave', () => {
+        isDown = false;
+        processCarousel.style.scrollSnapType = 'x mandatory';
+    });
+    
+    processCarousel.addEventListener('mouseup', () => {
+        isDown = false;
+        processCarousel.style.scrollSnapType = 'x mandatory';
+    });
+    
+    processCarousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - processCarousel.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll-fast multiplier
+        processCarousel.scrollLeft = scrollLeft - walk;
+    });
 });

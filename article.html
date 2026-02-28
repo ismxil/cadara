@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/svg+xml" href="assets/cadaranew-logo.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article | Ismail Ahmad</title>
+    <title>Article | Cadara Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="tailwind.config.js"></script>
@@ -17,19 +18,11 @@
         <!-- NAV Starts here-->
         <!-- Header with Logo and Hamburger Menu -->
         <div class="flex justify-between items-center mt-12">
-            <a href="index.html" class="flex justify-center items-center">
-                <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor" stroke-width="2.48974" />
-                    <path d="M19.703 1.3706L7.38959 33.6143" stroke="currentColor" stroke-width="2.48974" />
-                    <path d="M18.6145 7.31771L33.1972 32.5316" stroke="currentColor" stroke-width="6.90648" />
-                    <path
-                        d="M14.122 14.4752C6.64759 15.2002 1.24487 17.2957 1.24487 19.7676C1.24487 22.8405 9.59363 25.3316 19.8924 25.3316C30.1911 25.3316 38.5398 22.8405 38.5398 19.7676C38.5398 17.2701 33.0246 15.1569 25.4299 14.4531"
-                        stroke="currentColor" stroke-width="2.48974" />
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M20.8605 30.2672L22.5437 30.4788C22.7748 30.5077 22.8643 30.791 22.6966 30.948L21.4593 32.1087L21.7782 33.7749C21.8216 34.0024 21.5816 34.1764 21.3792 34.0649L19.8929 33.2469L18.4066 34.0652C18.2042 34.1766 17.9639 34.0025 18.0076 33.7752L18.3265 32.1089L17.0891 30.948C16.9215 30.7907 17.0112 30.5077 17.2421 30.4788L18.9253 30.2672L19.6464 28.7322C19.7451 28.5221 20.0408 28.5221 20.1395 28.7322L20.8605 30.2672Z"
-                        fill="currentColor" />
-                </svg>
-            </a>
+            <a href="index.html" class="flex items-center gap-3 group relative z-50">
+                    <div id="main-logo-container"
+                        class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-current transition-transform duration-500 ">
+                    </div>
+                </a>
             <!-- Hamburger Menu Button -->
             <button id="menu-toggle" class="relative w-8 h-8 flex flex-col justify-center items-center group"
                 aria-label="Toggle Menu">
@@ -46,18 +39,7 @@
                 <!-- Header with Logo and Close Button -->
                 <div class="flex justify-between items-center mt-12">
                     <a href="index.html" class="flex justify-center items-center">
-                        <svg class="w-8 h-8 logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="19.8924" cy="19.8924" r="18.6475" stroke="currentColor"
-                                stroke-width="2.48974" />
-                            <path d="M19.703 1.3706L7.38959 33.6143" stroke="currentColor" stroke-width="2.48974" />
-                            <path d="M18.6145 7.31771L33.1972 32.5316" stroke="currentColor" stroke-width="6.90648" />
-                            <path
-                                d="M14.122 14.4752C6.64759 15.2002 1.24487 17.2957 1.24487 19.7676C1.24487 22.8405 9.59363 25.3316 19.8924 25.3316C30.1911 25.3316 38.5398 22.8405 38.5398 19.7676C38.5398 17.2701 33.0246 15.1569 25.4299 14.4531"
-                                stroke="currentColor" stroke-width="2.48974" />
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M20.8605 30.2672L22.5437 30.4788C22.7748 30.5077 22.8643 30.791 22.6966 30.948L21.4593 32.1087L21.7782 33.7749C21.8216 34.0024 21.5816 34.1764 21.3792 34.0649L19.8929 33.2469L18.4066 34.0652C18.2042 34.1766 17.9639 34.0025 18.0076 33.7752L18.3265 32.1089L17.0891 30.948C16.9215 30.7907 17.0112 30.5077 17.2421 30.4788L18.9253 30.2672L19.6464 28.7322C19.7451 28.5221 20.0408 28.5221 20.1395 28.7322L20.8605 30.2672Z"
-                                fill="currentColor" />
-                        </svg>
+                        <div id="nav-overlay-logo" class="w-8 h-8 flex items-center justify-center text-current"></div>
                     </a>
                     <!-- Close Button -->
                     <button id="menu-close" class="relative w-8 h-8 flex flex-col justify-center items-center"
@@ -93,13 +75,13 @@
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="play.html"
-                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Contact</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm md:text-lg">IV</span>
                         </li>
                         <li class="flex items-end justify-between group">
                             <a href="thought.html"
-                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
+                                class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Blog</a>
                             <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                             <span class="font-mono text-sm md:text-lg">V</span>
                         </li>
@@ -111,7 +93,7 @@
                     style="transition-delay: 100ms;">
                     <div class="flex justify-center gap-6 mt-6">
                         <!-- LinkedIn -->
-                        <a href="https://linkedin.com/in/ismxil" target="_blank"
+                        <a href="https://linkedin.com/company/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="LinkedIn">
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path fill="currentColor"
@@ -119,7 +101,7 @@
                             </svg>
                         </a>
                         <!-- Behance -->
-                        <a href="https://www.behance.net/ismxil" target="_blank"
+                        <a href="https://behance.net/cadara" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="Behance">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -127,7 +109,7 @@
                             </svg>
                         </a>
                         <!-- Instagram -->
-                        <a href="https://www.instagram.com/ismxilahmad" target="_blank"
+                        <a href="https://instagram.com/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="Instagram">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -135,7 +117,7 @@
                             </svg>
                         </a>
                         <!-- X -->
-                        <a href="https://www.x.com/ismxilahmad" target="_blank"
+                        <a href="https://x.com/cadarastudio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="X">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -143,7 +125,7 @@
                             </svg>
                         </a>
                         <!-- GitHub -->
-                        <a href="https://github.com/ismxil" target="_blank"
+                        <a href="https://github.com/cadara-studio" target="_blank"
                             class="hover:scale-110 transition-transform duration-200" aria-label="GitHub">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -151,7 +133,7 @@
                             </svg>
                         </a>
                         <!-- Email -->
-                        <a href="mailto:work@ismailahmad.com" class="hover:scale-110 transition-transform duration-200"
+                        <a href="mailto:cadarastudio@gmail.com" class="hover:scale-110 transition-transform duration-200"
                             aria-label="Email">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -187,7 +169,7 @@
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            Back to Thought
+            Back to Blog
         </a>
 
         <!-- Article Content Area -->
@@ -266,13 +248,13 @@
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="play.html"
-                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Play</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Contact</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm md:text-lg">IV</span>
                 </li>
                 <li class="flex items-end justify-between group">
                     <a href="thought.html"
-                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Thought</a>
+                        class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Blog</a>
                     <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                     <span class="font-mono text-sm md:text-lg">V</span>
                 </li>
@@ -357,7 +339,7 @@
 
             function renderArticle(article) {
                 // Set page title
-                document.title = `${article.title} | Ismail Ahmad`;
+                document.title = `${article.title} | Cadara Studio`;
 
                 // Populate article
                 document.getElementById('article-title').textContent = article.title;
