@@ -132,6 +132,18 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari and Opera */
+        }
     </style>
 </head>
 
@@ -158,87 +170,140 @@
 
     <!-- Mobile Navigation Overlay -->
     <div id="nav-overlay"
-        class="fixed inset-0 bg-brand-black z-[100] opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="h-full flex flex-col max-w-sm mx-auto">
-            <!-- Header with Logo and Close Button -->
-            <div class="flex justify-between items-center mt-12 px-4">
-                <a href="index.html" class="flex justify-center items-center">
-                    <div id="nav-overlay-logo" class="w-8 h-8 flex items-center justify-center text-current"></div>
+        class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] bg-brand-red text-brand-black z-[100] transform -translate-y-full transition-transform duration-500 ease-in-out">
+        <div class="flex flex-col h-full relative">
+
+            <!-- Header with Logo and Close Button (Matches main header layout) -->
+            <div class="flex justify-between items-center px-6 py-4 md:px-8 md:py-4 border-b border-brand-black/10">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div id="nav-overlay-logo"
+                        class="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center text-current transition-transform duration-500">
+                    </div>
                 </a>
+
                 <!-- Close Button -->
-                <button id="menu-close" class="relative w-8 h-8 flex flex-col justify-center items-center"
+                <button id="menu-close"
+                    class="relative w-8 h-8 flex flex-col justify-center items-center hover:scale-110 transition-transform"
                     aria-label="Close Menu">
                     <span
-                        class="w-6 h-0.5 bg-current transition-all duration-300 ease-in-out rotate-45 absolute"></span>
+                        class="w-6 h-0.5 bg-brand-black transition-all duration-300 ease-in-out rotate-45 absolute"></span>
                     <span
-                        class="w-6 h-0.5 bg-current transition-all duration-300 ease-in-out -rotate-45 absolute"></span>
+                        class="w-6 h-0.5 bg-brand-black transition-all duration-300 ease-in-out -rotate-45 absolute"></span>
                 </button>
             </div>
 
-            <!-- Navigation Items -->
-            <nav class="mt-8 mb-8 nav-item transform translate-y-8 opacity-0 transition-all duration-300 ease-out"
-                style="transition-delay: 50ms;">
-                <ul class="space-y-4 px-4">
-                    <li class="flex items-end justify-between group">
-                        <a href="about.html"
-                            class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">About</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm md:text-lg">I</span>
-                    </li>
-                    <li class="flex items-end justify-between group">
-                        <a href="work.html"
-                            class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Work</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm md:text-lg">II</span>
-                    </li>
-                    <li class="flex items-end justify-between group">
-                        <a href="expertise.html"
-                            class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Expertise</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm md:text-lg">III</span>
-                    </li>
-                    <li class="flex items-end justify-between group">
-                        <a href="play.html"
-                            class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Contact</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm md:text-lg">IV</span>
-                    </li>
-                    <li class="flex items-end justify-between group">
-                        <a href="thought.html"
-                            class="uppercase tracking-widest text-lg md:text-2xl font-display transition-all duration-300 group-hover:pl-2">Blog</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm md:text-lg">V</span>
-                    </li>
-                </ul>
-            </nav>
+            <!-- Scrollable Content Area -->
+            <div class="flex-1 overflow-y-auto px-6 py-8 md:px-8 pb-12 flex flex-col">
 
-            <!-- Social Links -->
-            <div class="nav-item transform translate-y-8 opacity-0 transition-all duration-300 ease-out"
-                style="transition-delay: 100ms;">
-                <div class="flex justify-center gap-6 mt-6">
-                    <a href="https://linkedin.com/company/cadarastudio" target="_blank"
-                        class="hover:scale-110 transition-transform duration-200" aria-label="LinkedIn">
-                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <!-- Large "LET'S CHAT" Heading -->
+                <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-10 text-brand-black leading-none nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                    style="transition-delay: 100ms;">
+                    LET'S CHAT
+                </h2>
+
+                <!-- Navigation Items -->
+                <nav class="w-full mb-12">
+                    <ul class="space-y-4">
+                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                            style="transition-delay: 150ms;">
+                            <a href="about.html"
+                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">About</a>
+                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
+                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">I</span>
+                        </li>
+                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                            style="transition-delay: 200ms;">
+                            <a href="work.html"
+                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Work</a>
+                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
+                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">II</span>
+                        </li>
+                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                            style="transition-delay: 250ms;">
+                            <a href="expertise.html"
+                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Expertise</a>
+                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
+                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">III</span>
+                        </li>
+                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                            style="transition-delay: 300ms;">
+                            <a href="play.html"
+                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a>
+                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
+                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">IV</span>
+                        </li>
+                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                            style="transition-delay: 350ms;">
+                            <a href="thought.html"
+                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Thought</a>
+                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
+                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">V</span>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Social Links -->
+                <div class="flex items-center gap-6 nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                    style="transition-delay: 400ms;">
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com" target="_blank" class="hover:scale-110 transition-transform"
+                        aria-label="LinkedIn">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.06 2.06 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065m1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
                         </svg>
                     </a>
-                </div>
-            </div>
-
-            <footer
-                class="mt-8 opacity-80 text-center nav-item transform translate-y-8 opacity-0 transition-all duration-300 ease-out"
-                style="transition-delay: 150ms;">
-                <p class="text-xs text-center font-mono uppercase tracking-widest mb-2">(c) 2026</p>
-                <div class="flex justify-center items-center mt-4">
-                    <a href="#" id="menu-color-randomizer" class="hover:scale-110 transition-transform duration-200"
-                        aria-label="Randomize Colors">
-                        <!-- SVG injected here later -->
+                    <!-- Behance -->
+                    <a href="https://behance.net" target="_blank" class="hover:scale-110 transition-transform"
+                        aria-label="Behance">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.881v1.139h-7.619c.123 2.502 2.061 3.255 3.659 3.255 1.488 0 2.457-.611 2.94-1.68h3.844zm-3.047-4.144c-.211-1.258-1.398-2.22-2.723-2.22-1.35 0-2.42 1.05-2.703 2.22h5.426zm-11.679.144h-5.908v5h6.391c2.259 0 3.822-1.314 3.822-3.15 0-2.03-1.681-3.238-3.32-3.238 1.428-.152 2.822-1.223 2.822-2.829 0-1.896-1.579-2.933-3.666-2.933h-6.041v12.15h5.9v-5zm-5.908-5.321h2.956c1.233 0 2.247.502 2.247 1.621 0 1.111-.908 1.623-2.261 1.623h-2.942v-3.244z" />
+                        </svg>
+                    </a>
+                    <!-- Dribbble -->
+                    <a href="https://dribbble.com" target="_blank" class="hover:scale-110 transition-transform"
+                        aria-label="Dribbble">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 1.637-6.67 6.189-6.724 6.475 1.815 1.428 4.135 2.298 6.65 2.298 1.077 0 2.115-.17 3.094-.482C10.702 14.864 7.234 13.924 3.1 14.3v.018c.28 2.923 1.876 5.485 4.148 7.086 0 0 .97-4.63 6.94-6.41zm-11.83-2.61c.08-.43 1.098-4.8 6.41-6.425.077-.02.155-.04.234-.057-.69-1.253-1.46-2.433-2.274-3.513-4.103 1.256-7.34 1.455-7.514 1.464-.09 1.173-.016 2.368.223 3.518.397 1.926 1.3 3.655 2.508 5.01zm-2.074-6.162c.2-.014 3.626-.26 7.9-1.632-1.35-1.748-2.828-3.327-4.305-4.646C3.96 5.32 1.63 8.356 1.657 11.85zm6.54-6.052c1.442 1.298 2.88 2.844 4.195 4.545 2.396-.86 4.17-2.13 4.39-2.285C14.773 3.044 12.003 2.1 11.08 2.1A9.833 9.833 0 0 0 8.196 5.8z" />
+                        </svg>
+                    </a>
+                    <!-- Twitter -->
+                    <a href="https://twitter.com" target="_blank" class="hover:scale-110 transition-transform"
+                        aria-label="Twitter">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.06a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.936 4.936 0 0 0 4.604 3.417 9.867 9.867 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0 0 24 4.59z" />
+                        </svg>
+                    </a>
+                    <!-- Github -->
+                    <a href="https://github.com" target="_blank" class="hover:scale-110 transition-transform"
+                        aria-label="Go to Github">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <!-- Mail -->
+                    <a href="mailto:hello@cadarastudio.com" class="hover:scale-110 transition-transform"
+                        aria-label="Email Us">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+                        </svg>
                     </a>
                 </div>
-            </footer>
+
+                <footer
+                    class="mt-12 opacity-60 flex items-center gap-2 nav-item opacity-0 transform translate-y-4 transition-all duration-300"
+                    style="transition-delay: 450ms;">
+                    <p class="text-[10px] md:text-xs font-mono tracking-widest uppercase">© 2026 CADARA</p>
+                </footer>
+            </div>
         </div>
     </div>
+
     <!-- NAV Ends here-->
 
     <!-- Infinite Canvas Viewport -->
@@ -390,6 +455,60 @@
         </div>
     </template>
 
+
+    <!-- Project Lightbox Modal -->
+    <div id="project-modal"
+        class="fixed inset-0 bg-brand-black/98 z-[120] flex flex-col md:flex-row opacity-0 pointer-events-none transition-all duration-500 scale-95 items-stretch">
+
+        <!-- Left Column: Information Panel -->
+        <div
+            class="w-full md:w-[400px] bg-brand-red flex-shrink-0 flex flex-col justify-between p-8 md:p-12 text-brand-black relative">
+            <!-- Close Button -->
+            <button id="modal-close-btn"
+                class="absolute top-6 right-6 w-10 h-10 flex flex-col justify-center items-center rounded-full hover:scale-110 transition-transform focus:outline-none"
+                aria-label="Close Modal">
+                <span class="w-6 h-0.5 bg-brand-black rotate-45 absolute transition-transform"></span>
+                <span class="w-6 h-0.5 bg-brand-black -rotate-45 absolute transition-transform"></span>
+            </button>
+
+            <div class="mt-8 md:mt-12">
+                <h2 id="modal-project-title"
+                    class="font-display text-4xl md:text-5xl font-bold uppercase tracking-tighter leading-none mb-2">
+                    PROJECT</h2>
+                <a id="modal-project-link" href="#"
+                    class="inline-flex items-center text-sm font-mono tracking-widest hover:opacity-70 transition-opacity mb-16">
+                    view site <span class="ml-1 text-xs">↗</span>
+                </a>
+
+                <h3 class="font-mono text-sm tracking-widest uppercase font-bold mb-4">ABOUT THE PROJECT</h3>
+                <p id="modal-project-desc" class="text-sm md:text-base leading-relaxed opacity-90">
+                    A short description of the project goes here. This text explains the problem, the solution, and the
+                    impact of the work delivered by Cadara Studio.
+                </p>
+            </div>
+
+            <div class="mt-12">
+                <!-- Optional bottom block for tags/services if needed later -->
+            </div>
+        </div>
+
+        <!-- Right Column: Horizontal Image Carousel -->
+        <div id="modal-carousel-container" class="flex-1 relative overflow-hidden bg-brand-black flex flex-col">
+            <!-- Swipeable Track -->
+            <div id="modal-track"
+                class="flex-1 flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 items-center h-full">
+                <!-- Images injected here -->
+            </div>
+
+            <!-- Controls / Indicators -->
+            <div
+                class="absolute bottom-6 md:bottom-12 right-6 md:right-12 flex items-center justify-end gap-4 text-brand-red font-mono uppercase tracking-widest text-sm z-10 bg-brand-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
+                <button id="modal-prev" class="hover:opacity-70 transition-opacity p-2">&lt;</button>
+                <span id="modal-counter">1 / 3</span>
+                <button id="modal-next" class="hover:opacity-70 transition-opacity p-2">&gt;</button>
+            </div>
+        </div>
+    </div>
     <!-- Color Randomizer Fixed UI -->
     <a href="#" id="color-randomizer"
         class="fixed bottom-[30px] right-[30px] z-40 w-12 h-12 bg-brand-red rounded-full flex items-center justify-center shadow-[0px_12px_24px_0px_rgba(38,96,164,0.25)] hover:scale-110 transition-transform duration-200"
@@ -505,11 +624,16 @@
                 document.body.style.cursor = 'grab';
             });
 
-            // Stop click if we dragged
+            // Stop click if we dragged, otherwise open modal
             grid.addEventListener('click', (e) => {
+                const card = e.target.closest('.canvas-card');
                 if (hasDragged) {
                     e.preventDefault();
                     e.stopPropagation();
+                } else if (card) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openProjectModal(card);
                 }
             });
 
@@ -585,6 +709,108 @@
 
             // Start the loop
             requestAnimationFrame(tick);
+
+            // --- Modal Logic ---
+            const modal = document.getElementById('project-modal');
+            const closeBtn = document.getElementById('modal-close-btn');
+            const track = document.getElementById('modal-track');
+            const counter = document.getElementById('modal-counter');
+            const btnPrev = document.getElementById('modal-prev');
+            const btnNext = document.getElementById('modal-next');
+            const projectTitle = document.getElementById('modal-project-title');
+
+            let currentImages = [];
+
+            function openProjectModal(card) {
+                // Get title from card
+                const titleEl = card.querySelector('h3');
+                if (titleEl && projectTitle) {
+                    projectTitle.textContent = titleEl.textContent;
+                }
+
+                // Get image from card
+                const img = card.querySelector('img');
+                if (!img) return; // Ignore quote blocks
+
+                const src = img.src;
+
+                // Demo images
+                currentImages = [
+                    src,
+                    src.replace(/\?auto=compress/, '?grayscale&auto=compress'),
+                    src.replace(/\?auto=compress/, '?blur=2&auto=compress')
+                ];
+
+                // Build track HTML
+                // For the full-bleed look in the screenshot, the image should be w-full h-full object-cover or object-contain
+                track.innerHTML = currentImages.map((s, i) => `
+                    <div class="snap-start shrink-0 w-full h-full flex items-center justify-center relative group p-4 md:p-12">
+                        <img src="${s}" class="w-full h-full object-contain md:object-cover shadow-2xl transition-transform duration-700 ease-out group-hover:scale-[1.02]" alt="Project View ${i + 1}">
+                    </div>
+                `).join('');
+
+                // Scale in animation
+                modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                modal.classList.add('opacity-100', 'scale-100');
+
+                document.body.style.overflow = 'hidden';
+                updateCounter();
+
+                // Reset scroll
+                track.scrollTo({ left: 0, behavior: 'instant' });
+            }
+
+            function closeModal() {
+                // Scale out animation
+                modal.classList.remove('opacity-100', 'scale-100');
+                modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+
+                setTimeout(() => {
+                    document.body.style.overflow = '';
+                }, 300); // match transition duration
+            }
+
+            function updateCounter() {
+                if (!track.firstElementChild) return;
+                const slideWidth = track.clientWidth;
+                const activeIndex = Math.round(track.scrollLeft / slideWidth);
+                const total = track.children.length;
+                counter.textContent = `${activeIndex + 1} / ${total}`;
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+
+            // Close on background click (only if clicking the pure container, not the left panel)
+            modal.addEventListener('click', (e) => {
+                if (e.target === document.getElementById('modal-carousel-container') || e.target === track) {
+                    closeModal();
+                }
+            });
+
+            // Carousel navigation
+            track.addEventListener('scroll', () => {
+                requestAnimationFrame(updateCounter);
+            });
+
+            btnPrev.addEventListener('click', () => {
+                const slideWidth = track.clientWidth;
+                track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+            });
+
+            btnNext.addEventListener('click', () => {
+                const slideWidth = track.clientWidth;
+                track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            });
+
+            // Keyboard nav
+            window.addEventListener('keydown', (e) => {
+                if (modal.classList.contains('opacity-0')) return;
+
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') btnPrev.click();
+                if (e.key === 'ArrowRight') btnNext.click();
+            });
+
         });
     </script>
 </body>

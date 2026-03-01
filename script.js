@@ -90,8 +90,8 @@ function applyPalette(palette) {
     // Sync any overlays that are present on the page
     const navOverlay = document.getElementById('nav-overlay');
     if (navOverlay) {
-        navOverlay.style.backgroundColor = palette.bg;
-        navOverlay.style.color = palette.fg;
+        
+        
     }
     const passwordOverlay = document.getElementById('password-overlay');
     if (passwordOverlay) {
@@ -210,10 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle && menuClose && navOverlay) {
         function openMenu() {
             // Sync overlay colors with current theme
-            navOverlay.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--brand-black').trim();
-            navOverlay.style.color = getComputedStyle(document.documentElement).getPropertyValue('--brand-red').trim();
-            navOverlay.style.opacity = '1';
-            navOverlay.style.pointerEvents = 'auto';
+            
+            
+            navOverlay.classList.remove('-translate-y-full');
+            
             document.body.style.overflow = 'hidden';
             // Animate nav items in
             navOverlay.querySelectorAll('.nav-item').forEach((item, i) => {
@@ -225,8 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function closeMenu() {
-            navOverlay.style.opacity = '0';
-            navOverlay.style.pointerEvents = 'none';
+            navOverlay.classList.add('-translate-y-full');
+            
             document.body.style.overflow = '';
             // Reset nav items
             navOverlay.querySelectorAll('.nav-item').forEach(item => {
