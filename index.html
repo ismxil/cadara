@@ -142,13 +142,7 @@
                                 <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
                                 <span class="font-mono text-xs font-bold opacity-60">III</span>
                             </li>
-                            <li class="flex items-end group nav-item"
-                                style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:300ms;">
-                                <a href="play.html"
-                                    class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a>
-                                <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
-                                <span class="font-mono text-xs font-bold opacity-60">IV</span>
-                            </li>
+
                             <li class="flex items-end group nav-item"
                                 style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:350ms;">
                                 <a href="thought.html"
@@ -242,11 +236,11 @@
         <div
             class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-24 px-4 max-w-sm mx-auto w-full relative z-20">
             <a href="contact.html"
-                class="w-full flex-1 text-center py-4 bg-brand-red text-brand-black font-display uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform duration-200 shadow-xl pointer-events-auto">
+                class="w-full flex-1 text-center py-4 bg-brand-red text-brand-black font-display uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform duration-200 shadow-xl pointer-events-auto rounded-full">
                 Book a Call
             </a>
             <a href="work.html"
-                class="w-full flex-1 text-center py-4 border border-current text-current font-display uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform duration-200 pointer-events-auto">
+                class="w-full flex-1 text-center py-4 border border-current text-current font-display uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform duration-200 pointer-events-auto rounded-full">
                 View Work
             </a>
         </div>
@@ -355,7 +349,6 @@
 
         <!-- ── Pricing Cards ── -->
         <section class="max-w-sm mx-auto px-4 mb-24">
-            <p class="font-mono text-xs uppercase tracking-widest opacity-50 mb-6">— How we work</p>
             <div class="flex flex-col gap-3">
 
                 <!-- Card 1: Product Sprint (filled) -->
@@ -535,12 +528,7 @@
                         <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
                         <span class="font-mono text-sm">III</span>
                     </li>
-                    <li class="flex items-end justify-between group">
-                        <a href="play.html"
-                            class="uppercase tracking-widest text-lg font-display transition-all duration-300 group-hover:pl-2">Contact</a>
-                        <div class="flex-grow border-b border-dotted border-current mx-2 mb-1"></div>
-                        <span class="font-mono text-sm">IV</span>
-                    </li>
+
                     <li class="flex items-end justify-between group">
                         <a href="thought.html"
                             class="uppercase tracking-widest text-lg font-display transition-all duration-300 group-hover:pl-2">Blog</a>
@@ -671,9 +659,9 @@
 
             <!-- Cal.com embed — full viewport width, extends past narrow column -->
             <div class="w-full flex-1" style="min-height: 650px;">
-                <iframe src="https://cal.com/cadara/intro?embed=true&overlayCalendar=true&layout=month_view"
+                <iframe id="cal-modal-iframe" src=""
                     width="100%" height="100%" frameborder="0"
-                    style="min-height: 650px; width: 100%; border: none; display: block;" loading="lazy"
+                    style="min-height: 650px; width: 100%; border: none; display: block;"
                     title="Book a call with Cadara Studio"></iframe>
             </div>
 
@@ -780,7 +768,22 @@
             const closeBtn = document.getElementById('book-call-close');
             let calInitialized = false;
 
+            function getCalTheme() {
+                const hex = (getComputedStyle(document.documentElement)
+                    .getPropertyValue('--brand-black').trim() || '#FFF3DE').replace('#', '');
+                const r = parseInt(hex.slice(0, 2), 16);
+                const g = parseInt(hex.slice(2, 4), 16);
+                const b = parseInt(hex.slice(4, 6), 16);
+                return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? 'light' : 'dark';
+            }
+
             function openModal() {
+                if (!calInitialized) {
+                    const theme = getCalTheme();
+                    document.getElementById('cal-modal-iframe').src =
+                        `https://cal.com/cadara/intro?embed=true&layout=month_view&theme=${theme}`;
+                    calInitialized = true;
+                }
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 document.body.style.overflow = 'hidden';
                 injectLogo('#modal-logo-placeholder');
@@ -838,8 +841,8 @@
                         "Leaning on our expertise designing the right thing, the right way, you'll get a functional prototype that's ready to impress both investors and customers.",
                         'Front-end engineering can be added.'
                     ],
-                    price: '$45,000',
-                    period: '6 weeks'
+                    price: '$24,500',
+                    period: '8 weeks'
                 },
                 partnership: {
                     title: 'Ongoing Partnership',
@@ -847,7 +850,7 @@
                         'A dedicated design partner, month to month. No long-term commitments.',
                         'We embed ourselves in your team, attend standups, ship designs and iterate fast — without the overhead of a full-time hire.'
                     ],
-                    price: '$25,000',
+                    price: '$9,500',
                     period: 'Monthly'
                 }
             };

@@ -48,18 +48,22 @@
             grid-template-rows: repeat(3, max-content);
         }
 
-        /* ── Grid block: rounded mosaic 5-col × 3-row, 240px base ── */
+        /* ── Grid block: alternating 2×2-small + large cell pattern ──
+           Pair 1 (odd):  [2×2 small | large]  — top two rows
+           Pair 2 (even): [large | 2×2 small]  — bottom two rows
+           Large cell = 2s + gap, matching 2×2 footprint exactly.       ── */
         .canvas-block {
             display: grid;
-            grid-template-columns: repeat(5, 240px);
-            grid-template-rows: repeat(3, 240px);
+            grid-template-columns: repeat(4, 400px);
+            grid-template-rows: repeat(4, 400px);
             grid-template-areas:
-                "a a b c c"
-                "d e b c c"
-                "d f g h h";
-            gap: 10px;
-            padding: 5px;
-            background-color: currentColor;
+                "a  b  e  e"
+                "c  d  e  e"
+                "f  f  g  h"
+                "f  f  i  j";
+            gap: 6px;
+            padding: 3px;
+            background-color: var(--brand-black);
         }
 
         /* Grid area assignments */
@@ -67,10 +71,12 @@
         .gc-b { grid-area: b; }
         .gc-c { grid-area: c; }
         .gc-d { grid-area: d; }
-        .gc-e { grid-area: e; }
-        .gc-f { grid-area: f; }
+        .gc-e { grid-area: e; }   /* large — top-right */
+        .gc-f { grid-area: f; }   /* large — bottom-left */
         .gc-g { grid-area: g; }
         .gc-h { grid-area: h; }
+        .gc-i { grid-area: i; }
+        .gc-j { grid-area: j; }
 
         /* Individual cards */
         .canvas-card {
@@ -80,7 +86,7 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 20px;
-            background-color: var(--brand-black, #FFF3DE);
+            background-color: var(--brand-red);
             border-radius: 20px;
         }
 
@@ -176,7 +182,7 @@
                             <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:150ms;"><a href="about.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">About</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">I</span></li>
                             <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:200ms;"><a href="work.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Work</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">II</span></li>
                             <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:250ms;"><a href="expertise.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Expertise</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">III</span></li>
-                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:300ms;"><a href="play.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">IV</span></li>
+
                             <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:350ms;"><a href="thought.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Thought</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">V</span></li>
                         </ul>
                     </nav>
@@ -213,18 +219,11 @@
     <!-- Template for a single Block of projects -->
     <template id="block-template">
         <div class="canvas-block">
-            <!-- a · Gomoney — 2×1 wide (top-left) -->
-            <a href="#" class="canvas-card gc-a group" data-project="Gomoney">
-                <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Gomoney">
-                <div class="canvas-card-content">
-                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </div>
-                </div>
-            </a>
 
-            <!-- b · Cadana — 1×2 tall (middle column) -->
-            <a href="#" class="canvas-card gc-b group" data-project="Cadana">
+            <!-- ── ROW PAIR 1: [2×2 smalls LEFT | large RIGHT] ── -->
+
+            <!-- a · Cadana — small top-left of 2×2 -->
+            <a href="#" class="canvas-card gc-a group" data-project="Cadana">
                 <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -233,18 +232,8 @@
                 </div>
             </a>
 
-            <!-- c · Lemfi — 2×2 featured (top-right) -->
-            <a href="#" class="canvas-card gc-c group" data-project="Lemfi">
-                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Lemfi">
-                <div class="canvas-card-content">
-                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </div>
-                </div>
-            </a>
-
-            <!-- d · Sterling Bank — 1×2 tall (left column) -->
-            <a href="#" class="canvas-card gc-d group" data-project="Sterling Bank">
+            <!-- b · Sterling Bank — small top-right of 2×2 -->
+            <a href="#" class="canvas-card gc-b group" data-project="Sterling Bank">
                 <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sterling Bank">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -253,8 +242,8 @@
                 </div>
             </a>
 
-            <!-- e · Mezovest — 1×1 -->
-            <a href="#" class="canvas-card gc-e group" data-project="Mezovest">
+            <!-- c · Mezovest — small bottom-left of 2×2 -->
+            <a href="#" class="canvas-card gc-c group" data-project="Mezovest">
                 <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mezovest">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -263,8 +252,8 @@
                 </div>
             </a>
 
-            <!-- f · Kuda — 1×1 -->
-            <a href="#" class="canvas-card gc-f group" data-project="Kuda">
+            <!-- d · Kuda — small bottom-right of 2×2 -->
+            <a href="#" class="canvas-card gc-d group" data-project="Kuda">
                 <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kuda">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -273,7 +262,29 @@
                 </div>
             </a>
 
-            <!-- g · Motel One — 1×1 -->
+            <!-- e · Gomoney — LARGE cell, right side of pair 1 (spans 2×2) -->
+            <a href="#" class="canvas-card gc-e group" data-project="Gomoney">
+                <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Gomoney">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ── ROW PAIR 2: [large LEFT | 2×2 smalls RIGHT] ── -->
+
+            <!-- f · Lemfi — LARGE cell, left side of pair 2 (spans 2×2) -->
+            <a href="#" class="canvas-card gc-f group" data-project="Lemfi">
+                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Lemfi">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- g · Motel One — small top-left of 2×2 -->
             <a href="#" class="canvas-card gc-g group" data-project="Motel One">
                 <img src="https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Motel One">
                 <div class="canvas-card-content">
@@ -283,7 +294,7 @@
                 </div>
             </a>
 
-            <!-- h · Moniepoint — 2×1 wide (bottom-right) -->
+            <!-- h · Moniepoint — small top-right of 2×2 -->
             <a href="#" class="canvas-card gc-h group" data-project="Moniepoint">
                 <img src="https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Moniepoint">
                 <div class="canvas-card-content">
@@ -292,6 +303,27 @@
                     </div>
                 </div>
             </a>
+
+            <!-- i · Cadana — small bottom-left of 2×2 -->
+            <a href="#" class="canvas-card gc-i group" data-project="Cadana">
+                <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- j · Sterling Bank — small bottom-right of 2×2 -->
+            <a href="#" class="canvas-card gc-j group" data-project="Sterling Bank">
+                <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sterling Bank">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
         </div>
     </template>
 
@@ -393,15 +425,16 @@
 
             function measureBlock() {
                 const firstBlock = grid.querySelector('.canvas-block');
-                if (firstBlock) {
-                    const rect = firstBlock.getBoundingClientRect();
-                    blockWidth = rect.width;
-                    blockHeight = rect.height;
+                if (firstBlock && firstBlock.offsetWidth > 0) {
+                    // offsetWidth/Height are transform-independent — no false zeros
+                    blockWidth = firstBlock.offsetWidth;
+                    blockHeight = firstBlock.offsetHeight;
                 }
             }
 
-            // Wait a tick for layouts
-            setTimeout(measureBlock, 100);
+            // Measure after layout and again after all resources load
+            requestAnimationFrame(() => requestAnimationFrame(measureBlock));
+            window.addEventListener('load', measureBlock);
             window.addEventListener('resize', measureBlock);
 
             // Positioning and momentum variables
@@ -508,6 +541,9 @@
 
             // Animation Loop (Inertia + Toroidal Wrapping)
             function tick() {
+                // Auto-remeasure if not yet captured (e.g. first few frames)
+                if (blockWidth === 0) measureBlock();
+
                 // Smooth interpolation (lerp)
                 x += (targetX - x) * 0.08;
                 y += (targetY - y) * 0.08;
@@ -597,9 +633,11 @@
                 modalInfo.style.transform = 'translateX(-24px)';
                 modalImages.style.transform = 'translateX(24px)';
 
-                // Show modal
+                // Show modal, hide header
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 document.body.style.overflow = 'hidden';
+                const header = document.getElementById('site-header');
+                if (header) header.style.opacity = '0';
 
                 // Animate to resting position
                 requestAnimationFrame(() => {
@@ -612,6 +650,8 @@
 
             function closeModal() {
                 modal.classList.add('opacity-0');
+                const header = document.getElementById('site-header');
+                if (header) header.style.opacity = '1';
                 setTimeout(() => {
                     modal.classList.add('pointer-events-none');
                     document.body.style.overflow = '';

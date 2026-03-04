@@ -109,13 +109,7 @@
                                 <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
                                 <span class="font-mono text-xs font-bold opacity-60">III</span>
                             </li>
-                            <li class="flex items-end group nav-item"
-                                style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:300ms;">
-                                <a href="play.html"
-                                    class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a>
-                                <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
-                                <span class="font-mono text-xs font-bold opacity-60">IV</span>
-                            </li>
+
                             <li class="flex items-end group nav-item"
                                 style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:350ms;">
                                 <a href="thought.html"
@@ -186,7 +180,7 @@
         <!-- ── Alternative contact ── -->
         <div class="max-w-sm mx-auto px-4 py-10 w-full flex flex-col gap-4">
             <button id="copy-email-btn"
-                class="w-full flex items-center justify-between group px-5 py-4 transition-opacity duration-200 text-left hover:opacity-70"
+                class="w-full flex items-center justify-between group px-5 py-4 transition-opacity duration-200 text-left hover:opacity-70 rounded-full"
                 style="border: 1px solid currentColor;"
                 data-email="cadarastudio@gmail.com">
                 <span class="font-serif text-base">cadarastudio@gmail.com</span>
@@ -325,41 +319,25 @@
             };
         })(window, "https://app.cal.com/embed/embed.js", "init");
 
-        // Read actual brand colors from CSS vars (respects color randomizer)
-        function getComputedBrandColors() {
-            const style = getComputedStyle(document.documentElement);
-            const bg = style.getPropertyValue('--brand-black').trim() || '#FFF3DE';
-            const fg = style.getPropertyValue('--brand-red').trim() || '#2660A4';
-            return { bg, fg };
-        }
-
         Cal("init", { origin: "https://cal.com" });
 
         document.addEventListener('DOMContentLoaded', function () {
-            const { bg, fg } = getComputedBrandColors();
+            // Detect light vs dark based on the page background color
+            const bgColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--brand-black').trim() || '#FFF3DE';
+            const hex = bgColor.replace('#', '');
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            const theme = luminance > 0.5 ? 'light' : 'dark';
 
-            Cal("ui", {
-                cssVarsPerTheme: {
-                    light: {
-                        "cal-brand": fg,
-                        "cal-brand-text": bg,
-                        "cal-bg": bg,
-                        "cal-bg-subtle": bg,
-                        "cal-text": fg,
-                        "cal-text-subtle": fg,
-                        "cal-border": fg,
-                        "cal-border-subtle": fg,
-                        "cal-bg-emphasis": fg,
-                        "cal-text-emphasis": bg
-                    }
-                },
-                hideEventTypeDetails: false,
-                layout: "month_view"
-            });
+            Cal("ui", { theme });
 
             Cal("inline", {
                 elementOrSelector: "#cal-inline-container",
                 calLink: "cadara/intro",
+                config: { theme },
                 layout: "month_view"
             });
         });

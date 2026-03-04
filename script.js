@@ -113,7 +113,9 @@ function initFloatingCTA() {
 
     const btn = document.createElement('a');
     btn.id = 'floating-cta';
-    btn.href = 'contact.html';
+    btn.href = 'https://wa.me/2348057306313';
+    btn.target = '_blank';
+    btn.rel = 'noopener noreferrer';
     btn.setAttribute('aria-label', 'Talk to Ahmad');
     btn.style.cssText = [
         'position:fixed',

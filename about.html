@@ -20,6 +20,20 @@
 
 <body
     class="bg-brand-black text-brand-red font-serif selection:bg-brand-red selection:text-brand-black min-h-screen px-4">
+
+    <!-- ════════════════════════════════════════
+                 Fixed Randomize Button
+                 ════════════════════════════════════════ -->
+    <a href="#" id="color-randomizer"
+        class="fixed bottom-[30px] right-[30px] z-40 w-12 h-12 bg-brand-red rounded-full flex items-center justify-center shadow-[0px_12px_24px_0px_rgba(38,96,164,0.25)] hover:scale-110 transition-transform duration-200"
+        aria-label="Randomize Colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+                d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785zm-9.031 3.88a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633zm7 8a1 1 0 0 0-1.898 0l-.184.551a1 1 0 0 1-.632.633l-.551.183a1 1 0 0 0 0 1.898l.551.183a1 1 0 0 1 .633.633l.183.551a1 1 0 0 0 1.898 0l.184-.551a1 1 0 0 1 .632-.633l.551-.183a1 1 0 0 0 0-1.898l-.551-.184a1 1 0 0 1-.633-.632z" />
+        </svg>
+    </a>
+
+
     <!-- ════ Site Header (integrated accordion nav) ════ -->
     <div id="site-header" class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] z-[100]">
         <div id="header-row" class="bg-brand-black flex justify-between items-start px-4 pt-8 pb-4">
@@ -38,7 +52,7 @@
         <div id="nav-overlay" class="bg-brand-red text-brand-black overflow-hidden"
             style="max-height:0; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);">
             <div id="nav-inner" class="flex flex-col px-4 pt-10 pb-12 overflow-y-auto">
-                
+
                 <div class="flex flex-col gap-8">
                     <div class="flex items-end justify-between">
                         <h2 class="font-display text-[5.5rem] leading-[0.85] font-black uppercase text-brand-black nav-item"
@@ -78,13 +92,7 @@
                                 <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
                                 <span class="font-mono text-xs font-bold opacity-60">III</span>
                             </li>
-                            <li class="flex items-end group nav-item"
-                                style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:300ms;">
-                                <a href="play.html"
-                                    class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a>
-                                <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div>
-                                <span class="font-mono text-xs font-bold opacity-60">IV</span>
-                            </li>
+
                             <li class="flex items-end group nav-item"
                                 style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:350ms;">
                                 <a href="thought.html"
@@ -145,8 +153,13 @@
         <!-- Bio Section -->
         <div class="mb-16">
             <div class="space-y-5 font-serif text-base leading-relaxed">
-                <p>I'm Ahmad — a product designer with a decade inside fintech and banking. I started at NCK Technology building for Fidelity, Access Bank, and UBA, then led design at Gomoney and Sterling Bank before joining Lemfi and Accenture in Berlin, working with Deutsche Bank and Motel One. One belief has carried through: the best work happens at the intersection of craft and consequence.</p>
-                <p>Cadara Studio is the practice I built around that — a small, focused team doing precise work for companies in fintech, logistics, and regulated industries. If you're building in financial services and need a design partner who knows the space from the inside, I'd like to hear about it.</p>
+                <p>I'm Ahmad — a product designer with a decade inside fintech and banking. I started at NCK Technology
+                    building for Fidelity, Access Bank, and UBA, then led design at Gomoney and Sterling Bank before
+                    joining Lemfi and Accenture in Berlin, working with Deutsche Bank and Motel One. One belief has
+                    carried through: the best work happens at the intersection of craft and consequence.</p>
+                <p>Cadara Studio is the practice I built around that — a small, focused team doing precise work for
+                    companies in fintech, logistics, and regulated industries. If you're building in financial services
+                    and need a design partner who knows the space from the inside, I'd like to hear about it.</p>
             </div>
             <div class="mt-10 mb-48">
                 <div id="signature-container" class="w-40 mb-3"></div>
