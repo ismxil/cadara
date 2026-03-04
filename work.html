@@ -48,17 +48,17 @@
             grid-template-rows: repeat(3, max-content);
         }
 
-        /* ── Grid block: mosaic 4-col × 4-row, 300px base cells ── */
+        /* ── Grid block: rounded mosaic 5-col × 3-row, 240px base ── */
         .canvas-block {
             display: grid;
-            grid-template-columns: repeat(4, 300px);
-            grid-template-rows: repeat(4, 300px);
+            grid-template-columns: repeat(5, 240px);
+            grid-template-rows: repeat(3, 240px);
             grid-template-areas:
-                "a a b b"
-                "c d b b"
-                "c e e f"
-                "g g h f";
-            gap: 2px;
+                "a a b c c"
+                "d e b c c"
+                "d f g h h";
+            gap: 10px;
+            padding: 5px;
             background-color: currentColor;
         }
 
@@ -79,8 +79,9 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 28px;
+            padding: 20px;
             background-color: var(--brand-black, #FFF3DE);
+            border-radius: 20px;
         }
 
         .canvas-card img {
@@ -212,18 +213,8 @@
     <!-- Template for a single Block of projects -->
     <template id="block-template">
         <div class="canvas-block">
-            <!-- a · Cadana — 2×1 wide -->
-            <a href="#" class="canvas-card gc-a group" data-project="Cadana">
-                <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
-                <div class="canvas-card-content">
-                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </div>
-                </div>
-            </a>
-
-            <!-- b · Gomoney — 2×2 featured -->
-            <a href="#" class="canvas-card gc-b group" data-project="Gomoney">
+            <!-- a · Gomoney — 2×1 wide (top-left) -->
+            <a href="#" class="canvas-card gc-a group" data-project="Gomoney">
                 <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Gomoney">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -232,9 +223,9 @@
                 </div>
             </a>
 
-            <!-- c · Mezovest — 1×2 tall -->
-            <a href="#" class="canvas-card gc-c group" data-project="Mezovest">
-                <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mezovest">
+            <!-- b · Cadana — 1×2 tall (middle column) -->
+            <a href="#" class="canvas-card gc-b group" data-project="Cadana">
+                <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
@@ -242,7 +233,17 @@
                 </div>
             </a>
 
-            <!-- d · Sterling Bank — 1×1 -->
+            <!-- c · Lemfi — 2×2 featured (top-right) -->
+            <a href="#" class="canvas-card gc-c group" data-project="Lemfi">
+                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Lemfi">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- d · Sterling Bank — 1×2 tall (left column) -->
             <a href="#" class="canvas-card gc-d group" data-project="Sterling Bank">
                 <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sterling Bank">
                 <div class="canvas-card-content">
@@ -252,8 +253,28 @@
                 </div>
             </a>
 
-            <!-- e · Motel One — 2×1 wide -->
-            <a href="#" class="canvas-card gc-e group" data-project="Motel One">
+            <!-- e · Mezovest — 1×1 -->
+            <a href="#" class="canvas-card gc-e group" data-project="Mezovest">
+                <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mezovest">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- f · Kuda — 1×1 -->
+            <a href="#" class="canvas-card gc-f group" data-project="Kuda">
+                <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kuda">
+                <div class="canvas-card-content">
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- g · Motel One — 1×1 -->
+            <a href="#" class="canvas-card gc-g group" data-project="Motel One">
                 <img src="https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Motel One">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
@@ -262,29 +283,9 @@
                 </div>
             </a>
 
-            <!-- f · Lemfi — 1×2 tall -->
-            <a href="#" class="canvas-card gc-f group" data-project="Lemfi">
-                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lemfi">
-                <div class="canvas-card-content">
-                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </div>
-                </div>
-            </a>
-
-            <!-- g · Moniepoint — 2×1 wide -->
-            <a href="#" class="canvas-card gc-g group" data-project="Moniepoint">
+            <!-- h · Moniepoint — 2×1 wide (bottom-right) -->
+            <a href="#" class="canvas-card gc-h group" data-project="Moniepoint">
                 <img src="https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Moniepoint">
-                <div class="canvas-card-content">
-                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </div>
-                </div>
-            </a>
-
-            <!-- h · Kuda — 1×1 -->
-            <a href="#" class="canvas-card gc-h group" data-project="Kuda">
-                <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kuda">
                 <div class="canvas-card-content">
                     <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
