@@ -602,30 +602,46 @@
         </div>
 
 
-        <!-- ── Project Case Study Overlay ── -->
-        <div id="project-overlay"
-            class="fixed inset-0 z-[150] opacity-0 pointer-events-none transition-opacity duration-300"
-            style="background-color: var(--brand-black);">
-            <!-- Fixed header inside overlay -->
-            <div
-                class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] z-[160] bg-brand-black px-4 pt-8 pb-4 flex justify-between items-start">
-                <div id="project-overlay-logo" class="w-[72px] h-[72px] flex items-center justify-center text-current">
-                </div>
-                <button id="project-overlay-close"
-                    class="relative w-8 h-8 flex flex-col justify-center items-center mt-1" aria-label="Close project">
-                    <span class="w-6 h-0.5 bg-current rotate-45 absolute transition-all"></span>
-                    <span class="w-6 h-0.5 bg-current -rotate-45 absolute transition-all"></span>
+        <!-- ── Project Case Study Modal ── -->
+        <div id="project-modal"
+            class="fixed inset-0 z-[150] flex flex-col md:flex-row opacity-0 pointer-events-none overflow-y-auto md:overflow-hidden"
+            style="background-color: var(--brand-black); color: var(--brand-red); transition: opacity 0.4s ease;">
+
+            <!-- LEFT: Info Panel -->
+            <aside id="modal-info"
+                class="relative w-full md:w-[360px] md:flex-shrink-0 md:h-screen md:overflow-y-auto flex flex-col px-8 pt-10 pb-10 md:px-10 md:pt-14 md:pb-12"
+                style="background-color: var(--brand-red); color: var(--brand-black); transition: transform 0.45s cubic-bezier(0.25,1,0.5,1);">
+
+                <button id="modal-close-btn"
+                    class="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-brand-black hover:text-brand-red transition-colors duration-200"
+                    style="border: 1px solid var(--brand-black);" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="5" x2="19" y2="19" /><line x1="19" y1="5" x2="5" y2="19" />
+                    </svg>
                 </button>
-            </div>
-            <!-- Horizontal scroll track -->
-            <div id="project-scroll-track" class="absolute inset-0 flex overflow-x-auto overflow-y-hidden"
-                style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-top: 110px;">
-                <!-- Panels injected dynamically -->
-            </div>
-            <!-- Progress bar -->
-            <div class="absolute bottom-0 left-0 right-0 h-0.5" style="background: currentColor; opacity: 0.1;">
-                <div id="project-overlay-progress" class="h-full bg-brand-red"
-                    style="width: 0%; transition: width 0.1s linear;"></div>
+
+                <p id="modal-index" class="font-mono text-[10px] uppercase tracking-widest mb-10" style="opacity:0.4;">— 01</p>
+                <h2 id="modal-title" class="font-display font-black uppercase leading-[0.88] mb-5" style="font-size: clamp(2.8rem, 8vw, 4rem);">PROJECT</h2>
+                <div id="modal-tags" class="flex flex-wrap gap-2 mb-8"></div>
+                <p id="modal-desc" class="font-serif text-sm leading-[1.75] mb-auto" style="opacity: 0.65;"></p>
+
+                <div class="mt-10 flex flex-col gap-3">
+                    <a id="modal-url" href="#" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest hover:opacity-100 transition-opacity"
+                        style="opacity: 0.4;">
+                        <span id="modal-url-text">Visit site</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </a>
+                    <a href="contact.html"
+                        class="text-center py-3.5 rounded-full font-display uppercase tracking-widest text-xs hover:opacity-90 transition-opacity"
+                        style="background-color: var(--brand-black); color: var(--brand-red);">Work with us</a>
+                </div>
+            </aside>
+
+            <!-- RIGHT: Images -->
+            <div id="modal-images"
+                class="flex-1 md:h-screen md:overflow-y-auto"
+                style="transition: transform 0.45s cubic-bezier(0.25,1,0.5,1);">
             </div>
         </div>
 
@@ -896,109 +912,77 @@
         })();
     </script>
 
-    <!-- Project Case Study Overlay -->
+    <!-- Project Case Study Modal -->
     <script>
         (function () {
-            const projects = {
-                lemfi: {
-                    title: 'LEMFI',
-                    url: 'lemfi.com',
-                    tags: ['Fintech', 'Brand', 'Product Design'],
-                    description: 'Debit card designed for Lemfi, to help with its growth strategy in the UK market.',
-                    images: ['assets/lemfi.png'],
-                },
-                gomoney: {
-                    title: 'GOMONEY',
-                    url: 'gomoney.me',
-                    tags: ['Fintech', 'UX/UI', 'Mobile'],
-                    description: "Digital banking experience built for Africa's mobile-first generation. A full product redesign.",
-                    images: ['assets/gomoney.png'],
-                },
-                cadana: {
-                    title: 'CADANA',
-                    url: 'cadana.io',
-                    tags: ['Payroll', 'Fintech', 'Brand Identity'],
-                    description: 'Payroll and cross-border payments for African workers and businesses. End-to-end design.',
-                    images: ['assets/cadana.png'],
-                },
+            const projectMeta = {
+                lemfi:   { index: '06', name: 'Lemfi',   tags: ['Fintech', 'Transfer', 'Brand'],   url: 'lemfi.com',   src: 'assets/lemfi.png',   desc: 'Debit card and product design for Lemfi, supporting its growth strategy and brand expansion in the UK market.' },
+                gomoney: { index: '02', name: 'Gomoney', tags: ['Banking', 'UX/UI', 'Mobile'],     url: 'gomoney.me',  src: 'assets/gomoney.png', desc: 'A full product redesign for GoMoney — digital banking built from the ground up for Africa\'s mobile-first generation.' },
+                cadana:  { index: '01', name: 'Cadana',  tags: ['Fintech', 'UX/UI', 'Product'],    url: 'cadana.io',   src: 'assets/cadana.png',  desc: 'End-to-end product design for Cadana — a payroll and cross-border payments platform built for African workers and global businesses.' },
             };
 
-            const overlay = document.getElementById('project-overlay');
-            const track = document.getElementById('project-scroll-track');
-            const closeBtn = document.getElementById('project-overlay-close');
-            const progress = document.getElementById('project-overlay-progress');
-
-            function buildPanels(project) {
-                track.innerHTML = '';
-                track.scrollLeft = 0;
-
-                // Panel 1: Info
-                const info = document.createElement('div');
-                info.style.cssText = 'width:min(440px,92vw);height:100%;flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 56px;';
-                info.innerHTML = `
-                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
-                    ${project.tags.map(t => `<span style="font-family:inherit;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;border:1px solid currentColor;border-radius:999px;padding:4px 14px;opacity:0.7;">${t}</span>`).join('')}
-                </div>
-                <h2 style="font-family:'Midnight Sans',sans-serif;font-size:clamp(3.5rem,10vw,5rem);line-height:0.88;font-weight:900;text-transform:uppercase;margin-bottom:20px;">${project.title}</h2>
-                <p style="font-size:0.9rem;line-height:1.6;opacity:0.65;margin-bottom:20px;">${project.description}</p>
-                <a href="https://${project.url}" target="_blank" style="font-size:11px;font-family:monospace;text-transform:uppercase;letter-spacing:0.08em;opacity:0.45;text-decoration:none;">↗ ${project.url}</a>`;
-                track.appendChild(info);
-
-                // Image panels
-                project.images.forEach((src) => {
-                    const img = document.createElement('div');
-                    img.style.cssText = 'width:min(88vw,600px);height:100%;flex-shrink:0;scroll-snap-align:start;overflow:hidden;';
-                    img.innerHTML = `<img src="${src}" alt="${project.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
-                    track.appendChild(img);
-                });
-
-                // End panel
-                const end = document.createElement('div');
-                end.style.cssText = 'width:min(380px,88vw);height:100%;flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 56px;';
-                end.innerHTML = `
-                <p style="font-family:'Midnight Sans',sans-serif;font-size:clamp(2.5rem,8vw,4rem);line-height:0.9;font-weight:900;text-transform:uppercase;margin-bottom:32px;">Thanks<br>for<br>looking.</p>
-                <a href="contact.html" style="display:inline-flex;align-items:center;gap:10px;font-family:'Midnight Sans',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none;color:currentColor;">
-                    Book a call
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                </a>`;
-                track.appendChild(end);
-            }
+            const modal = document.getElementById('project-modal');
+            const modalInfo = document.getElementById('modal-info');
+            const modalImages = document.getElementById('modal-images');
+            const closeBtn = document.getElementById('modal-close-btn');
 
             function openProject(key) {
-                const project = projects[key];
-                if (!project) return;
-                buildPanels(project);
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-                document.body.style.overflow = 'hidden';
-                injectLogo('#project-overlay-logo');
+                const meta = projectMeta[key];
+                if (!meta) return;
 
-                // Progress tracking
-                if (progress) {
-                    track.addEventListener('scroll', function onScroll() {
-                        const max = track.scrollWidth - track.clientWidth;
-                        progress.style.width = max > 0 ? (track.scrollLeft / max * 100) + '%' : '0%';
-                    }, { passive: true });
-                }
+                document.getElementById('modal-index').textContent = `— ${meta.index}`;
+                document.getElementById('modal-title').textContent = meta.name;
+                document.getElementById('modal-desc').textContent = meta.desc;
+                document.getElementById('modal-tags').innerHTML = meta.tags.map(t =>
+                    `<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;border:1px solid currentColor;border-radius:999px;padding:4px 12px;opacity:0.5;">${t}</span>`
+                ).join('');
+                const urlEl = document.getElementById('modal-url');
+                document.getElementById('modal-url-text').textContent = meta.url;
+                urlEl.href = `https://${meta.url}`;
+
+                modalImages.innerHTML = `
+                    <div style="width:100%;height:85vh;overflow:hidden;flex-shrink:0;">
+                        <img src="${meta.src}" alt="${meta.name}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    </div>
+                    <div style="width:100%;padding:52px 48px 64px;background-color:var(--brand-red);color:var(--brand-black);flex-shrink:0;">
+                        <p style="font-family:'Midnight Sans',sans-serif;font-size:clamp(3rem,8vw,5.5rem);line-height:0.88;font-weight:900;text-transform:uppercase;margin-bottom:16px;">${meta.name}</p>
+                        <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;opacity:0.45;">${meta.tags.join(' · ')}</p>
+                    </div>`;
+                modalImages.scrollTop = 0;
+
+                modalInfo.style.transitionDuration = '0s';
+                modalImages.style.transitionDuration = '0s';
+                modalInfo.style.transform = 'translateX(-24px)';
+                modalImages.style.transform = 'translateX(24px)';
+
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'hidden';
+
+                requestAnimationFrame(() => {
+                    modalInfo.style.transitionDuration = '';
+                    modalImages.style.transitionDuration = '';
+                    modalInfo.style.transform = 'translateX(0)';
+                    modalImages.style.transform = 'translateX(0)';
+                });
             }
 
             function closeProject() {
-                overlay.classList.add('opacity-0', 'pointer-events-none');
-                document.body.style.overflow = '';
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('pointer-events-none');
+                    document.body.style.overflow = '';
+                }, 400);
             }
 
-            // Listen for project card clicks
             document.addEventListener('click', (e) => {
                 const card = e.target.closest('[data-project]');
-                if (card) {
-                    e.preventDefault();
-                    openProject(card.dataset.project);
-                }
+                if (card) { e.preventDefault(); openProject(card.dataset.project); }
             });
 
             closeBtn && closeBtn.addEventListener('click', closeProject);
-
+            modalImages && modalImages.addEventListener('click', (e) => { if (e.target === modalImages) closeProject(); });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !overlay.classList.contains('opacity-0')) closeProject();
+                if (e.key === 'Escape' && !modal.classList.contains('opacity-0')) closeProject();
             });
         })();
     </script>

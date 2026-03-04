@@ -48,30 +48,29 @@
             grid-template-rows: repeat(3, max-content);
         }
 
-        /* ── Grid block: strict 3-col × 4-row, 400px cells, 1px gaps ── */
+        /* ── Grid block: mosaic 4-col × 4-row, 300px base cells ── */
         .canvas-block {
             display: grid;
-            grid-template-columns: repeat(3, 400px);
-            grid-template-rows: repeat(4, 400px);
+            grid-template-columns: repeat(4, 300px);
+            grid-template-rows: repeat(4, 300px);
             grid-template-areas:
-                "p1 p2 p2"
-                "p3 p2 p2"
-                "p4 p5 p6"
-                "p7 q1 p8";
-            gap: 1px;
-            background-color: currentColor; /* gap color = brand accent */
+                "a a b b"
+                "c d b b"
+                "c e e f"
+                "g g h f";
+            gap: 2px;
+            background-color: currentColor;
         }
 
         /* Grid area assignments */
-        .gc-p1 { grid-area: p1; }
-        .gc-p2 { grid-area: p2; }
-        .gc-p3 { grid-area: p3; }
-        .gc-p4 { grid-area: p4; }
-        .gc-p5 { grid-area: p5; }
-        .gc-p6 { grid-area: p6; }
-        .gc-p7 { grid-area: p7; }
-        .gc-p8 { grid-area: p8; }
-        .gc-q1 { grid-area: q1; }
+        .gc-a { grid-area: a; }
+        .gc-b { grid-area: b; }
+        .gc-c { grid-area: c; }
+        .gc-d { grid-area: d; }
+        .gc-e { grid-area: e; }
+        .gc-f { grid-area: f; }
+        .gc-g { grid-area: g; }
+        .gc-h { grid-area: h; }
 
         /* Individual cards */
         .canvas-card {
@@ -117,13 +116,15 @@
             opacity: 1;
         }
 
-        /* Text — hidden by default, slides up on hover */
+        /* Hover icon — slides up, no title text */
         .canvas-card-content {
             position: relative;
             z-index: 20;
+            display: flex;
+            justify-content: flex-end;
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .canvas-card:hover .canvas-card-content {
@@ -211,100 +212,82 @@
     <!-- Template for a single Block of projects -->
     <template id="block-template">
         <div class="canvas-block">
-            <!-- p1 · Cadana -->
-            <a href="project.html" class="canvas-card gc-p1 group">
+            <!-- a · Cadana — 2×1 wide -->
+            <a href="#" class="canvas-card gc-a group" data-project="Cadana">
                 <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Cadana</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Fintech</span>
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">UX/UI</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p2 · Gomoney — featured 2×2 -->
-            <a href="project.html" class="canvas-card gc-p2 group">
+            <!-- b · Gomoney — 2×2 featured -->
+            <a href="#" class="canvas-card gc-b group" data-project="Gomoney">
                 <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Gomoney">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-5xl text-brand-red uppercase font-bold mb-3 tracking-widest">Gomoney</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Banking</span>
-                        <span class="text-xs font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">UX/UI</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p3 · Mezovest -->
-            <a href="project.html" class="canvas-card gc-p3 group">
+            <!-- c · Mezovest — 1×2 tall -->
+            <a href="#" class="canvas-card gc-c group" data-project="Mezovest">
                 <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mezovest">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Mezovest</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Logistics</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p4 · Sterling Bank -->
-            <a href="project.html" class="canvas-card gc-p4 group">
+            <!-- d · Sterling Bank — 1×1 -->
+            <a href="#" class="canvas-card gc-d group" data-project="Sterling Bank">
                 <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sterling Bank">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Sterling Bank</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Enterprise</span>
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">App</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p5 · Motel One -->
-            <a href="project.html" class="canvas-card gc-p5 group">
+            <!-- e · Motel One — 2×1 wide -->
+            <a href="#" class="canvas-card gc-e group" data-project="Motel One">
                 <img src="https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Motel One">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Motel One</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Hospitality</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p6 · Lemfi -->
-            <a href="project.html" class="canvas-card gc-p6 group">
+            <!-- f · Lemfi — 1×2 tall -->
+            <a href="#" class="canvas-card gc-f group" data-project="Lemfi">
                 <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lemfi">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Lemfi</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Fintech</span>
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Transfer</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- p7 · Moniepoint -->
-            <a href="project.html" class="canvas-card gc-p7 group">
+            <!-- g · Moniepoint — 2×1 wide -->
+            <a href="#" class="canvas-card gc-g group" data-project="Moniepoint">
                 <img src="https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Moniepoint">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Moniepoint</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Finance</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
 
-            <!-- q1 · Quote card -->
-            <div class="canvas-card gc-q1 bg-brand-red text-brand-black flex flex-col justify-end">
-                <h3 class="font-display text-[2.6rem] uppercase leading-[0.9] font-black">I HAVE MORE<br>FONTS THAN<br>FRIENDS</h3>
-                <p class="font-mono text-[10px] tracking-widest uppercase mt-3 opacity-60">— A Designer's truth</p>
-            </div>
-
-            <!-- p8 · Kuda -->
-            <a href="project.html" class="canvas-card gc-p8 group">
+            <!-- h · Kuda — 1×1 -->
+            <a href="#" class="canvas-card gc-h group" data-project="Kuda">
                 <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kuda">
                 <div class="canvas-card-content">
-                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Kuda</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Banking</span>
+                    <div class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
                     </div>
                 </div>
             </a>
@@ -575,11 +558,10 @@
             };
 
             function openProjectModal(card) {
-                const titleEl = card.querySelector('h3');
                 const img = card.querySelector('img');
-                if (!img) return; // quote card — no modal
+                if (!img) return;
 
-                const name = titleEl ? titleEl.textContent.trim() : '';
+                const name = card.dataset.project || '';
                 const meta = projectMeta[name] || { index: '—', tags: [], url: null, desc: '' };
 
                 // Fill left panel
