@@ -35,7 +35,6 @@
             width: 100vw;
             height: 100vh;
             touch-action: none;
-            /* Block default mobile scrolling/zooming */
         }
 
         /* The master container we move with translate3d */
@@ -45,39 +44,44 @@
             left: 50%;
             transform-origin: 0 0;
             display: grid;
-            /* 3 identical blocks wide, 3 blocks tall */
             grid-template-columns: repeat(3, max-content);
             grid-template-rows: repeat(3, max-content);
         }
 
-        /* Essential block unit containing the actual repeated cards */
+        /* ── Grid block: strict 3-col × 4-row, 400px cells, 1px gaps ── */
         .canvas-block {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: stretch;
-            width: 1500px;
-            /* Fixed width ensures perfect tiling for standard cards */
+            display: grid;
+            grid-template-columns: repeat(3, 400px);
+            grid-template-rows: repeat(4, 400px);
+            grid-template-areas:
+                "p1 p2 p2"
+                "p3 p2 p2"
+                "p4 p5 p6"
+                "p7 q1 p8";
+            gap: 1px;
+            background-color: currentColor; /* gap color = brand accent */
         }
 
-        /* Style for individual cards on the canvas */
+        /* Grid area assignments */
+        .gc-p1 { grid-area: p1; }
+        .gc-p2 { grid-area: p2; }
+        .gc-p3 { grid-area: p3; }
+        .gc-p4 { grid-area: p4; }
+        .gc-p5 { grid-area: p5; }
+        .gc-p6 { grid-area: p6; }
+        .gc-p7 { grid-area: p7; }
+        .gc-p8 { grid-area: p8; }
+        .gc-q1 { grid-area: q1; }
+
+        /* Individual cards */
         .canvas-card {
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 24px;
-            border-radius: 0px;
-            transition: transform 0.3s ease;
-        }
-
-        /* Dark overlay for text legibility */
-        .canvas-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 50%);
-            z-index: 10;
+            padding: 28px;
+            background-color: var(--brand-black, #FFF3DE);
         }
 
         .canvas-card img {
@@ -88,36 +92,21 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .canvas-card:hover {
-            transform: scale(0.98);
+            filter: grayscale(100%);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
         }
 
         .canvas-card:hover img {
-            transform: scale(1.05);
-            /* Slight zoom on image */
+            transform: scale(1.06);
+            filter: grayscale(0%);
         }
 
-
-
-
-        /* Hide content by default, reveal on hover */
-        .canvas-card-content {
-            position: relative;
-            z-index: 20;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* The dark overlay should also fade in on hover so the card is fully bright when not hovered */
+        /* Dark gradient overlay — only visible on hover */
         a.canvas-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 50%);
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 55%);
             z-index: 10;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -126,6 +115,15 @@
 
         a.canvas-card:hover::before {
             opacity: 1;
+        }
+
+        /* Text — hidden by default, slides up on hover */
+        .canvas-card-content {
+            position: relative;
+            z-index: 20;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .canvas-card:hover .canvas-card-content {
@@ -162,8 +160,8 @@
             </button>
         </div>
         <div id="nav-overlay" class="bg-brand-red text-brand-black overflow-hidden" style="max-height:0; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);">
-            <div id="nav-inner" class="flex flex-col px-4 pb-16 overflow-y-auto">
-                <div class="flex-1 min-h-[60px]"></div>
+            <div id="nav-inner" class="flex flex-col px-4 pt-10 pb-12 overflow-y-auto">
+                
                 <div class="flex flex-col gap-8">
                     <div class="flex items-end justify-between">
                         <h2 class="font-display text-[5.5rem] leading-[0.85] font-black uppercase text-brand-black nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:50ms;">LET'S<br>CHAT</h2>
@@ -194,6 +192,14 @@
     </div>
 
 
+    <!-- Mobile drag hint (fades out after 3s) -->
+    <div id="drag-hint" class="md:hidden fixed inset-x-0 bottom-20 flex justify-center z-50 pointer-events-none" style="transition: opacity 0.6s ease;">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full font-mono text-xs uppercase tracking-widest" style="background-color: var(--brand-red); color: var(--brand-black);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/></svg>
+            Drag to explore
+        </div>
+    </div>
+
     <!-- Infinite Canvas Viewport -->
     <div id="canvas-viewport">
         <div id="canvas-grid">
@@ -205,138 +211,100 @@
     <!-- Template for a single Block of projects -->
     <template id="block-template">
         <div class="canvas-block">
-            <!-- Project 1 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Cadana</h3>
+            <!-- p1 · Cadana -->
+            <a href="project.html" class="canvas-card gc-p1 group">
+                <img src="https://images.pexels.com/photos/1569076/pexels-photo-1569076.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cadana">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Cadana</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Fintech</span>
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">UX/UI</span>
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Fintech</span>
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">UX/UI</span>
                     </div>
                 </div>
             </a>
 
-            <!-- Project 2 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Gomoney</h3>
+            <!-- p2 · Gomoney — featured 2×2 -->
+            <a href="project.html" class="canvas-card gc-p2 group">
+                <img src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Gomoney">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-5xl text-brand-red uppercase font-bold mb-3 tracking-widest">Gomoney</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Banking</span>
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">UX/UI</span>
+                        <span class="text-xs font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Banking</span>
+                        <span class="text-xs font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">UX/UI</span>
                     </div>
                 </div>
             </a>
 
-            <!-- Quote 1 -->
-            <div
-                class="canvas-card quote-card group bg-brand-red text-brand-black flex flex-col justify-center items-start p-10">
-                <h3 class="font-display text-4xl md:text-5xl uppercase leading-none font-bold">I AM DESIGNER OF COS, I
-                    HAVE MORE FONTS THAN FRIENDS</h3>
+            <!-- p3 · Mezovest -->
+            <a href="project.html" class="canvas-card gc-p3 group">
+                <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mezovest">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Mezovest</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Logistics</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- p4 · Sterling Bank -->
+            <a href="project.html" class="canvas-card gc-p4 group">
+                <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sterling Bank">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Sterling Bank</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Enterprise</span>
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">App</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- p5 · Motel One -->
+            <a href="project.html" class="canvas-card gc-p5 group">
+                <img src="https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Motel One">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Motel One</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Hospitality</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- p6 · Lemfi -->
+            <a href="project.html" class="canvas-card gc-p6 group">
+                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lemfi">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Lemfi</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Fintech</span>
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Transfer</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- p7 · Moniepoint -->
+            <a href="project.html" class="canvas-card gc-p7 group">
+                <img src="https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Moniepoint">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Moniepoint</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Finance</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- q1 · Quote card -->
+            <div class="canvas-card gc-q1 bg-brand-red text-brand-black flex flex-col justify-end">
+                <h3 class="font-display text-[2.6rem] uppercase leading-[0.9] font-black">I HAVE MORE<br>FONTS THAN<br>FRIENDS</h3>
+                <p class="font-mono text-[10px] tracking-widest uppercase mt-3 opacity-60">— A Designer's truth</p>
             </div>
 
-            <!-- Project 3 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/5475765/pexels-photo-5475765.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Mezovest</h3>
+            <!-- p8 · Kuda -->
+            <a href="project.html" class="canvas-card gc-p8 group">
+                <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kuda">
+                <div class="canvas-card-content">
+                    <h3 class="font-display text-3xl text-brand-red uppercase font-bold mb-2 tracking-widest">Kuda</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Logistics</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Project 4 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Sterling Bank</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Enterprise</span>
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">App</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Project 5 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Motel One</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Hospitality</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Project 6 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/1036641/pexels-photo-1036641.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Lemfi</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Global
-                            Transfer</span>
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Fintech</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Project 7 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Moniepoint</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Finance</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Project 8 -->
-            <a href="project.html" class="canvas-card group">
-                <img src="https://images.pexels.com/photos/3182743/pexels-photo-3182743.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Work Example">
-                <div class="canvas-card-content flex flex-col justify-end h-full">
-                    <h3
-                        class="font-display text-3xl md:text-4xl text-brand-red uppercase font-bold mb-3 tracking-widest">
-                        Kuda</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-[10px] md:text-xs font-display tracking-widest uppercase border-2 border-brand-red text-brand-red rounded-full px-3 py-1">Banking</span>
+                        <span class="text-[10px] font-display tracking-widest uppercase border border-brand-red text-brand-red px-3 py-1">Banking</span>
                     </div>
                 </div>
             </a>
@@ -409,36 +377,18 @@
 
     <script src="script.js"></script>
     <script>
+        // Fade out mobile drag hint
+        (function() {
+            var hint = document.getElementById('drag-hint');
+            if (hint) setTimeout(function() { hint.style.opacity = '0'; }, 2800);
+        })();
+    </script>
+    <script>
         // --- INFINITE CANVAS LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('canvas-grid');
             const template = document.getElementById('block-template');
             if (!grid || !template) return;
-
-            // Extract the cards inside the template content
-            const blockContainer = template.content.querySelector('.canvas-block');
-            const cards = Array.from(blockContainer.querySelectorAll('.canvas-card'));
-
-            // Generate a single shuffled order for this session
-            // Fisher-Yates shuffle
-            const shuffledCards = [...cards];
-            for (let i = shuffledCards.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
-            }
-
-            // Empty the template block and re-insert the shuffled cards
-            blockContainer.innerHTML = '';
-            shuffledCards.forEach(card => {
-                // Apply random size characteristics via flexbox
-                const randomBasis = Math.floor(Math.random() * 200) + 300; // 300px to 500px base width
-                const randomGrow = Math.random() * 2 + 1; // 1 to 3 grow factor
-                const randomHeight = Math.floor(Math.random() * 200) + 400; // 400px to 600px height
-
-                card.style.flex = `${randomGrow} 1 ${randomBasis}px`;
-                card.style.minHeight = `${randomHeight}px`;
-                blockContainer.appendChild(card);
-            });
 
             // Clone the block 9 times (3x3 grid) to wrap properly
             for (let i = 0; i < 9; i++) {

@@ -106,7 +106,70 @@ function applyPalette(palette) {
     updateCursors(palette.fg, palette.bg);
 }
 
+// ── Floating CTA button (desktop only, adapts to color randomizer) ──
+function initFloatingCTA() {
+    if (document.getElementById('floating-cta')) return;
+    if (window.location.pathname.endsWith('contact.html')) return;
+
+    const btn = document.createElement('a');
+    btn.id = 'floating-cta';
+    btn.href = 'contact.html';
+    btn.setAttribute('aria-label', 'Talk to Ahmad');
+    btn.style.cssText = [
+        'position:fixed',
+        'left:32px',
+        'bottom:32px',
+        'z-index:50',
+        'display:none',
+        'align-items:center',
+        'gap:12px',
+        'padding:6px 10px 6px 6px',
+        'border-radius:9999px',
+        'background-color:var(--brand-red)',
+        'color:var(--brand-black)',
+        'text-decoration:none',
+        'box-shadow:0 8px 32px rgba(0,0,0,0.18)',
+        'transition:transform 0.2s ease, box-shadow 0.2s ease',
+        'cursor:pointer',
+    ].join(';');
+
+    btn.innerHTML = `
+        <img src="assets/Ismail%20Ahmad.jpg" alt="Ahmad"
+             style="width:48px;height:48px;border-radius:9999px;object-fit:cover;flex-shrink:0;object-position:top;">
+        <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-family:'Midnight Sans',sans-serif;font-weight:700;font-size:15px;line-height:1.2;white-space:nowrap;">Talk to Ahmad</span>
+            <span style="font-size:11px;opacity:0.65;white-space:nowrap;letter-spacing:0.03em;">2 project spaces left</span>
+        </div>
+        <div style="position:relative;width:38px;height:38px;flex-shrink:0;margin-left:4px;">
+            <div style="position:absolute;inset:0;border-radius:9999px;background-color:var(--brand-black);opacity:0.18;"></div>
+            <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </div>
+        </div>`;
+
+    function syncVisibility() {
+        btn.style.display = window.innerWidth >= 768 ? 'flex' : 'none';
+    }
+    syncVisibility();
+    window.addEventListener('resize', syncVisibility);
+
+    btn.addEventListener('mouseenter', () => {
+        btn.style.transform = 'scale(1.04)';
+        btn.style.boxShadow = '0 12px 40px rgba(0,0,0,0.22)';
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+    });
+
+    document.body.appendChild(btn);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initFloatingCTA();
 
     // --- Hero text letter-by-letter reveal animation ---
     const heroLines = document.querySelectorAll('.hero-line');
@@ -211,10 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function openMenu() {
             const headerRow = document.getElementById('header-row');
-            const availH = window.innerHeight - (headerRow ? headerRow.offsetHeight : 100);
             const navInner = document.getElementById('nav-inner');
-            if (navInner) navInner.style.height = availH + 'px';
-            navOverlay.style.maxHeight = availH + 'px';
+            // Size to content, not full viewport
+            if (navInner) navInner.style.height = 'auto';
+            const contentH = navInner ? navInner.scrollHeight : 500;
+            navOverlay.style.maxHeight = contentH + 'px';
             document.body.style.overflow = 'hidden';
             menuOpen = true;
             // Match header row color to nav overlay so they blend seamlessly
