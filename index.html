@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="tailwind.config.js"></script>
-    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+
     <style>
         /* ── Marquee animation ── */
         @keyframes marquee {
@@ -80,170 +80,57 @@
         </svg>
     </a>
 
-    <!-- ════════════════════════════════════════
-         Mobile Navigation Overlay
-         ════════════════════════════════════════ -->
-    <div id="nav-overlay"
-        class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] bg-brand-red text-brand-black z-[100] transform -translate-y-full transition-transform duration-500 ease-in-out">
-        <div class="flex flex-col h-full relative">
-
-            <!-- Header with Logo and Close Button (Matches main header layout) -->
-            <div class="flex justify-between items-center px-6 py-4 md:px-8 md:py-4 border-b border-brand-black/10">
-                <a href="index.html" class="flex items-center gap-3 group">
-                    <div id="nav-overlay-logo"
-                        class="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center text-current transition-transform duration-500">
+    <!-- ════ Site Header (integrated accordion nav) ════ -->
+    <div id="site-header" class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] z-[100]">
+        <div id="header-row" class="bg-brand-black flex justify-between items-start px-4 pt-8 pb-4">
+            <a href="index.html" aria-label="Cadara Studio – Home">
+                <div id="main-logo-container" class="w-[72px] h-[72px] flex items-center justify-center text-current transition-transform duration-500"></div>
+            </a>
+            <button id="menu-toggle" class="relative w-8 h-8 flex flex-col justify-center items-center group mt-1" aria-label="Toggle Menu">
+                <span class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out"></span>
+                <span class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out mt-1.5"></span>
+                <span class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out mt-1.5"></span>
+            </button>
+        </div>
+        <div id="nav-overlay" class="bg-brand-red text-brand-black overflow-hidden" style="max-height:0; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);">
+            <div id="nav-inner" class="flex flex-col px-4 pb-16 overflow-y-auto">
+                <div class="flex-1 min-h-[60px]"></div>
+                <div class="flex flex-col gap-8">
+                    <div class="flex items-end justify-between">
+                        <h2 class="font-display text-[5.5rem] leading-[0.85] font-black uppercase text-brand-black nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:50ms;">LET'S<br>CHAT</h2>
+                        <a href="contact.html" class="w-16 h-16 rounded-full border-2 border-brand-black flex items-center justify-center hover:bg-brand-black hover:text-brand-red transition-colors duration-200 flex-shrink-0 mb-2 nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:100ms;" aria-label="Contact">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                        </a>
                     </div>
-                </a>
-
-                <!-- Close Button -->
-                <button id="menu-close"
-                    class="relative w-8 h-8 flex flex-col justify-center items-center hover:scale-110 transition-transform"
-                    aria-label="Close Menu">
-                    <span
-                        class="w-6 h-0.5 bg-brand-black transition-all duration-300 ease-in-out rotate-45 absolute"></span>
-                    <span
-                        class="w-6 h-0.5 bg-brand-black transition-all duration-300 ease-in-out -rotate-45 absolute"></span>
-                </button>
-            </div>
-
-            <!-- Scrollable Content Area -->
-            <div class="flex-1 overflow-y-auto px-6 py-8 md:px-8 pb-12 flex flex-col">
-
-                <!-- Large "LET'S CHAT" Heading -->
-                <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-10 text-brand-black leading-none nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                    style="transition-delay: 100ms;">
-                    LET'S CHAT
-                </h2>
-
-                <!-- Navigation Items -->
-                <nav class="w-full mb-12">
-                    <ul class="space-y-4">
-                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                            style="transition-delay: 150ms;">
-                            <a href="about.html"
-                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">About</a>
-                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
-                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">I</span>
-                        </li>
-                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                            style="transition-delay: 200ms;">
-                            <a href="work.html"
-                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Work</a>
-                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
-                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">II</span>
-                        </li>
-                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                            style="transition-delay: 250ms;">
-                            <a href="expertise.html"
-                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Expertise</a>
-                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
-                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">III</span>
-                        </li>
-                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                            style="transition-delay: 300ms;">
-                            <a href="play.html"
-                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a>
-                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
-                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">IV</span>
-                        </li>
-                        <li class="flex items-end group nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                            style="transition-delay: 350ms;">
-                            <a href="thought.html"
-                                class="uppercase tracking-widest text-lg md:text-xl font-display font-medium group-hover:pl-2 transition-all duration-300">Thought</a>
-                            <div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1.5"></div>
-                            <span class="font-mono text-xs md:text-sm font-bold opacity-60">V</span>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Social Links -->
-                <div class="flex items-center gap-6 nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                    style="transition-delay: 400ms;">
-                    <!-- LinkedIn -->
-                    <a href="https://linkedin.com" target="_blank" class="hover:scale-110 transition-transform"
-                        aria-label="LinkedIn">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.06 2.06 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065m1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
-                        </svg>
-                    </a>
-                    <!-- Behance -->
-                    <a href="https://behance.net" target="_blank" class="hover:scale-110 transition-transform"
-                        aria-label="Behance">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.881v1.139h-7.619c.123 2.502 2.061 3.255 3.659 3.255 1.488 0 2.457-.611 2.94-1.68h3.844zm-3.047-4.144c-.211-1.258-1.398-2.22-2.723-2.22-1.35 0-2.42 1.05-2.703 2.22h5.426zm-11.679.144h-5.908v5h6.391c2.259 0 3.822-1.314 3.822-3.15 0-2.03-1.681-3.238-3.32-3.238 1.428-.152 2.822-1.223 2.822-2.829 0-1.896-1.579-2.933-3.666-2.933h-6.041v12.15h5.9v-5zm-5.908-5.321h2.956c1.233 0 2.247.502 2.247 1.621 0 1.111-.908 1.623-2.261 1.623h-2.942v-3.244z" />
-                        </svg>
-                    </a>
-                    <!-- Dribbble -->
-                    <a href="https://dribbble.com" target="_blank" class="hover:scale-110 transition-transform"
-                        aria-label="Dribbble">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 1.637-6.67 6.189-6.724 6.475 1.815 1.428 4.135 2.298 6.65 2.298 1.077 0 2.115-.17 3.094-.482C10.702 14.864 7.234 13.924 3.1 14.3v.018c.28 2.923 1.876 5.485 4.148 7.086 0 0 .97-4.63 6.94-6.41zm-11.83-2.61c.08-.43 1.098-4.8 6.41-6.425.077-.02.155-.04.234-.057-.69-1.253-1.46-2.433-2.274-3.513-4.103 1.256-7.34 1.455-7.514 1.464-.09 1.173-.016 2.368.223 3.518.397 1.926 1.3 3.655 2.508 5.01zm-2.074-6.162c.2-.014 3.626-.26 7.9-1.632-1.35-1.748-2.828-3.327-4.305-4.646C3.96 5.32 1.63 8.356 1.657 11.85zm6.54-6.052c1.442 1.298 2.88 2.844 4.195 4.545 2.396-.86 4.17-2.13 4.39-2.285C14.773 3.044 12.003 2.1 11.08 2.1A9.833 9.833 0 0 0 8.196 5.8z" />
-                        </svg>
-                    </a>
-                    <!-- Twitter -->
-                    <a href="https://twitter.com" target="_blank" class="hover:scale-110 transition-transform"
-                        aria-label="Twitter">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.06a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.936 4.936 0 0 0 4.604 3.417 9.867 9.867 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0 0 24 4.59z" />
-                        </svg>
-                    </a>
-                    <!-- Github -->
-                    <a href="https://github.com" target="_blank" class="hover:scale-110 transition-transform"
-                        aria-label="Go to Github">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
-                    </a>
-                    <!-- Mail -->
-                    <a href="mailto:hello@cadarastudio.com" class="hover:scale-110 transition-transform"
-                        aria-label="Email Us">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
-                        </svg>
-                    </a>
+                    <nav class="w-full">
+                        <ul class="space-y-3">
+                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:150ms;"><a href="about.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">About</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">I</span></li>
+                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:200ms;"><a href="work.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Work</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">II</span></li>
+                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:250ms;"><a href="expertise.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Expertise</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">III</span></li>
+                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:300ms;"><a href="play.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Play</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">IV</span></li>
+                            <li class="flex items-end group nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:350ms;"><a href="thought.html" class="uppercase tracking-widest text-base font-display font-medium group-hover:pl-2 transition-all duration-300">Thought</a><div class="flex-grow border-b border-dotted border-brand-black/30 mx-3 mb-1"></div><span class="font-mono text-xs font-bold opacity-60">V</span></li>
+                        </ul>
+                    </nav>
+                    <div class="flex items-center justify-between nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:400ms;">
+                        <a href="https://linkedin.com/company/cadarastudio" target="_blank" class="hover:scale-110 transition-transform" aria-label="LinkedIn"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.06 2.06 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065m1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg></a>
+                        <a href="https://behance.net/cadara" target="_blank" class="hover:scale-110 transition-transform" aria-label="Behance"><svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.881v1.139h-7.619c.123 2.502 2.061 3.255 3.659 3.255 1.488 0 2.457-.611 2.94-1.68h3.844zm-3.047-4.144c-.211-1.258-1.398-2.22-2.723-2.22-1.35 0-2.42 1.05-2.703 2.22h5.426zm-11.679.144h-5.908v5h6.391c2.259 0 3.822-1.314 3.822-3.15 0-2.03-1.681-3.238-3.32-3.238 1.428-.152 2.822-1.223 2.822-2.829 0-1.896-1.579-2.933-3.666-2.933h-6.041v12.15h5.9v-5zm-5.908-5.321h2.956c1.233 0 2.247.502 2.247 1.621 0 1.111-.908 1.623-2.261 1.623h-2.942v-3.244z"/></svg></a>
+                        <a href="https://instagram.com/cadarastudio" target="_blank" class="hover:scale-110 transition-transform" aria-label="Instagram"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+                        <a href="https://x.com/cadarastudio" target="_blank" class="hover:scale-110 transition-transform" aria-label="X"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                        <a href="https://github.com/ismxil" target="_blank" class="hover:scale-110 transition-transform" aria-label="Github"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                    </div>
+                    <p class="text-[10px] font-mono tracking-widest uppercase nav-item" style="opacity:0;transform:translateY(1rem);transition:opacity 0.3s,transform 0.3s;transition-delay:450ms;">&lt;3 (c) 2026</p>
                 </div>
-
-                <footer
-                    class="mt-12 opacity-60 flex items-center gap-2 nav-item opacity-0 transform translate-y-4 transition-all duration-300"
-                    style="transition-delay: 450ms;">
-                    <p class="text-[10px] md:text-xs font-mono tracking-widest uppercase">© 2026 CADARA</p>
-                </footer>
             </div>
         </div>
     </div>
-
     <!-- ════════════════════════════════════════
          Page content
          ════════════════════════════════════════ -->
-    <main>
+    <main class="pt-[120px]">
 
         <!-- ── Header + Hero + Bio ── -->
         <div class="max-w-sm mx-auto px-4 pt-8">
 
-            <!-- Header: profile photo + hamburger -->
-            <div class="flex justify-between items-top mb-14 mt-4">
-                <a href="index.html" class="flex justify-center items-center flex-shrink-0"
-                    aria-label="Cadara Studio – Home">
-                    <div id="main-logo-container"
-                        class="w-[100px] h-[100px] flex items-center justify-center text-current">
-                        <!-- SVG injected by initMainLogo() -->
-                    </div>
-                </a>
-                <button type="button" id="menu-toggle"
-                    class="relative w-8 h-8 flex flex-col justify-center items-center group" aria-label="Toggle Menu">
-                    <span class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out"></span>
-                    <span
-                        class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out mt-1.5"></span>
-                    <span
-                        class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 ease-in-out mt-1.5"></span>
-                </button>
-            </div>
 
             <!-- Hero title -->
             <h1 id="hero-text" class="font-display text-[5.2rem] md:text-[6.5rem] uppercase leading-[0.8] mb-6">
@@ -279,7 +166,7 @@
         <!-- ── Buttons ── -->
         <div
             class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-24 px-4 max-w-sm mx-auto w-full relative z-20">
-            <a href="https://cal.com/cadara/intro" data-cal-link="cadara/intro"
+            <a href="#" data-book-call="true"
                 class="w-full flex-1 text-center py-4 bg-brand-red text-brand-black font-display uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform duration-200 shadow-xl pointer-events-auto">
                 Book a Call
             </a>
@@ -298,7 +185,7 @@
                     class="flex flex-col md:flex-row gap-12 md:gap-6 md:pr-6 flex-shrink-0 project-cards-cluster w-full md:w-auto">
 
                     <!-- Card: Lemfi -->
-                    <a href="work.html" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
+                    <a href="#" data-project="lemfi" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
                         <div
                             class="border-[3px] border-current overflow-hidden aspect-[4/3] md:aspect-video w-full relative transition-all duration-500 md:rounded-lg md:group-hover:rounded-3xl">
                             <img src="assets/lemfi.png" alt="Lemfi project"
@@ -322,7 +209,7 @@
                     </a>
 
                     <!-- Card: GoMoney -->
-                    <a href="work.html" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
+                    <a href="#" data-project="gomoney" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
                         <div
                             class="border-[3px] border-current overflow-hidden aspect-[4/3] md:aspect-video w-full relative transition-all duration-500 md:rounded-lg md:group-hover:rounded-3xl">
                             <img src="assets/gomoney.png" alt="GoMoney project"
@@ -346,7 +233,7 @@
                     </a>
 
                     <!-- Card: Cadana -->
-                    <a href="work.html" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
+                    <a href="#" data-project="cadana" class="flex flex-col gap-4 w-full md:w-[60vw] flex-shrink-0 group">
                         <div
                             class="border-[3px] border-current overflow-hidden aspect-[4/3] md:aspect-video w-full relative transition-all duration-500 md:rounded-lg md:group-hover:rounded-3xl">
                             <img src="assets/cadana.png" alt="Cadana project"
@@ -389,112 +276,56 @@
         </section>
 
 
-        <!-- ── Value Proposition Cards ── -->
-        <div class="max-w-sm mx-auto px-4 font-serif text-base leading-6 mb-12 space-y-4">
-            <h2 class="font-display text-[4.5rem] leading-[0.8] mb-10">PROCESS</h2>
+        <!-- ── Processes ── -->
+        <section class="max-w-sm mx-auto px-4 mb-24">
+            <h2 class="font-display text-[4rem] font-black uppercase leading-[0.85] mb-4">PROCESSES</h2>
+            <p class="font-serif text-sm leading-relaxed mb-12 opacity-70">The process is simple. Once we agree on the scope, we set up shared communication tools and get started that very week. A simple framework to deliver the best results.</p>
+            <div class="flex gap-8 overflow-x-auto pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
+                <style>#process-cards::-webkit-scrollbar { display: none; }</style>
 
-            <p> The process is simple. Once we agree on the scope, we set up a shared communication tools and we
-                get started that very
-                week. We follow these simple framework to ensure we deliver the best possible results.</p>
-        </div>
-        <div class="max-w-4xl mx-auto px-4 mb-24">
-            <div id="process-carousel"
-                class="flex flex-nowrap gap-6 overflow-x-auto snap-x snap-mandatory cursor-grab active:cursor-grabbing pb-4 select-none"
-                style="scrollbar-width: none; -ms-overflow-style: none;">
-                <style>
-                    #process-carousel::-webkit-scrollbar {
-                        display: none;
-                    }
-                </style>
                 <!-- Strategy -->
-                <details
-                    class="group border-[2px] border-current p-6 md:p-8 transition-colors duration-300 w-[85vw] md:w-[400px] flex-shrink-0 snap-start bg-brand-black relative">
-                    <summary
-                        class="flex flex-col gap-8 list-none [&::-webkit-details-marker]:hidden cursor-pointer outline-none">
-                        <div class="flex justify-between items-start">
-                            <span class="font-mono text-sm">I</span>
-                            <svg class="w-6 h-6 transform transition-transform group-open:rotate-180" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-2xl uppercase tracking-wider">Strategy</h3>
-                    </summary>
-                    <div
-                        class="mt-6 font-serif text-lg leading-relaxed border-t border-dotted border-current pt-6 opacity-90 transition-opacity">
-                        We dig into your goals, users, and constraints, questioning,
-                        and synthesizing insights into a clear, defensible
-                        position grounding all creative decisions.
-                    </div>
-                </details>
+                <div class="flex-shrink-0 w-[190px] flex flex-col gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                    </svg>
+                    <h3 class="font-display text-xl uppercase font-semibold">Strategy</h3>
+                    <p class="font-serif text-[12.5px] leading-5 opacity-80">We dig into your goals, users, and constraints, synthesizing insights into a clear, defensible position grounding all creative decisions.</p>
+                </div>
+
                 <!-- Direction -->
-                <details
-                    class="group border-[2px] border-current p-6 md:p-8 transition-colors duration-300 w-[85vw] md:w-[400px] flex-shrink-0 snap-start bg-brand-black relative">
-                    <summary
-                        class="flex flex-col gap-8 list-none [&::-webkit-details-marker]:hidden cursor-pointer outline-none">
-                        <div class="flex justify-between items-start">
-                            <span class="font-mono text-sm">II</span>
-                            <svg class="w-6 h-6 transform transition-transform group-open:rotate-180" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-2xl uppercase tracking-wider">Direction</h3>
-                    </summary>
-                    <div
-                        class="mt-6 font-serif text-lg leading-relaxed border-t border-dotted border-current pt-6 opacity-90 transition-opacity">
-                        A taste-led practice of developing a visual language that creates cohesion and clarity. We
-                        design key screens. You sign off before we build out the rest.
-                    </div>
-                </details>
+                <div class="flex-shrink-0 w-[190px] flex flex-col gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 11l19-9-9 19-2-8-8-2z" />
+                    </svg>
+                    <h3 class="font-display text-xl uppercase font-semibold">Direction</h3>
+                    <p class="font-serif text-[12.5px] leading-5 opacity-80">A taste-led practice of developing a visual language that creates cohesion and clarity. We design key screens. You sign off before we build.</p>
+                </div>
+
                 <!-- Design -->
-                <details
-                    class="group border-[2px] border-current p-6 md:p-8 transition-colors duration-300 w-[85vw] md:w-[400px] flex-shrink-0 snap-start bg-brand-black relative">
-                    <summary
-                        class="flex flex-col gap-8 list-none [&::-webkit-details-marker]:hidden cursor-pointer outline-none">
-                        <div class="flex justify-between items-start">
-                            <span class="font-mono text-sm">III</span>
-                            <svg class="w-6 h-6 transform transition-transform group-open:rotate-180" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-2xl uppercase tracking-wider">Design</h3>
-                    </summary>
-                    <div
-                        class="mt-6 font-serif text-lg leading-relaxed border-t border-dotted border-current pt-6 opacity-90 transition-opacity">
-                        We design within strategic guardrails to solve
-                        for conversion, comprehension, and trust, testing and refining until the experience works
-                        flawlessly at scale.
-                    </div>
-                </details>
+                <div class="flex-shrink-0 w-[190px] flex flex-col gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    <h3 class="font-display text-xl uppercase font-semibold">Design</h3>
+                    <p class="font-serif text-[12.5px] leading-5 opacity-80">We design within strategic guardrails to solve for conversion, comprehension, and trust, testing and refining until the experience works flawlessly.</p>
+                </div>
+
                 <!-- Build -->
-                <details
-                    class="group border-[2px] border-current p-6 md:p-8 transition-colors duration-300 w-[85vw] md:w-[400px] flex-shrink-0 snap-start bg-brand-black relative">
-                    <summary
-                        class="flex flex-col gap-8 list-none [&::-webkit-details-marker]:hidden cursor-pointer outline-none">
-                        <div class="flex justify-between items-start">
-                            <span class="font-mono text-sm">IV</span>
-                            <svg class="w-6 h-6 transform transition-transform group-open:rotate-180" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-2xl uppercase tracking-wider">Build</h3>
-                    </summary>
-                    <div
-                        class="mt-6 font-serif text-lg leading-relaxed border-t border-dotted border-current pt-6 opacity-90 transition-opacity">
-                        We work in the space between design and development, we design with code in mind, and
-                        partner with developers to ensure
-                        the final product matches what was design.
-                    </div>
-                </details>
+                <div class="flex-shrink-0 w-[190px] flex flex-col gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <h3 class="font-display text-xl uppercase font-semibold">Build</h3>
+                    <p class="font-serif text-[12.5px] leading-5 opacity-80">We work in the space between design and development, designing with code in mind, partnering with developers to ensure the final product matches the vision.</p>
+                </div>
             </div>
-        </div>
+        </section>
 
 
         <!-- ── Footer ── -->
@@ -592,6 +423,83 @@
 
         </div>
 
+
+        <!-- ── Project Case Study Overlay ── -->
+        <div id="project-overlay" class="fixed inset-0 z-[150] opacity-0 pointer-events-none transition-opacity duration-300" style="background-color: var(--brand-black);">
+            <!-- Fixed header inside overlay -->
+            <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-[400px] z-[160] bg-brand-black px-4 pt-8 pb-4 flex justify-between items-start">
+                <div id="project-overlay-logo" class="w-[72px] h-[72px] flex items-center justify-center text-current"></div>
+                <button id="project-overlay-close" class="relative w-8 h-8 flex flex-col justify-center items-center mt-1" aria-label="Close project">
+                    <span class="w-6 h-0.5 bg-current rotate-45 absolute transition-all"></span>
+                    <span class="w-6 h-0.5 bg-current -rotate-45 absolute transition-all"></span>
+                </button>
+            </div>
+            <!-- Horizontal scroll track -->
+            <div id="project-scroll-track" class="absolute inset-0 flex overflow-x-auto overflow-y-hidden" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-top: 110px;">
+                <!-- Panels injected dynamically -->
+            </div>
+            <!-- Progress bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-0.5" style="background: currentColor; opacity: 0.1;">
+                <div id="project-overlay-progress" class="h-full bg-brand-red" style="width: 0%; transition: width 0.1s linear;"></div>
+            </div>
+        </div>
+
+        <!-- ── Book a Call Modal ── -->
+        <div id="book-call-modal"
+            class="fixed inset-0 z-[200] flex flex-col opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto"
+            style="background-color: var(--brand-black);">
+
+            <!-- Header row (narrow) -->
+            <div class="w-full max-w-[400px] mx-auto px-4 pt-8 flex justify-between items-start flex-shrink-0">
+                <div class="w-[72px] h-[72px] flex items-center justify-center text-current">
+                    <div id="modal-logo-placeholder" class="w-full h-full flex items-center justify-center"></div>
+                </div>
+                <button id="book-call-close"
+                    class="relative w-8 h-8 flex flex-col justify-center items-center hover:scale-110 transition-transform mt-1"
+                    aria-label="Close">
+                    <span class="w-6 h-0.5 bg-current rotate-45 absolute transition-all"></span>
+                    <span class="w-6 h-0.5 bg-current -rotate-45 absolute transition-all"></span>
+                </button>
+            </div>
+
+            <!-- Title (narrow) -->
+            <div class="w-full max-w-[400px] mx-auto px-4 mt-8 mb-6">
+                <h2 class="font-display text-[3.5rem] leading-[0.88] font-black uppercase">Let's design<br>the right thing<br>the right way.</h2>
+            </div>
+
+            <!-- Cal.com embed — full viewport width, extends past narrow column -->
+            <div class="w-full flex-1" style="min-height: 650px;">
+                <iframe
+                    src="https://cal.com/cadara/intro?embed=true&overlayCalendar=true&layout=month_view"
+                    width="100%" height="100%"
+                    frameborder="0"
+                    style="min-height: 650px; width: 100%; border: none; display: block;"
+                    loading="lazy"
+                    title="Book a call with Cadara Studio"></iframe>
+            </div>
+
+            <!-- Email subscription (narrow) -->
+            <div class="w-full max-w-[400px] mx-auto px-4 py-8 flex flex-col gap-4">
+                <div class="border-t border-current opacity-20 mb-4"></div>
+                <h3 class="font-display text-lg uppercase tracking-widest">Keep up to date</h3>
+                <form id="email-subscribe-form" class="flex items-center gap-2">
+                    <input type="email" id="email-subscribe-input" placeholder="Your email"
+                        class="flex-1 px-5 py-3 rounded-full bg-transparent text-current placeholder-current border border-current/30 font-serif text-sm outline-none focus:border-current transition-colors"
+                        style="opacity: 0.8;">
+                    <button type="submit"
+                        class="w-12 h-12 rounded-full bg-brand-red text-brand-black flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform"
+                        aria-label="Subscribe">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M7 17L17 7M17 7H7M17 7v10" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
     </main>
 
     <!-- ════════════════════════════════════════
@@ -667,11 +575,165 @@
     </script>
 
     <script src="script.js"></script>
-    <!-- Cal embed script -->
+    <!-- Book a Call Modal -->
     <script>
-        (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.cal = C.cal || function () { let p = C.cal.q = C.cal.q || []; p.push(arguments); }; let js = d.createElement("script"); js.type = "text/javascript"; js.src = "https://app.cal.com/embed/embed.js"; js.async = true; d.head.appendChild(js); })(window, "https://app.cal.com/embed/embed.js", "init");
-        cal("init", { origin: "https://cal.com" });
-        cal("ui", { "styles": { "branding": { "brandColor": "#000000" } }, "hideEventTypeDetails": false, "layout": "month_view" });
+        (function () {
+            const modal = document.getElementById('book-call-modal');
+            const closeBtn = document.getElementById('book-call-close');
+            let calInitialized = false;
+
+            function openModal() {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'hidden';
+                injectLogo('#modal-logo-placeholder');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = '';
+            }
+
+            // Trigger from any [data-book-call] element
+            document.addEventListener('click', (e) => {
+                const trigger = e.target.closest('[data-book-call]');
+                if (trigger) {
+                    e.preventDefault();
+                    openModal();
+                }
+            });
+
+            closeBtn && closeBtn.addEventListener('click', closeModal);
+
+            // Close on backdrop (clicking outside inner panel)
+            modal && modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('opacity-0')) closeModal();
+            });
+
+            // Email subscribe
+            const form = document.getElementById('email-subscribe-form');
+            const input = document.getElementById('email-subscribe-input');
+            form && form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (input && input.value) {
+                    const orig = input.placeholder;
+                    input.value = '';
+                    input.placeholder = "You're in! Talk soon.";
+                    setTimeout(() => { input.placeholder = orig; }, 3000);
+                }
+            });
+        })();
+    </script>
+
+    <!-- Project Case Study Overlay -->
+    <script>
+    (function () {
+        const projects = {
+            lemfi: {
+                title: 'LEMFI',
+                url: 'lemfi.com',
+                tags: ['Fintech', 'Brand', 'Product Design'],
+                description: 'Debit card designed for Lemfi, to help with its growth strategy in the UK market.',
+                images: ['assets/lemfi.png'],
+            },
+            gomoney: {
+                title: 'GOMONEY',
+                url: 'gomoney.me',
+                tags: ['Fintech', 'UX/UI', 'Mobile'],
+                description: "Digital banking experience built for Africa's mobile-first generation. A full product redesign.",
+                images: ['assets/gomoney.png'],
+            },
+            cadana: {
+                title: 'CADANA',
+                url: 'cadana.io',
+                tags: ['Payroll', 'Fintech', 'Brand Identity'],
+                description: 'Payroll and cross-border payments for African workers and businesses. End-to-end design.',
+                images: ['assets/cadana.png'],
+            },
+        };
+
+        const overlay = document.getElementById('project-overlay');
+        const track = document.getElementById('project-scroll-track');
+        const closeBtn = document.getElementById('project-overlay-close');
+        const progress = document.getElementById('project-overlay-progress');
+
+        function buildPanels(project) {
+            track.innerHTML = '';
+            track.scrollLeft = 0;
+
+            // Panel 1: Info
+            const info = document.createElement('div');
+            info.style.cssText = 'width:min(440px,92vw);height:100%;flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 56px;';
+            info.innerHTML = `
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+                    ${project.tags.map(t => `<span style="font-family:inherit;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;border:1px solid currentColor;border-radius:999px;padding:4px 14px;opacity:0.7;">${t}</span>`).join('')}
+                </div>
+                <h2 style="font-family:'Midnight Sans',sans-serif;font-size:clamp(3.5rem,10vw,5rem);line-height:0.88;font-weight:900;text-transform:uppercase;margin-bottom:20px;">${project.title}</h2>
+                <p style="font-size:0.9rem;line-height:1.6;opacity:0.65;margin-bottom:20px;">${project.description}</p>
+                <a href="https://${project.url}" target="_blank" style="font-size:11px;font-family:monospace;text-transform:uppercase;letter-spacing:0.08em;opacity:0.45;text-decoration:none;">↗ ${project.url}</a>`;
+            track.appendChild(info);
+
+            // Image panels
+            project.images.forEach((src) => {
+                const img = document.createElement('div');
+                img.style.cssText = 'width:min(88vw,600px);height:100%;flex-shrink:0;scroll-snap-align:start;overflow:hidden;';
+                img.innerHTML = `<img src="${src}" alt="${project.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+                track.appendChild(img);
+            });
+
+            // End panel
+            const end = document.createElement('div');
+            end.style.cssText = 'width:min(380px,88vw);height:100%;flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 56px;';
+            end.innerHTML = `
+                <p style="font-family:'Midnight Sans',sans-serif;font-size:clamp(2.5rem,8vw,4rem);line-height:0.9;font-weight:900;text-transform:uppercase;margin-bottom:32px;">Thanks<br>for<br>looking.</p>
+                <a href="#" data-book-call="true" style="display:inline-flex;align-items:center;gap:10px;font-family:'Midnight Sans',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none;color:currentColor;">
+                    Book a call
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                </a>`;
+            track.appendChild(end);
+        }
+
+        function openProject(key) {
+            const project = projects[key];
+            if (!project) return;
+            buildPanels(project);
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+            injectLogo('#project-overlay-logo');
+
+            // Progress tracking
+            if (progress) {
+                track.addEventListener('scroll', function onScroll() {
+                    const max = track.scrollWidth - track.clientWidth;
+                    progress.style.width = max > 0 ? (track.scrollLeft / max * 100) + '%' : '0%';
+                }, { passive: true });
+            }
+        }
+
+        function closeProject() {
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+
+        // Listen for project card clicks
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('[data-project]');
+            if (card) {
+                e.preventDefault();
+                openProject(card.dataset.project);
+            }
+        });
+
+        closeBtn && closeBtn.addEventListener('click', closeProject);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !overlay.classList.contains('opacity-0')) closeProject();
+        });
+    })();
     </script>
 </body>
 
