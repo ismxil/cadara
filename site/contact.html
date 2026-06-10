@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Cadara, Fintech-first Design Studio</title>
+<meta name="description" content="Let's talk. Start a product, web or brand project with Cadara. work@ismailahmad.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker__track">
+    <span>available for new projects</span><span>product design</span><span>web design</span><span>branding</span><span>let's talk</span>
+    <span>available for new projects</span><span>product design</span><span>web design</span><span>branding</span><span>let's talk</span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="index.html"><span class="dot">CA</span> Cadara</a>
+    <nav class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="is-active">Contact</a>
+      <a href="contact.html" class="btn">let's talk <span class="arrow">↗</span></a>
+    </nav>
+    <button class="nav__toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- contact hero -->
+<section class="contact-hero wrap">
+  <div class="eyebrow mono"><span class="num">(05)</span> Contact</div>
+  <h1 class="display h-hero">let's talk <span class="arrow" style="font-size:.5em;font-weight:600">↗</span></h1>
+  <p class="hero__lead" style="max-width:46ch">Have a product, website or brand in mind — especially in fintech? Tell us a little about it and we'll get back to you. Or, sometimes all you need is a good old email.</p>
+
+  <div class="contact-big">
+    <a href="mailto:work@ismailahmad.com">work@ismailahmad.com&nbsp;↗</a>
+    <a href="https://ismailahmad.com">ismailahmad.com&nbsp;↗</a>
+  </div>
+</section>
+
+<!-- form -->
+<section class="section" style="padding-top:clamp(30px,4vw,50px)">
+  <div class="wrap">
+    <hr class="rule" style="margin-bottom:clamp(34px,5vw,56px)">
+    <div class="eyebrow mono" style="margin-bottom:1.6rem"><span class="num">↳</span> Start a project</div>
+    <form class="form" id="contactForm">
+      <div>
+        <label for="name">Your name</label>
+        <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" required>
+      </div>
+      <div>
+        <label>What do you need?</label>
+        <div class="pills">
+          <label class="pill"><input type="checkbox" name="service" value="Product design"><span>Product design</span></label>
+          <label class="pill"><input type="checkbox" name="service" value="Branding"><span>Branding</span></label>
+          <label class="pill"><input type="checkbox" name="service" value="Web & portal"><span>Web &amp; portal</span></label>
+          <label class="pill"><input type="checkbox" name="service" value="Graphics"><span>Graphics</span></label>
+        </div>
+      </div>
+      <div>
+        <label for="message">Tell us about your project</label>
+        <textarea id="message" name="message" placeholder="A few lines about what you're building…"></textarea>
+      </div>
+      <div>
+        <button type="submit" class="btn btn--solid">send message <span class="arrow">↗</span></button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">Cadara</div>
+        <p>Fintech-first product &amp; brand design studio. Led by Ismail Ahmad — based in Berlin, working worldwide.</p>
+        <span class="footer__avail"><i></i> Available for new projects</span>
+      </div>
+      <div>
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="work.html">Work</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:work@ismailahmad.com">work@ismailahmad.com</a></li>
+          <li><a href="https://ismailahmad.com">ismailahmad.com</a></li>
+          <li>Berlin, Germany</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Cadara. All rights reserved.</span>
+      <span class="mono">Studio '26</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+document.getElementById('contactForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.getElementById('name').value || '';
+  var email = document.getElementById('email').value || '';
+  var msg = document.getElementById('message').value || '';
+  var services = Array.prototype.map.call(
+    document.querySelectorAll('input[name="service"]:checked'),
+    function (c) { return c.value; }
+  ).join(', ');
+  var subject = encodeURIComponent('New project enquiry — ' + (name || 'Website'));
+  var body = encodeURIComponent(
+    'Name: ' + name + '\nEmail: ' + email +
+    '\nNeeds: ' + (services || '—') + '\n\n' + msg
+  );
+  window.location.href = 'mailto:work@ismailahmad.com?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>
