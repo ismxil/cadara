@@ -151,8 +151,8 @@ html[data-theme="dark"] .fs-checkbox_field-4 * {
 }
 
 html[data-theme="dark"] .fs-checkbox_field-4 {
-  background-color: #f4f4f4 !important;
-  color: #050505 !important;
+  background-color: #191919 !important;
+  color: #f4f4f4 !important;
   border-color: transparent !important;
 }
 
@@ -310,4 +310,19 @@ html[data-theme="dark"] .form_wrap .submit-button {
   color: #4c32ff !important;
   border-color: transparent !important;
   box-shadow: none !important;
+}
+
+html[data-theme="dark"] .filter-block .fs-checkbox_field-4,
+html[data-theme="dark"] .filter-block .fs-selectcustom_dropdown-toggle,
+html[data-theme="dark"] .filter-block .w-dropdown-toggle.fs-selectcustom_dropdown-toggle {
+  background-color: #191919 !important;
+  color: #f4f4f4 !important;
+  border-color: transparent !important;
+}
+
+html[data-theme="dark"] .filter-block .fs-checkbox_field-4 .fs-checkbox_label-4,
+html[data-theme="dark"] .filter-block .fs-checkbox_field-4 .fs-checkbox_label-4 *,
+html[data-theme="dark"] .filter-block .fs-selectcustom_dropdown-toggle .text-block-18,
+html[data-theme="dark"] .filter-block .fs-selectcustom_icon {
+  color: #f4f4f4 !important;
 }
