@@ -15,20 +15,14 @@ const links = [
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
 
   useEffect(() => { setMounted(true) }, [])
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
   useEffect(() => { setOpen(false) }, [pathname])
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/10' : 'bg-transparent'}`}>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)]">
       {/* Desktop nav */}
       <div className="hidden md:flex items-center justify-between px-8 lg:px-12 h-16">
         <Link href="/" className="flex items-center gap-3 group">
