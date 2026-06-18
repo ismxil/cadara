@@ -1,40 +1,18 @@
 @charset "UTF-8";
 
-@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght,HEXP@160..700,0..100&display=swap');
-
-@font-face {
-  font-family: '36Regular';
-  src: url('../fonts/MidnightSansRDPro-36Regular.ttf') format('truetype');
-  font-style: normal;
-}
-@font-face {
-  font-family: '12Bold';
-  src: url('../fonts/MidnightSansRDPro-12Bold.ttf') format('truetype');
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Signifier';
-  src: url('/fonts/Signifier-Light.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Signifier Italic';
-  src: url('/fonts/Signifier-LightItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 @font-face {
   font-family: 'Uncut Sans';
-  src: url('../../landing-assets/UncutSans-Medium.woff') format('woff');
+  src: url('../../asset/UncutSans-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Uncut Sans';
-  src: url('../../landing-assets/UncutSans-Semibold.woff') format('woff');
+  src: url('../../asset/UncutSans-Semibold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
 
 /* RESET ------------------- */

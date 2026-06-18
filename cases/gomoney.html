@@ -4,12 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css?v=cadara2">
     <link rel="stylesheet" href="css/header.css?v=cadara2">
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
@@ -18,53 +12,24 @@
 
 <body>
 
+    <div class="site-bg" aria-hidden="true"></div>
 
-    <!-- NAVIGATION MENU / HEADER -->
+    <!-- HEADER -->
     <header>
         <nav>
-            <div><a href="../index.html" class="logo">Cadara</a></div>
-
-            <!-- Desktop Navigation -->
+            <a class="brand" href="../index.html" aria-label="Cadara Studio home">
+                <img src="../asset/cadara-logo.svg" alt="Cadara" class="brand-logo">
+            </a>
             <ul class="nav-links">
-                <li><a class="current" href="work.html">Work</a></li>
+                <li><a href="work.html">Work</a></li>
                 <li><a href="../index.html#studio">Studio</a></li>
                 <li><a href="../index.html#offer">Offer</a></li>
-                <li><a href="mailto:info@cadarstudio.com" class="link">Contact <svg
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            xmlns:serif="http://www.serif.com/" width="100%" height="100%" viewBox="0 0 23 27"
-                            version="1.1" xml:space="preserve"
-                            style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:1.5;">
-                            <path d="M2.567,21.713l17.024,-17.023l-17.024,-0l17.024,-0l-0,17.023" />
-                        </svg></a> </li>
             </ul>
-
-            <!-- Hamburger Menu -->
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-pill-wrap">
+                <a class="pill" href="mailto:info@cadarstudio.com">Contact<span class="pill-arrow" aria-hidden="true">→</span></a>
             </div>
         </nav>
     </header>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul>
-            <li><a class="current" href="work.html">Work</a></li>
-            <li><a href="../index.html#studio">Studio</a></li>
-            <li><a href="../index.html#offer">Offer</a></li>
-            <li><a href="mailto:info@cadarstudio.com" class="link">Contact<svg
-                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        xmlns:serif="http://www.serif.com/" width="100%" height="100%" viewBox="0 0 23 27" version="1.1"
-                        xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:1.5;">
-                        <path d="M2.567,21.713l17.024,-17.023l-17.024,-0l17.024,-0l-0,17.023" />
-                    </svg></a> </li>
-        </ul>
-    </div>
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
-
-    <!-- END OF HEADER -->
 
 
     <!-- This is the SECTION 1 Hero -->
@@ -227,16 +192,6 @@
 
 
 
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/js/lightbox.min.js"
-        integrity="sha512-KbRFbjA5bwNan6DvPl1ODUolvTTZ/vckssnFhka5cG80JVa5zSlRPCr055xSgU/q6oMIGhZWLhcbgIC0fyw3RQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 
