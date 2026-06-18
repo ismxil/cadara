@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Cadara Studio is preparing a new design studio website.">
-  <meta property="og:title" content="Cadara Studio — Coming Soon">
-  <meta property="og:description" content="A new design studio website is on the way.">
+  <meta name="description" content="Cadara Studio is a strategy and design consultancy for financial services.">
+  <meta property="og:title" content="Cadara Studio">
+  <meta property="og:description" content="Strategy and design for financial services.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <title>Cadara Studio — Coming Soon</title>
+  <link rel="icon" href="asset/cadara-fav.svg" type="image/svg+xml">
+  <link rel="icon" href="asset/cadara-fav.png" type="image/png">
+  <title>Cadara Studio</title>
   <style>
     @font-face {
       font-family: "Uncut Sans";
-      src: url("landing-assets/UncutSans-Medium.woff") format("woff");
+      src: url("asset/UncutSans-Medium.woff") format("woff");
       font-weight: 500;
       font-style: normal;
       font-display: swap;
@@ -21,7 +23,7 @@
 
     @font-face {
       font-family: "Uncut Sans";
-      src: url("landing-assets/UncutSans-Semibold.woff") format("woff");
+      src: url("asset/UncutSans-Semibold.woff") format("woff");
       font-weight: 600;
       font-style: normal;
       font-display: swap;
@@ -29,27 +31,26 @@
 
     @font-face {
       font-family: "Outage Cut";
-      src: url("landing-assets/Outage-Cut.ttf") format("truetype");
+      src: url("asset/Outage-Cut.ttf") format("truetype");
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
 
     :root {
-      --blue: #021DFF;
+      --blue: #021dff;
+      --blue-deep: #0010c8;
+      --lime: #ecff00;
       --white: #ffffff;
-      --blue-ink: #2337e8;
-      --blue-soft: rgba(255, 255, 255, 0.72);
+      --ink: #080808;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      width: 100%;
-      min-height: 100%;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -58,7 +59,12 @@
       color: var(--white);
       font-family: "Uncut Sans", Arial, sans-serif;
       font-weight: 500;
-      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::selection {
+      background: var(--lime);
+      color: var(--ink);
     }
 
     a {
@@ -66,382 +72,630 @@
       text-decoration: none;
     }
 
-    .page {
-      position: relative;
-      isolation: isolate;
-      min-height: 100vh;
-      min-height: 100svh;
-      overflow: hidden;
-      background-color: var(--blue);
-    }
-
-    .page::before {
-      content: "";
-      position: absolute;
-      inset: -14%;
-      z-index: -4;
-      background:
-        radial-gradient(circle at 18% 20%, rgba(0, 4, 129, 0.54) 0 13%, transparent 27%),
-        radial-gradient(circle at 70% 23%, rgba(255, 255, 255, 0.09) 0 17%, transparent 32%),
-        linear-gradient(135deg, #0610d7 0%, var(--blue) 42%, #000a9b 100%);
-    }
-
-    .page::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.22;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 7px);
-      background-size: 84px 84px, 84px 84px, 100% 7px;
-      mix-blend-mode: overlay;
-      animation: scan 9s linear infinite;
-    }
-
-    .orb {
-      position: absolute;
-      z-index: -3;
-      width: min(72vw, 980px);
-      aspect-ratio: 1.14;
-      background-image: url("landing-assets/bg.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      opacity: 0.7;
-      filter: saturate(1.3) contrast(1.04);
-      mix-blend-mode: screen;
-      transform: translate3d(0, 0, 0);
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    .orb-one {
-      top: -18%;
-      left: 6%;
-    }
-
-    .orb-two {
-      right: -20%;
-      bottom: 5%;
-      width: min(64vw, 860px);
-      opacity: 0.5;
-      animation-delay: -5s;
-    }
-
-    .orb-three {
-      left: -19%;
-      bottom: -22%;
-      width: min(57vw, 760px);
-      opacity: 0.48;
-      animation-delay: -9s;
-    }
-
-    .digital-field {
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      opacity: 0.42;
-      background:
-        linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.16) 43%, transparent 44% 100%),
-        linear-gradient(24deg, transparent 0 62%, rgba(0, 0, 0, 0.28) 63%, transparent 66% 100%);
-      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-    }
-
-    .digital-field::before,
-    .digital-field::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.42;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent 0 28px,
-        rgba(255, 255, 255, 0.1) 28px 30px,
-        transparent 30px 96px
-      );
-      transform: skewX(-18deg) translateX(-22%);
-      animation: dataSweep 7s linear infinite;
-    }
-
-    .digital-field::after {
-      opacity: 0.28;
-      transform: skewX(18deg) translateX(18%);
-      animation-duration: 11s;
-      animation-direction: reverse;
-    }
-
-    .shell {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: clamp(28px, 4.5vw, 78px) clamp(24px, 4.4vw, 72px) 0;
-    }
-
-    .content {
-      width: min(100%, 690px);
-      padding-top: clamp(0px, 2.6vh, 32px);
-    }
-
-    .symbol {
-      width: clamp(54px, 5.2vw, 96px);
-      height: auto;
+    img {
+      max-width: 100%;
       display: block;
-      margin-bottom: clamp(28px, 3.7vw, 54px);
     }
 
-    h1 {
-      margin: 0 0 clamp(20px, 2vw, 34px);
-      font-size: clamp(42px, 5.2vw, 84px);
-      font-weight: 600;
-      line-height: 0.9;
-      letter-spacing: -0.035em;
-      text-transform: uppercase;
+    .site {
+      overflow: hidden;
+      background: var(--blue);
     }
 
-    .lede {
-      max-width: 690px;
-      margin: 0;
-      font-size: clamp(20px, 2.1vw, 36px);
-      line-height: 1.18;
-      letter-spacing: -0.045em;
+    /* ── Layout ─────────────────────────────────── */
+
+    .container {
+      width: calc(100% - clamp(32px, 6vw, 96px));
+      margin: 0 auto;
     }
 
-    .contact-pill {
-      width: fit-content;
-      min-height: 72px;
+    /* ── Header ─────────────────────────────────── */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: clamp(18px, 2vw, 28px) 0;
+      background: var(--blue);
+      transition: transform 240ms ease;
+      will-change: transform;
+    }
+
+    .header.is-hidden {
+      transform: translateY(-100%);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
       display: inline-flex;
       align-items: center;
-      gap: 26px;
-      margin-top: clamp(30px, 3.7vw, 58px);
-      padding: 14px 24px 14px 32px;
-      border-radius: 999px;
-      background: var(--white);
-      color: var(--blue-ink);
-      box-shadow: 0 14px 44px rgba(0, 0, 0, 0.16);
+      flex-shrink: 0;
     }
 
-    .pill-text {
-      font-size: clamp(16px, 1.1vw, 22px);
+    .brand-logo {
+      width: clamp(92px, 10vw, 148px);
+      height: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 3.5vw, 64px);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: clamp(18px, 1.7vw, 26px);
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      min-height: 44px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--ink);
+      font-size: clamp(15px, 1.4vw, 22px);
+      font-weight: 600;
       line-height: 1;
       white-space: nowrap;
+      transition: gap 240ms ease, padding-right 240ms ease;
     }
 
-    .socials {
-      display: inline-flex;
-      align-items: center;
-      gap: 18px;
+    .pill-arrow {
+      display: inline-block;
+      overflow: hidden;
+      max-width: 0;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: max-width 240ms ease, opacity 200ms ease, transform 240ms ease;
     }
 
-    .social-link {
-      width: 28px;
-      height: 28px;
-      display: inline-grid;
-      place-items: center;
-      color: var(--blue-ink);
-      transition: transform 180ms ease, opacity 180ms ease;
+    .pill:hover {
+      gap: 6px;
     }
 
-    .social-link:hover {
-      transform: translateY(-2px);
-      opacity: 0.78;
+    .pill:hover .pill-arrow {
+      max-width: 20px;
+      opacity: 1;
+      transform: translateX(0);
     }
 
-    .social-link svg {
+    /* ── Hero ────────────────────────────────────── */
+
+    .hero {
+      position: relative;
+      padding: clamp(60px, 8vw, 130px) 0 clamp(32px, 5vw, 72px);
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: -180px;
+      background-image: url("asset/bg-blur.svg");
+      background-size: cover;
+      background-position: center top;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(44px, 6.8vw, 112px);
+      font-weight: 600;
+      line-height: 0.94;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Work section ────────────────────────────── */
+
+    .section {
+      padding: clamp(52px, 7vw, 112px) 0;
+    }
+
+    #work {
+      padding-top: clamp(24px, 4vw, 56px);
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .cases-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(48px, 7vw, 112px);
+    }
+
+    .case-card {
+      display: grid;
+      gap: clamp(16px, 2vw, 28px);
+      border: 0;
+      background: transparent;
+    }
+
+    .case-image {
+      overflow: hidden;
+      border-radius: clamp(14px, 1.8vw, 28px);
+      aspect-ratio: 16 / 9;
+    }
+
+    .case-image img {
       width: 100%;
       height: 100%;
-      display: block;
+      object-fit: cover;
+      transition: transform 560ms ease;
     }
 
-    .wordmark {
-      align-self: center;
-      margin: auto 0 clamp(18px, 2.6vw, 42px);
+    .case-card:hover .case-image img {
+      transform: scale(1.03);
+    }
+
+    .case-meta {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: clamp(16px, 4vw, 64px);
+      padding: 0 clamp(16px, 3vw, 48px);
+    }
+
+    .case-meta h3 {
+      flex-shrink: 0;
+      margin: 0;
+      font-size: clamp(22px, 2.6vw, 40px);
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .case-meta p {
+      max-width: 600px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: clamp(15px, 1.4vw, 21px);
+      line-height: 1.3;
+    }
+
+    /* ── Services ────────────────────────────────── */
+
+    .offer-head {
+      text-align: center;
+      margin-bottom: clamp(28px, 4vw, 56px);
+    }
+
+    .offer-head h2 {
+      max-width: 820px;
+      margin: 0 auto;
+      font-size: clamp(34px, 5.4vw, 86px);
+      font-weight: 600;
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      min-height: clamp(200px, 20vw, 280px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(12px, 1.5vw, 20px);
+      padding: clamp(28px, 3vw, 48px) clamp(22px, 2.5vw, 40px);
+      border-radius: clamp(16px, 2vw, 28px);
+      background: rgba(0, 8, 100, 0.5);
+      text-align: center;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(100, 80, 255, 0.45) 0%, rgba(20, 0, 180, 0.2) 55%, transparent 100%);
+      filter: blur(28px);
+      pointer-events: none;
+    }
+
+    .service-card h3 {
+      position: relative;
+      margin: 0;
+      font-size: clamp(19px, 1.9vw, 30px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .service-card p {
+      position: relative;
+      max-width: 380px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(14px, 1.4vw, 22px);
+      line-height: 1.2;
+    }
+
+    /* ── Floating emblem ────────────────────────── */
+
+    .floating-emblem {
+      position: fixed;
+      bottom: clamp(20px, 2.5vw, 36px);
+      right: clamp(20px, 2.5vw, 36px);
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(52px, 5vw, 72px);
+      height: clamp(52px, 5vw, 72px);
+      transition: transform 280ms ease, opacity 280ms ease;
+    }
+
+    .floating-emblem:hover {
+      transform: scale(1.1) rotate(12deg);
+      opacity: 0.85;
+    }
+
+    .floating-emblem img {
+      width: 100%;
+      height: 100%;
+      filter: brightness(0) invert(1);
+      opacity: 0.6;
+    }
+
+    /* ── Studio / Statement ──────────────────────── */
+
+    .statement {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(28px, 4vw, 56px);
+      text-align: center;
+    }
+
+    .statement-emblem {
+      width: clamp(56px, 6vw, 96px);
+      height: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.72;
+    }
+
+    .statement p {
+      max-width: 960px;
+      margin: 0;
+      font-size: clamp(26px, 4.4vw, 72px);
+      font-weight: 600;
+      line-height: 0.96;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Footer ──────────────────────────────────── */
+
+    .footer {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: clamp(72px, 9vw, 130px) 0 clamp(28px, 3vw, 44px);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: clamp(40px, 7vw, 92px);
+      text-align: center;
+    }
+
+    .footer-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(14px, 1.8vw, 22px);
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .footer-socials {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: clamp(18px, 1.8vw, 28px);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 0.16em;
+    }
+
+    .footer-logo {
       color: var(--white);
       font-family: "Outage Cut", Impact, sans-serif;
-      font-size: min(23.6vw, 454px);
+      font-size: clamp(92px, 15vw, 300px);
       font-weight: 400;
-      line-height: 0.58;
+      line-height: 0.72;
       letter-spacing: -0.043em;
       text-transform: uppercase;
       white-space: nowrap;
-      transform: none;
       user-select: none;
-      pointer-events: none;
     }
 
-    @keyframes scan {
-      from {
-        background-position: 0 0, 0 0, 0 0;
-      }
-      to {
-        background-position: 84px 84px, -84px 84px, 0 70px;
-      }
+    .footer-base {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      margin-top: auto;
+      gap: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: clamp(12px, 1vw, 15px);
+      text-align: left;
     }
 
-    @keyframes drift {
-      from {
-        transform: translate3d(-1.8%, -1.4%, 0) scale(1);
-      }
-      to {
-        transform: translate3d(2.4%, 2%, 0) scale(1.045);
-      }
+    .footer-base p {
+      margin: 0;
     }
 
-    @keyframes dataSweep {
-      from {
-        background-position-x: 0;
-      }
-      to {
-        background-position-x: 480px;
-      }
+    .footer-base p:nth-child(2) {
+      text-align: center;
     }
+
+    .footer-base p:nth-child(3) {
+      text-align: right;
+    }
+
+    /* ── Responsive ──────────────────────────────── */
 
     @media (max-width: 900px) {
-      .shell {
-        padding: 28px 28px 0;
+      .nav-links {
+        display: none;
       }
 
-      .content {
-        padding-top: clamp(0px, 3vh, 30px);
+      .services-grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: 0 auto;
       }
 
-      .lede {
-        max-width: 520px;
+      .case-meta {
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 clamp(16px, 4vw, 32px);
       }
 
-      .wordmark {
-        font-size: 23.4vw;
-        line-height: 0.58;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .shell {
-        padding: 28px 20px 0;
+      .footer-base {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 10px;
       }
 
-      .content {
-        padding-top: clamp(0px, 2vh, 18px);
-      }
-
-      .symbol {
-        width: 48px;
-        margin-bottom: 42px;
-      }
-
-      h1 {
-        max-width: 320px;
-        margin-bottom: 14px;
-        font-size: clamp(35px, 10vw, 46px);
-        line-height: 0.95;
-      }
-
-      .lede {
-        max-width: 290px;
-        font-size: clamp(15px, 4.4vw, 18px);
-        line-height: 1.22;
-      }
-
-      .contact-pill {
-        min-height: 52px;
-        gap: 15px;
-        margin-top: 28px;
-        padding: 11px 15px 11px 20px;
-      }
-
-      .pill-text {
-        font-size: 12px;
-      }
-
-      .socials {
-        gap: 11px;
-      }
-
-      .social-link {
-        width: 21px;
-        height: 21px;
-      }
-
-      .orb-one {
-        width: 180vw;
-        top: -4%;
-        left: -72%;
-      }
-
-      .orb-two {
-        width: 170vw;
-        right: -105%;
-        bottom: 8%;
-      }
-
-      .orb-three {
-        width: 140vw;
-        left: -85%;
-        bottom: -18%;
-      }
-
-      .wordmark {
-        align-self: flex-start;
-        width: 100%;
-        margin-bottom: 18px;
-        font-size: 22.5vw;
-        line-height: 0.58;
+      .footer-base p:nth-child(3) {
         text-align: center;
       }
     }
 
+    @media (min-width: 600px) and (max-width: 900px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 11vw, 48px);
+        line-height: 0.96;
+      }
+
+      .footer-socials {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .footer-logo {
+        font-size: 22vw;
+      }
+
+      .statement p {
+        font-size: clamp(22px, 8vw, 34px);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .page::after,
-      .orb,
-      .digital-field::before,
-      .digital-field::after {
-        animation: none;
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
       }
     }
   </style>
 </head>
+
 <body>
-  <main class="page">
-    <div class="orb orb-one" aria-hidden="true"></div>
-    <div class="orb orb-two" aria-hidden="true"></div>
-    <div class="orb orb-three" aria-hidden="true"></div>
-    <div class="digital-field" aria-hidden="true"></div>
+  <main class="site">
 
-    <div class="shell">
-      <section class="content" aria-labelledby="coming-soon-title">
-        <img class="symbol" src="landing-assets/cadara-symbol.svg" alt="Cadara">
-        <h1 id="coming-soon-title">Coming soon</h1>
-        <p class="lede">We are shaping a new studio for digital products, brand systems, and sharp visual experiences.</p>
-
-        <div class="contact-pill" aria-label="Stay in touch">
-          <span class="pill-text">Stay in touch.</span>
-          <div class="socials">
-            <a class="social-link" href="https://www.linkedin.com/company/cadarastudio" aria-label="Cadara on LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M20.45 20.45h-3.57v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96v5.7H9.28V8.95h3.43v1.57h.05c.48-.9 1.64-1.86 3.38-1.86 3.62 0 4.29 2.38 4.29 5.48v6.31ZM5.25 7.38a2.07 2.07 0 1 1 0-4.15 2.07 2.07 0 0 1 0 4.15Zm1.78 13.07H3.46V8.95h3.57v11.5ZM22.23 0H1.76C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.76 24h20.47c.97 0 1.77-.77 1.77-1.73V1.73C24 .77 23.2 0 22.23 0Z"/>
-              </svg>
-            </a>
-            <a class="social-link" href="https://www.instagram.com/cadarastudio" aria-label="Cadara on Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.22.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.05.41 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.22a3.72 3.72 0 0 1-.9 1.38 3.72 3.72 0 0 1-1.38.9c-.42.16-1.05.36-2.22.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.22-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.22-.41 1.27-.06 1.65-.07 4.85-.07Zm0-2.16C8.74 0 8.33.01 7.05.07 5.77.13 4.9.33 4.14.63a5.86 5.86 0 0 0-2.12 1.38A5.86 5.86 0 0 0 .64 4.14C.34 4.9.14 5.77.08 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.32.79.73 1.46 1.38 2.12a5.86 5.86 0 0 0 2.12 1.38c.76.3 1.63.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.86 5.86 0 0 0 2.12-1.38 5.86 5.86 0 0 0 1.38-2.12c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.86 5.86 0 0 0-1.38-2.12A5.86 5.86 0 0 0 19.86.64c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/>
-              </svg>
-            </a>
-            <a class="social-link" href="mailto:info@cadarstudio.com" aria-label="Email Cadara">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M2.4 4h19.2A2.4 2.4 0 0 1 24 6.4v11.2a2.4 2.4 0 0 1-2.4 2.4H2.4A2.4 2.4 0 0 1 0 17.6V6.4A2.4 2.4 0 0 1 2.4 4Zm9.6 8.7 9.6-6.2H2.4l9.6 6.2Zm0 2.7L2.4 9.2v8.4h19.2V9.2L12 15.4Z"/>
-              </svg>
-            </a>
-          </div>
+    <header class="header">
+      <nav class="nav container" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="Cadara Studio home">
+          <img src="asset/cadara-logo.svg" alt="Cadara" class="brand-logo">
+        </a>
+        <div class="nav-links">
+          <a href="cases/work.html">Work</a>
+          <a href="#studio">Studio</a>
+          <a href="#offer">Offer</a>
         </div>
-      </section>
+        <a class="pill" href="mailto:info@cadarstudio.com">Contact<span class="pill-arrow" aria-hidden="true">→</span></a>
+      </nav>
+    </header>
 
-      <div class="wordmark" aria-hidden="true">CADARA</div>
-    </div>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-content container">
+        <h1>Strategy and design studio for financial institutions.</h1>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="cases-grid">
+
+          <a class="case-card" href="cases/lemfi.html">
+            <figure class="case-image">
+              <img src="cases/images/lemfi.png" alt="Lemfi case study">
+            </figure>
+            <div class="case-meta">
+              <h3>Lemfi</h3>
+              <p>Global card features designed to expand payment access for customers across the US, Canada, and the UK.</p>
+            </div>
+          </a>
+
+          <a class="case-card" href="cases/gomoney.html">
+            <figure class="case-image">
+              <img src="cases/images/gomoney.png" alt="Gomoney case study">
+            </figure>
+            <div class="case-meta">
+              <h3>Gomoney</h3>
+              <p>An onboarding redesign focused on reducing drop-off and making account creation feel direct and dependable.</p>
+            </div>
+          </a>
+
+          <a class="case-card" href="cases/mezovest.html">
+            <figure class="case-image">
+              <img src="cases/images/mezovest.png" alt="Mezovest case study">
+            </figure>
+            <div class="case-meta">
+              <h3>Mezovest</h3>
+              <p>A design framework and identity foundation for an investment platform moving from research into product.</p>
+            </div>
+          </a>
+
+          <a class="case-card" href="cases/cadana.html">
+            <figure class="case-image">
+              <img src="cases/images/cadana.png" alt="Cadana case study">
+            </figure>
+            <div class="case-meta">
+              <h3>Cadana</h3>
+              <p>A bespoke identity system for an international payroll company modernizing compensation infrastructure.</p>
+            </div>
+          </a>
+
+        </div>
+    </section>
+
+    <section class="section" id="offer">
+      <div class="container">
+        <div class="offer-head">
+          <h2>Design for the financial moment.</h2>
+        </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <h3>Strategy</h3>
+            <p>Insight-led positioning, product direction, and brand clarity for financial teams making critical moves.</p>
+          </article>
+          <article class="service-card">
+            <h3>Design</h3>
+            <p>Visual identity, digital systems, interface craft, and launch-ready brand assets with a point of view.</p>
+          </article>
+          <article class="service-card">
+            <h3>Experience</h3>
+            <p>Customer journeys, onboarding flows, service touchpoints, and product moments built around trust.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="studio">
+      <div class="statement container">
+        <img src="asset/cadara-symbol.svg" alt="" aria-hidden="true" class="statement-emblem">
+        <p>We help financial brands become easier to understand, easier to trust, and harder to ignore.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner container">
+
+        <div class="footer-cta">
+          <div class="footer-actions">
+            <a class="pill" href="mailto:info@cadarstudio.com">Contact us<span class="pill-arrow" aria-hidden="true">→</span></a>
+            <a class="pill" href="cases/work.html">View work<span class="pill-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <nav class="footer-socials" aria-label="Social links">
+            <a href="https://www.linkedin.com/company/cadarastudio">LinkedIn</a>
+            <a href="https://www.instagram.com/cadarastudio">Instagram</a>
+            <a href="mailto:info@cadarstudio.com">Email</a>
+          </nav>
+        </div>
+
+        <div class="footer-logo" aria-hidden="true">CADARA</div>
+
+        <div class="footer-base">
+          <p>Privacy policy</p>
+          <p>&copy; 2026 Cadara Studio. All rights reserved.</p>
+          <p>Strategy and design for financial services</p>
+        </div>
+
+      </div>
+    </footer>
+
   </main>
+
+  <a class="floating-emblem" href="mailto:info@cadarstudio.com" aria-label="Email Cadara Studio">
+    <img src="asset/cadara-emblem.svg" alt="">
+  </a>
+
+  <script>
+    const siteHeader = document.querySelector('.header');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      const isPastHeader = currentScrollY > 96;
+      const isScrollingDown = currentScrollY > lastScrollY;
+      siteHeader.classList.toggle('is-hidden', isPastHeader && isScrollingDown);
+      lastScrollY = Math.max(currentScrollY, 0);
+    }, { passive: true });
+  </script>
 </body>
+
 </html>
