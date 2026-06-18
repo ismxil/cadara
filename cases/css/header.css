@@ -40,22 +40,25 @@
 }
 
 /* Header */
-header {
+header,
+.header {
   position: sticky;
   top: 0;
   z-index: 20;
   padding: clamp(18px, 2vw, 28px) 0;
-  background: var(--blue-color);
+  background: var(--blue, var(--blue-color, #021dff));
   transition: transform 240ms ease;
   will-change: transform;
 }
 
-header.is-hidden {
+header.is-hidden,
+.header.is-hidden {
   transform: translateY(-100%);
 }
 
 /* Nav layout */
-nav {
+nav,
+.nav {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -94,8 +97,14 @@ nav {
   transition: color 160ms ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .current {
   color: #ffffff;
+}
+
+/* Highlight the current page link with the active lime color if desired */
+.nav-links .current {
+  color: var(--lime, var(--lime-color, #ecff00));
 }
 
 .nav-pill-wrap {
@@ -111,15 +120,15 @@ nav {
   min-height: 44px;
   padding: 0 24px;
   border-radius: 999px;
-  background: var(--lime-color);
-  color: var(--black-color);
+  background: var(--lime, var(--lime-color, #ecff00));
+  color: var(--ink, var(--black-color, #080808));
   font-family: 'Uncut Sans', Arial, sans-serif;
   font-size: clamp(15px, 1.4vw, 22px);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
-  transition: gap 240ms ease;
+  transition: gap 240ms ease, padding-right 240ms ease;
 }
 
 .pill-arrow {
