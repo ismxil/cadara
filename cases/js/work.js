@@ -22,7 +22,7 @@ function setupMobileMenu() {
     home: isCasesPath ? '../index.html' : 'index.html',
     work: isCasesPath ? 'work.html' : 'cases/work.html',
     studio: isCasesPath ? '../index.html#studio' : '#studio',
-    offer: isCasesPath ? '../index.html#offer' : '#offer',
+    offer: isCasesPath ? 'offer.html' : 'cases/offer.html',
   };
 
   const panel = document.createElement('div');
