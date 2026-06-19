@@ -100,6 +100,20 @@ img {
   overflow: hidden;
   border: 0;
   background: transparent;
+  animation: scroll-scale linear both;
+  animation-timeline: view();
+  animation-range: entry 5% cover 30%;
+}
+
+@keyframes scroll-scale {
+  from {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .case-card:hover .case-image img {

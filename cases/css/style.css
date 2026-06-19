@@ -728,6 +728,20 @@ img {
   display: block;
   overflow: hidden;
   border-radius: 0 0 clamp(36px, 5vw, 72px) clamp(36px, 5vw, 72px);
+  animation: scroll-scale linear both;
+  animation-timeline: view();
+  animation-range: entry 5% cover 30%;
+}
+
+@keyframes scroll-scale {
+  from {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .next-project-image .showcase {
