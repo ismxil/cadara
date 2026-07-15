@@ -617,8 +617,57 @@ body.menu-open {
     display: none;
   }
 
+  .header-inner {
+    align-items: center;
+  }
+
+  .brand {
+    padding: 0;
+  }
+
+  .brand-symbol,
+  .brand .cadara-symbol-host--md {
+    width: 32px;
+    height: 32px;
+  }
+
   .nav-toggle {
     display: inline-flex;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    box-shadow: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .mobile-menu-close {
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    box-shadow: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .mobile-menu-symbol,
+  .mobile-menu-top .cadara-symbol-host--md {
+    width: 32px;
+    height: 32px;
   }
 
   .intro {

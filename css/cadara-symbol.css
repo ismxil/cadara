@@ -135,7 +135,17 @@
 }
 
 @media (max-width: 900px) {
+  .cadara-symbol-host--md {
+    width: 32px;
+    height: 32px;
+  }
+
   .brand-wordmark {
-    font-size: clamp(32px, 8vw, 48px);
+    font-size: 20px;
+  }
+
+  .brand--animated {
+    gap: 8px;
+    min-height: auto;
   }
 }
