@@ -1,10 +1,8 @@
 /* Header: C writes into Cadara. Studio: star hold → rotate → plus hold */
 
 :root {
-  /* 5000ms star → 700ms rotate → 5000ms plus → 700ms rotate = 11400ms */
-  --cadara-loop-hold: 5000ms;
-  --cadara-loop-rotate: 700ms;
-  --cadara-loop-duration: 11400ms;
+  /* Studio: star 385 + rot 576 + hold 4000 + rot 576 + settle 195 + wait 8000 = 13732ms */
+  --cadara-loop-duration: 13732ms;
   /* 15000ms C → 15000ms Cadara write = 30000ms */
   --cadara-brand-duration: 30000ms;
 }
@@ -44,40 +42,29 @@
 }
 
 .cadara-symbol-host--loop .cadara-symbol-rotate {
-  animation:
-    cadara-symbol-rotate var(--cadara-loop-duration) ease-in-out infinite,
-    cadara-symbol-diagonals-hide var(--cadara-loop-duration) steps(1, end) infinite;
+  opacity: 1;
+  animation: cadara-loop-rotate var(--cadara-loop-duration) linear infinite;
 }
 
-@keyframes cadara-symbol-diagonals-hide {
-  0%,
-  43.85% {
-    opacity: 1;
-  }
-
-  43.86%,
-  99.99% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
+.cadara-symbol-host--loop .cadara-symbol-line--d {
+  opacity: 1;
 }
 
-@keyframes cadara-symbol-rotate {
+@keyframes cadara-loop-rotate {
+  /* 385 @45° → 576 to 0° → 4000 @0° → 576 to 45° → 195 settle @45° → 8000 wait */
   0%,
-  43.86% {
+  2.8% {
+    transform: rotate(45deg);
+  }
+
+  7%,
+  36.13% {
     transform: rotate(0deg);
   }
 
-  50%,
-  93.86% {
-    transform: rotate(90deg);
-  }
-
+  40.32%,
   100% {
-    transform: rotate(0deg);
+    transform: rotate(45deg);
   }
 }
 

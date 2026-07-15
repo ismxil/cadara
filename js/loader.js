@@ -13,6 +13,7 @@ const LOADER = {
   },
   fadeOut: 520,
   navFade: 360,
+  assetTimeout: 10000,
 };
 
 function wait(ms) {
@@ -44,6 +45,80 @@ function isInternalNavigationLink(anchor) {
   if (samePath && sameSearch && url.hash) return false;
 
   return true;
+}
+
+function markImageLoaded(img) {
+  img.classList.add('is-loaded');
+}
+
+function waitForImage(img, timeout = LOADER.assetTimeout) {
+  if (!img) return Promise.resolve();
+
+  const finish = async () => {
+    if (img.decode) {
+      try {
+        await img.decode();
+      } catch {
+        /* ignore decode errors for broken assets */
+      }
+    }
+    markImageLoaded(img);
+  };
+
+  if (img.complete && img.naturalWidth > 0) {
+    return finish();
+  }
+
+  return Promise.race([
+    new Promise((resolve) => {
+      const done = async () => {
+        await finish();
+        resolve();
+      };
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', () => {
+        markImageLoaded(img);
+        resolve();
+      }, { once: true });
+    }),
+    wait(timeout).then(() => {
+      markImageLoaded(img);
+    }),
+  ]);
+}
+
+function getCriticalImages() {
+  const hero = [...document.querySelectorAll('.case-hero-cover img')];
+  const gallery = [...document.querySelectorAll('.case-gallery-item img')].slice(0, 6);
+  const cards = [...document.querySelectorAll('.case-card .case-image img')];
+  const covers = [...document.querySelectorAll('.case-next-cover img, .case-next img')];
+
+  return [...new Set([...hero, ...gallery, ...cards, ...covers])];
+}
+
+function prepareAllImages() {
+  document.querySelectorAll('img').forEach((img) => {
+    if (img.complete && img.naturalWidth > 0) {
+      markImageLoaded(img);
+      return;
+    }
+
+    img.addEventListener('load', () => markImageLoaded(img), { once: true });
+    img.addEventListener('error', () => markImageLoaded(img), { once: true });
+  });
+}
+
+async function waitForCriticalAssets() {
+  prepareAllImages();
+
+  const fontsReady = document.fonts?.ready?.catch(() => undefined) ?? Promise.resolve();
+  const critical = getCriticalImages();
+  const imagesReady = Promise.all(critical.map((img) => waitForImage(img)));
+
+  await Promise.race([
+    Promise.all([fontsReady, imagesReady]),
+    wait(LOADER.assetTimeout),
+  ]);
 }
 
 async function hideLoader(loader) {
@@ -80,23 +155,30 @@ function waitForLoaderAnimation(loader) {
 function revealSite() {
   requestAnimationFrame(() => {
     document.body.classList.add('is-ready');
+    document.dispatchEvent(new CustomEvent('cadara:ready'));
   });
 }
 
 async function playLoaderIntro(loader) {
+  const assets = waitForCriticalAssets();
+
   if (prefersReducedMotion()) {
+    await assets;
     await hideLoader(loader);
     return;
   }
 
-  await waitForLoaderAnimation(loader);
-  await wait(LOADER.settle);
+  await Promise.all([
+    waitForLoaderAnimation(loader).then(() => wait(LOADER.settle)),
+    assets,
+  ]);
   await hideLoader(loader);
 }
 
 async function initSiteLoader() {
   const loader = document.getElementById('site-loader');
   if (!loader) {
+    await waitForCriticalAssets();
     revealSite();
     return;
   }

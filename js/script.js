@@ -106,5 +106,83 @@ function setupComingSoonCards() {
   });
 }
 
+function setupScrollReveal() {
+  const targets = document.querySelectorAll(
+    '.case-card, .case-gallery-item, .case-gallery-text, .case-hero-cover, .case-next'
+  );
+  if (!targets.length) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  targets.forEach((el) => {
+    el.classList.add('reveal');
+  });
+
+  function revealAll() {
+    targets.forEach((el) => el.classList.add('is-visible'));
+  }
+
+  function startObserver() {
+    if (reduceMotion.matches) {
+      revealAll();
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0,
+      }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+  }
+
+  if (document.body.classList.contains('is-ready')) {
+    startObserver();
+  } else {
+    document.addEventListener('cadara:ready', startObserver, { once: true });
+  }
+}
+
+function setupProjectPrefetch() {
+  const cards = document.querySelectorAll('.case-card[href]');
+  if (!cards.length) return;
+
+  const prefetched = new Set();
+
+  cards.forEach((card) => {
+    card.addEventListener(
+      'mouseenter',
+      () => {
+        const href = card.href;
+        if (!href || prefetched.has(href)) return;
+        prefetched.add(href);
+
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = href;
+        document.head.appendChild(link);
+      },
+      { once: true }
+    );
+  });
+}
+
 setupMobileMenu();
 setupComingSoonCards();
+setupScrollReveal();
+setupProjectPrefetch();

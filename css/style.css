@@ -196,7 +196,7 @@ img {
   margin: 0;
   height: 340px;
   overflow: hidden;
-  contain: paint;
+  background: #111;
 }
 
 .case-image img {
@@ -204,13 +204,50 @@ img {
   height: 100%;
   object-fit: cover;
   transform: translate3d(0, 0, 0);
-  transition: transform 500ms ease;
+  opacity: 0;
+  transition:
+    transform 500ms ease,
+    opacity 420ms ease;
   backface-visibility: hidden;
+}
+
+.case-image img.is-loaded {
+  opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .case-card:hover .case-image img {
     transform: translate3d(0, 0, 0) scale(1.05);
+  }
+}
+
+/* Subtle scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .case-image img,
+  .case-gallery-item img {
+    opacity: 1;
+    transition: none;
   }
 }
 
