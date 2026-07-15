@@ -1,15 +1,18 @@
-/* Cadara symbol — star hold, 90° rotate, plus hold */
+/* Header: C writes into Cadara. Studio: star hold → rotate → plus hold */
 
 :root {
-  /* 15000ms star → 700ms rotate → 15000ms plus → 700ms rotate = 31400ms */
-  --cadara-symbol-duration: 31400ms;
+  /* 5000ms star → 700ms rotate → 5000ms plus → 700ms rotate = 11400ms */
+  --cadara-loop-hold: 5000ms;
+  --cadara-loop-rotate: 700ms;
+  --cadara-loop-duration: 11400ms;
+  /* 15000ms C → 15000ms Cadara write = 30000ms */
+  --cadara-brand-duration: 30000ms;
 }
 
 .cadara-symbol-host {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--lime);
   flex-shrink: 0;
 }
 
@@ -23,6 +26,12 @@
   height: 92px;
 }
 
+/* ── Studio / loop: star → rotate → plus ── */
+
+.cadara-symbol-host--loop {
+  color: var(--lime);
+}
+
 .cadara-symbol-svg {
   width: 100%;
   height: 100%;
@@ -30,48 +39,23 @@
 }
 
 .cadara-symbol-rotate {
-  transform-origin: 46px 46px;
-  transform-box: fill-box;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
 }
 
-.cadara-symbol-host--loop .cadara-symbol-rotate,
-.cadara-symbol-host--brand .cadara-symbol-rotate {
+.cadara-symbol-host--loop .cadara-symbol-rotate {
   animation:
-    cadara-symbol-rotate var(--cadara-symbol-duration) ease-in-out infinite,
-    cadara-symbol-diagonals-hide var(--cadara-symbol-duration) steps(1, end) infinite;
+    cadara-symbol-rotate var(--cadara-loop-duration) ease-in-out infinite,
+    cadara-symbol-diagonals-hide var(--cadara-loop-duration) steps(1, end) infinite;
 }
 
-.brand--animated {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 48px;
-}
-
-.brand-wordmark {
-  opacity: 0;
-  visibility: hidden;
-  white-space: nowrap;
-  font-family: 'Suisse Intl', Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--white);
-}
-
-.brand--animated .brand-wordmark {
-  animation: cadara-wordmark var(--cadara-symbol-duration) steps(1, end) infinite;
-}
-
-/* Diagonals hidden during plus — only v/h cross stays visible */
 @keyframes cadara-symbol-diagonals-hide {
   0%,
-  47.76% {
+  43.85% {
     opacity: 1;
   }
 
-  47.77%,
+  43.86%,
   99.99% {
     opacity: 0;
   }
@@ -83,12 +67,12 @@
 
 @keyframes cadara-symbol-rotate {
   0%,
-  47.77% {
+  43.86% {
     transform: rotate(0deg);
   }
 
   50%,
-  97.77% {
+  93.86% {
     transform: rotate(90deg);
   }
 
@@ -97,28 +81,155 @@
   }
 }
 
-@keyframes cadara-wordmark {
-  0%,
-  49.99% {
-    opacity: 0;
-    visibility: hidden;
+/* ── Header brand: C → Cadara ── */
+
+.cadara-symbol-host--brand {
+  position: relative;
+}
+
+.cadara-mark--c {
+  font-family: 'Beirut Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--white);
+}
+
+.brand--animated {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 54px;
+  min-height: 54px;
+}
+
+.cadara-symbol-host--brand .cadara-mark--c {
+  animation: cadara-brand-c var(--cadara-brand-duration) steps(1, end) infinite;
+}
+
+.brand-wordmark {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: 'Beirut Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  clip-path: inset(0 100% 0 0);
+  pointer-events: none;
+}
+
+.brand--animated .brand-wordmark {
+  animation: cadara-brand-wordmark-write var(--cadara-brand-duration) ease-in-out infinite;
+}
+
+@media (hover: hover) and (min-width: 901px) {
+  .brand--animated {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    gap: 0;
   }
 
-  50%,
-  97.77% {
+  .brand--animated .cadara-symbol-host--md {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .brand--animated .cadara-mark--c,
+  .brand--animated .brand-wordmark {
+    animation: none;
+  }
+
+  .brand--animated .brand-wordmark {
+    position: static;
+    transform: none;
+    visibility: hidden;
+    clip-path: none;
+    overflow: visible;
+    min-width: 0;
+    margin-left: -0.04em;
+  }
+
+  .brand--animated.is-writing .brand-wordmark {
+    visibility: visible;
+  }
+
+  .brand--animated.is-typing .brand-wordmark::after {
+    content: '|';
+    margin-left: 0.04em;
+    animation: cadara-typewriter-cursor 0.75s step-end infinite;
+  }
+}
+
+@keyframes cadara-typewriter-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes cadara-brand-c {
+  0%,
+  46% {
     opacity: 1;
     visibility: visible;
   }
 
-  100% {
+  50%,
+  99.99% {
     opacity: 0;
+    visibility: hidden;
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes cadara-brand-wordmark-write {
+  0%,
+  46% {
+    clip-path: inset(0 100% 0 0);
+    visibility: hidden;
+  }
+
+  48% {
+    clip-path: inset(0 100% 0 0);
+    visibility: visible;
+  }
+
+  62% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  92% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  96%,
+  100% {
+    clip-path: inset(0 100% 0 0);
     visibility: hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cadara-symbol-host--loop .cadara-symbol-rotate,
-  .cadara-symbol-host--brand .cadara-symbol-rotate,
+  .cadara-symbol-host--brand .cadara-mark--c,
   .brand--animated .brand-wordmark {
     animation: none;
   }
@@ -128,9 +239,14 @@
     opacity: 1;
   }
 
+  .cadara-mark--c {
+    opacity: 1;
+    visibility: visible;
+  }
+
   .brand-wordmark {
-    opacity: 0;
     visibility: hidden;
+    clip-path: inset(0 100% 0 0);
   }
 }
 
@@ -140,12 +256,16 @@
     height: 32px;
   }
 
-  .brand-wordmark {
-    font-size: 20px;
+  .cadara-symbol-host--md .cadara-mark--c {
+    font-size: 28px;
   }
 
   .brand--animated {
-    gap: 8px;
-    min-height: auto;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .brand-wordmark {
+    font-size: 20px;
   }
 }

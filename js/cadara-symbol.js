@@ -1,10 +1,10 @@
-const CADARA_SYMBOL_SVG = `
-  <svg class="cadara-symbol-svg" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path class="cadara-symbol-line cadara-symbol-line--v" d="M45.9961 7.03125V84.9662" stroke="currentColor" stroke-width="6"/>
-    <path class="cadara-symbol-line cadara-symbol-line--h" d="M84.9688 45.9922L7.03378 45.9922" stroke="currentColor" stroke-width="6"/>
+const CADARA_LOOP_SVG = `
+  <svg class="cadara-symbol-svg" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path class="cadara-symbol-line cadara-symbol-line--v" d="M32.1055 5V59.2156" stroke="currentColor" stroke-width="6"/>
+    <path class="cadara-symbol-line cadara-symbol-line--h" d="M59.2148 32.1016L4.99922 32.1016" stroke="currentColor" stroke-width="6"/>
     <g class="cadara-symbol-rotate">
-      <path class="cadara-symbol-line cadara-symbol-line--d" d="M18.4492 73.5547L73.5576 18.4463" stroke="currentColor" stroke-width="6"/>
-      <path class="cadara-symbol-line cadara-symbol-line--d" d="M18.4434 18.4453L73.5517 73.5536" stroke="currentColor" stroke-width="6"/>
+      <path class="cadara-symbol-line cadara-symbol-line--d" d="M12.9414 51.2812L51.2776 12.945" stroke="currentColor" stroke-width="6"/>
+      <path class="cadara-symbol-line cadara-symbol-line--d" d="M12.9375 12.9453L51.2737 51.2815" stroke="currentColor" stroke-width="6"/>
     </g>
   </svg>`;
 
@@ -13,12 +13,19 @@ function mountCadaraSymbol(host, { variant = 'loop', size = 'md' } = {}) {
 
   host.dataset.cadaraMounted = 'true';
   host.classList.add('cadara-symbol-host', `cadara-symbol-host--${size}`, `cadara-symbol-host--${variant}`);
-  host.innerHTML = CADARA_SYMBOL_SVG;
+
+  if (variant === 'brand') {
+    host.innerHTML = `<span class="cadara-mark cadara-mark--c" aria-hidden="true">C</span>`;
+  } else {
+    host.innerHTML = CADARA_LOOP_SVG;
+  }
+
   return host;
 }
 
 function replaceImageWithSymbol(img, options) {
   const host = document.createElement('span');
+  if (img.className) host.className = img.className;
   mountCadaraSymbol(host, options);
   img.replaceWith(host);
   return host;
@@ -76,9 +83,73 @@ function initCadaraSymbols() {
   });
 
   document.querySelectorAll('[data-cadara-symbol]').forEach((host) => {
-    const variant = host.dataset.cadaraSymbol === 'brand' ? 'brand' : 'loop';
+    const symbol = host.dataset.cadaraSymbol;
+    const variant = symbol === 'brand' ? 'brand' : symbol === 'loader' ? 'loader' : 'loop';
     const size = host.dataset.cadaraSize || 'md';
     mountCadaraSymbol(host, { variant, size });
+  });
+
+  setupBrandTypewriter();
+}
+
+function setupBrandTypewriter() {
+  const desktopHover = window.matchMedia('(hover: hover) and (min-width: 901px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const suffixText = 'adara';
+  const typeDelay = 90;
+
+  document.querySelectorAll('.brand--animated').forEach((brand) => {
+    const cMark = brand.querySelector('.cadara-mark--c');
+    const wordmark = brand.querySelector('.brand-wordmark');
+    if (!cMark || !wordmark) return;
+
+    let timer = null;
+
+    function clearTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function reset() {
+      clearTimer();
+      brand.classList.remove('is-writing', 'is-typing');
+      if (desktopHover.matches) {
+        wordmark.textContent = '';
+      }
+    }
+
+    function startTyping() {
+      if (!desktopHover.matches) return;
+
+      clearTimer();
+      brand.classList.add('is-writing');
+      wordmark.textContent = '';
+
+      if (reduceMotion.matches) {
+        wordmark.textContent = suffixText;
+        return;
+      }
+
+      brand.classList.add('is-typing');
+      let index = 0;
+
+      timer = setInterval(() => {
+        index += 1;
+        wordmark.textContent = suffixText.slice(0, index);
+        if (index >= suffixText.length) {
+          brand.classList.remove('is-typing');
+          clearTimer();
+        }
+      }, typeDelay);
+    }
+
+    brand.addEventListener('mouseenter', startTyping);
+    brand.addEventListener('mouseleave', reset);
+
+    if (!desktopHover.matches) return;
+    reset();
   });
 }
 

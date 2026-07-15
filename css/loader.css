@@ -1,0 +1,133 @@
+:root {
+  --cadara-loader-size: 68px;
+  --cadara-loader-rotate: 576ms;
+  --cadara-loader-hold: 918ms;
+  --cadara-loader-star-hold: 385ms;
+  --cadara-loader-settle: 195ms;
+  --cadara-loader-duration: 2455ms;
+  --cadara-page-fade: 420ms;
+  --cadara-page-fade-out: 360ms;
+  --cadara-loader-fade: 520ms;
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+body.is-ready {
+  overflow: visible;
+}
+
+body.is-loading .site {
+  opacity: 0;
+}
+
+body.is-leaving .site {
+  opacity: 0;
+  transition: opacity var(--cadara-page-fade-out) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.is-ready .site {
+  opacity: 1;
+  animation: site-reveal var(--cadara-page-fade) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes site-reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--cadara-loader-fade) cubic-bezier(0.4, 0, 0.2, 1),
+    visibility var(--cadara-loader-fade);
+}
+
+.site-loader.is-exiting {
+  opacity: 0;
+}
+
+.site-loader.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-loader.is-nav .site-loader__symbol {
+  opacity: 0;
+}
+
+.site-loader__symbol {
+  width: var(--cadara-loader-size);
+  height: var(--cadara-loader-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 180ms ease;
+}
+
+/* Loader: star hold → 90° (576ms) → hold (918ms) → back (576ms) */
+
+.site-loader .cadara-symbol-host--loader,
+.site-loader__symbol.cadara-symbol-host {
+  width: var(--cadara-loader-size) !important;
+  height: var(--cadara-loader-size) !important;
+}
+
+.cadara-symbol-host--loader .cadara-symbol-rotate {
+  opacity: 1;
+  animation: cadara-loader-rotate var(--cadara-loader-duration) linear forwards;
+}
+
+.cadara-symbol-host--loader .cadara-symbol-line--d {
+  opacity: 1;
+}
+
+@keyframes cadara-loader-rotate {
+  0%,
+  15.68% {
+    transform: rotate(0deg);
+  }
+
+  39.14%,
+  76.54% {
+    transform: rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-ready .site,
+  body.is-leaving .site,
+  .site-loader {
+    transition: none;
+    animation: none;
+  }
+
+  body.is-ready .site {
+    opacity: 1;
+  }
+
+  .cadara-symbol-host--loader .cadara-symbol-rotate {
+    animation: none;
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}

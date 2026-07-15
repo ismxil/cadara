@@ -15,9 +15,13 @@
   <title>Work — Cadara Studio</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/cadara-symbol.css">
+  <link rel="stylesheet" href="../css/loader.css">
 </head>
 
-<body>
+<body class="is-loading">
+  <div class="site-loader" id="site-loader" aria-hidden="true">
+    <span class="site-loader__symbol" data-cadara-symbol="loader" data-cadara-size="lg" aria-hidden="true"></span>
+  </div>
   <main class="site">
     <header class="header">
       <div class="header-inner container">
@@ -152,8 +156,8 @@
       <div class="footer-inner container">
         <div class="footer-cta">
           <div class="footer-actions">
-            <a class="pill" href="mailto:info@cadarstudio.com">Contact us</a>
-            <a class="pill" href="work.html">View work</a>
+            <a class="pill" href="mailto:info@cadarstudio.com">Contact us<span class="pill-arrow" aria-hidden="true"></span></a>
+            <a class="pill" href="work.html">View work<span class="pill-arrow" aria-hidden="true"></span></a>
           </div>
           <nav class="footer-socials" aria-label="Social links">
             <a href="https://www.linkedin.com/company/cadarastudio" target="_blank" rel="noopener">LinkedIn</a>
@@ -170,6 +174,7 @@
   </main>
 
   <script src="../js/cadara-symbol.js"></script>
+  <script src="../js/loader.js"></script>
   <script src="../js/script.js"></script>
 </body>
 
