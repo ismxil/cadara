@@ -44,7 +44,7 @@ function setupMobileMenu() {
       <a href="mailto:info@cadarstudio.com">Contact</a>
     </nav>
     <div class="mobile-menu-bottom">
-      <img class="mobile-menu-emblem" src="${assetPrefix}cadara-symbol.svg" alt="" aria-hidden="true">
+      <img class="mobile-menu-emblem" src="${assetPrefix}cadara-symbol.svg" alt="" aria-hidden="true" data-cadara-pending="loop">
       <nav class="mobile-menu-socials" aria-label="Social links">
         <a href="https://www.linkedin.com/company/cadarastudio" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://www.instagram.com/cadarastudio" target="_blank" rel="noopener">Instagram</a>
@@ -54,6 +54,7 @@ function setupMobileMenu() {
     </div>
   `;
   document.body.appendChild(panel);
+  if (window.initCadaraSymbols) window.initCadaraSymbols();
 
   const closeButton = panel.querySelector('.mobile-menu-close');
   const mobileQuery = window.matchMedia('(max-width: 900px)');
@@ -90,3 +91,37 @@ function setupMobileMenu() {
 }
 
 setupMobileMenu();
+
+function setupComingSoonCards() {
+  const cards = document.querySelectorAll('.case-card--soon');
+  if (!cards.length) return;
+
+  const finePointer = window.matchMedia('(pointer: fine) and (min-width: 901px)');
+
+  cards.forEach((card) => {
+    const label = card.querySelector('.case-card-soon');
+    if (!label) return;
+
+    function moveLabel(event) {
+      const rect = card.getBoundingClientRect();
+      label.style.left = `${event.clientX - rect.left}px`;
+      label.style.top = `${event.clientY - rect.top}px`;
+    }
+
+    function activate(event) {
+      if (!finePointer.matches) return;
+      card.classList.add('is-active');
+      moveLabel(event);
+    }
+
+    function deactivate() {
+      card.classList.remove('is-active');
+    }
+
+    card.addEventListener('mouseenter', activate);
+    card.addEventListener('mousemove', moveLabel);
+    card.addEventListener('mouseleave', deactivate);
+  });
+}
+
+setupComingSoonCards();
