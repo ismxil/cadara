@@ -243,16 +243,49 @@
     height: 32px;
   }
 
+  .cadara-mark--c,
   .cadara-symbol-host--md .cadara-mark--c {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .brand--animated {
-    min-width: 32px;
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
     min-height: 32px;
+    gap: 0;
+  }
+
+  .brand--animated .cadara-symbol-host--md {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .brand--animated .cadara-mark--c,
+  .brand--animated .brand-wordmark {
+    animation: none;
   }
 
   .brand-wordmark {
-    font-size: 20px;
+    position: static;
+    top: auto;
+    transform: none;
+    visibility: hidden;
+    clip-path: none;
+    overflow: visible;
+    min-width: 0;
+    margin-left: -0.04em;
+    font-size: 32px;
+  }
+
+  .brand--animated.is-writing .brand-wordmark {
+    visibility: visible;
+  }
+
+  .brand--animated.is-typing .brand-wordmark::after {
+    content: '|';
+    margin-left: 0.04em;
+    animation: cadara-typewriter-cursor 0.75s step-end infinite;
   }
 }

@@ -80,10 +80,11 @@ body.is-ready .site {
   transition: opacity 180ms ease;
 }
 
-/* Loader: star hold → 90° (576ms) → hold (918ms) → back (576ms) */
+/* Loader: same angle path as studio — 45° → 0° → 45° (timing unchanged) */
 
 .site-loader .cadara-symbol-host--loader,
 .site-loader__symbol.cadara-symbol-host {
+  color: var(--lime);
   width: var(--cadara-loader-size) !important;
   height: var(--cadara-loader-size) !important;
 }
@@ -100,16 +101,22 @@ body.is-ready .site {
 @keyframes cadara-loader-rotate {
   0%,
   15.68% {
-    transform: rotate(0deg);
+    transform: rotate(45deg);
   }
 
   39.14%,
   76.54% {
-    transform: rotate(90deg);
+    transform: rotate(0deg);
   }
 
   100% {
-    transform: rotate(0deg);
+    transform: rotate(45deg);
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --cadara-loader-size: 58px;
   }
 }
 

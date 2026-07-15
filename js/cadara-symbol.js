@@ -97,6 +97,8 @@ function setupBrandTypewriter() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const suffixText = 'adara';
   const typeDelay = 90;
+  const holdTyped = 4000;
+  const holdIdle = 8000;
 
   document.querySelectorAll('.brand--animated').forEach((brand) => {
     const cMark = brand.querySelector('.cadara-mark--c');
@@ -104,6 +106,8 @@ function setupBrandTypewriter() {
     if (!cMark || !wordmark) return;
 
     let timer = null;
+    let loopTimer = null;
+    let loopActive = false;
 
     function clearTimer() {
       if (timer) {
@@ -112,16 +116,22 @@ function setupBrandTypewriter() {
       }
     }
 
+    function clearLoop() {
+      if (loopTimer) {
+        clearTimeout(loopTimer);
+        loopTimer = null;
+      }
+      loopActive = false;
+    }
+
     function reset() {
       clearTimer();
       brand.classList.remove('is-writing', 'is-typing');
-      if (desktopHover.matches) {
-        wordmark.textContent = '';
-      }
+      wordmark.textContent = '';
     }
 
-    function startTyping() {
-      if (!desktopHover.matches) return;
+    function startTyping({ onDone, force = false } = {}) {
+      if (!force && !desktopHover.matches && !loopActive) return;
 
       clearTimer();
       brand.classList.add('is-writing');
@@ -129,6 +139,7 @@ function setupBrandTypewriter() {
 
       if (reduceMotion.matches) {
         wordmark.textContent = suffixText;
+        if (onDone) onDone();
         return;
       }
 
@@ -141,15 +152,60 @@ function setupBrandTypewriter() {
         if (index >= suffixText.length) {
           brand.classList.remove('is-typing');
           clearTimer();
+          if (onDone) onDone();
         }
       }, typeDelay);
     }
 
-    brand.addEventListener('mouseenter', startTyping);
-    brand.addEventListener('mouseleave', reset);
+    function scheduleIntervalLoop() {
+      clearLoop();
+      if (desktopHover.matches || reduceMotion.matches) return;
 
-    if (!desktopHover.matches) return;
-    reset();
+      loopActive = true;
+
+      function runCycle() {
+        if (!loopActive || desktopHover.matches) return;
+
+        startTyping({
+          force: true,
+          onDone: () => {
+            if (!loopActive || desktopHover.matches) return;
+            loopTimer = window.setTimeout(() => {
+              if (!loopActive || desktopHover.matches) return;
+              reset();
+              loopTimer = window.setTimeout(runCycle, holdIdle);
+            }, holdTyped);
+          },
+        });
+      }
+
+      reset();
+      loopTimer = window.setTimeout(runCycle, 1200);
+    }
+
+    brand.addEventListener('mouseenter', () => {
+      if (!desktopHover.matches) return;
+      startTyping({ force: true });
+    });
+
+    brand.addEventListener('mouseleave', () => {
+      if (!desktopHover.matches) return;
+      reset();
+    });
+
+    desktopHover.addEventListener('change', () => {
+      clearLoop();
+      reset();
+      if (desktopHover.matches) return;
+      scheduleIntervalLoop();
+    });
+
+    if (desktopHover.matches) {
+      reset();
+      return;
+    }
+
+    scheduleIntervalLoop();
   });
 }
 
