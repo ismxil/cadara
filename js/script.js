@@ -7,7 +7,7 @@ function setupMobileMenu() {
   const links = {
     home: isCasesPath ? '../index.html' : 'index.html',
     work: isCasesPath ? 'work.html' : 'cases/work.html',
-    studio: isCasesPath ? '../index.html#studio' : '#studio',
+    studio: isCasesPath ? '../studio.html' : 'studio.html',
     contact: 'mailto:info@cadarstudio.com',
   };
 
