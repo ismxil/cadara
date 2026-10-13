@@ -1,5 +1,5 @@
 // PostHog project key (phc_…) and region host. Analytics stays off until the key is set.
-const POSTHOG_KEY = '';
+const POSTHOG_KEY = 'phc_Ae5J8ADcAUxcu2nuQzcZng8WCy2EDk4DrGdT24EJbmiu';
 const POSTHOG_HOST = 'https://us.i.posthog.com';
 // Only the production site is tracked, so previews and mirror deploys don't skew the data.
 const TRACKED_HOSTS = ['cadarastudio.com', 'www.cadarastudio.com'];
