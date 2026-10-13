@@ -1,13 +1,13 @@
 :root {
   --cadara-loader-size: 68px;
-  --cadara-loader-rotate: 576ms;
-  --cadara-loader-hold: 918ms;
-  --cadara-loader-star-hold: 385ms;
-  --cadara-loader-settle: 195ms;
-  --cadara-loader-duration: 2455ms;
-  --cadara-page-fade: 420ms;
-  --cadara-page-fade-out: 360ms;
-  --cadara-loader-fade: 520ms;
+  --cadara-loader-rotate: 340ms;
+  --cadara-loader-hold: 540ms;
+  --cadara-loader-star-hold: 230ms;
+  --cadara-loader-settle: 120ms;
+  --cadara-loader-duration: 1450ms;
+  --cadara-page-fade: 340ms;
+  --cadara-page-fade-out: 300ms;
+  --cadara-loader-fade: 400ms;
 }
 
 body.is-loading {
