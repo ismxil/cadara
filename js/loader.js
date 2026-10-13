@@ -3,15 +3,15 @@ const LOADER = {
     const value = getComputedStyle(document.documentElement)
       .getPropertyValue('--cadara-loader-duration')
       .trim();
-    return parseInt(value, 10) || 3900;
+    return parseInt(value, 10) || 921;
   },
   get settle() {
     const value = getComputedStyle(document.documentElement)
       .getPropertyValue('--cadara-loader-settle')
       .trim();
-    return parseInt(value, 10) || 300;
+    return parseInt(value, 10) || 74;
   },
-  fadeOut: 520,
+  fadeOut: 195,
   navFade: 360,
   assetTimeout: 10000,
 };
@@ -130,7 +130,7 @@ async function hideLoader(loader) {
 }
 
 function waitForLoaderAnimation(loader) {
-  const duration = LOADER.duration + LOADER.settle + 150;
+  const duration = LOADER.duration + LOADER.settle + 57;
 
   return Promise.race([
     new Promise((resolve) => {

@@ -5,7 +5,7 @@ function setupMobileMenu() {
   const links = {
     home: '/index.html',
     work: '/cases/work.html',
-    studio: '/index.html#studio',
+    studio: '/studio.html',
     insights: '/insights/index.html',
     contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarstudio.com'}`,
   };
