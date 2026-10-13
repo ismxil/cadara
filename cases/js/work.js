@@ -41,7 +41,7 @@ function setupMobileMenu() {
       <a href="${links.work}">Work</a>
       <a href="${links.studio}">Studio</a>
       <a href="${links.offer}">Offer</a>
-      <a href="mailto:info@cadarstudio.com">Contact</a>
+      <a href="mailto:info@cadarastudio.com">Contact</a>
     </nav>
     <div class="mobile-menu-bottom">
       <img class="mobile-menu-emblem" src="${assetPrefix}cadara-symbol.svg" alt="" aria-hidden="true" data-cadara-pending="loop">

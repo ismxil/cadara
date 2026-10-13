@@ -8,7 +8,7 @@ function setupMobileMenu() {
     home: isCasesPath ? '../index.html' : 'index.html',
     work: isCasesPath ? 'work.html' : 'cases/work.html',
     studio: isCasesPath ? '../index.html#studio' : '#studio',
-    contact: 'mailto:info@cadarstudio.com',
+    contact: 'mailto:info@cadarastudio.com',
   };
 
   const panel = document.createElement('div');
