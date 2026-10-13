@@ -2,13 +2,12 @@ function setupMobileMenu() {
   const menuTrigger = document.querySelector('.nav-toggle');
   if (!menuTrigger) return;
 
-  const isCasesPath = window.location.pathname.includes('/cases/');
-  const assetPrefix = isCasesPath ? '../asset/' : 'asset/';
   const links = {
-    home: isCasesPath ? '../index.html' : 'index.html',
-    work: isCasesPath ? 'work.html' : 'cases/work.html',
-    studio: isCasesPath ? '../studio.html' : 'studio.html',
-    contact: 'mailto:info@cadarstudio.com',
+    home: '/index.html',
+    work: '/cases/work.html',
+    studio: '/studio.html',
+    insights: '/insights/index.html',
+    contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarstudio.com'}`,
   };
 
   const panel = document.createElement('div');
@@ -24,6 +23,7 @@ function setupMobileMenu() {
     </div>
     <nav class="mobile-menu-links" aria-label="Mobile navigation">
       <a href="${links.work}">Work</a>
+      <a href="${links.insights}">Insights</a>
       <a href="${links.studio}">Studio</a>
       <a href="${links.contact}">Contact</a>
     </nav>
@@ -35,6 +35,21 @@ function setupMobileMenu() {
       </nav>
     </div>
   `;
+  if (document.body.dataset.socialLinks) {
+    const socials = panel.querySelector('.mobile-menu-socials');
+    socials.replaceChildren();
+    JSON.parse(document.body.dataset.socialLinks).forEach((social) => {
+      let url;
+      try { url = new URL(social.url); } catch { return; }
+      if (!['http:', 'https:'].includes(url.protocol)) return;
+      const link = document.createElement('a');
+      link.href = url.href;
+      link.textContent = social.title;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      socials.appendChild(link);
+    });
+  }
   document.body.appendChild(panel);
   if (window.initCadaraSymbols) window.initCadaraSymbols();
 
