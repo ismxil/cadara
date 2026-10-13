@@ -7,7 +7,7 @@ function setupMobileMenu() {
     work: '/cases/work.html',
     studio: '/studio.html',
     insights: '/insights/index.html',
-    contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarstudio.com'}`,
+    contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarastudio.com'}`,
   };
 
   const panel = document.createElement('div');
