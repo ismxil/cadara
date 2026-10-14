@@ -20,6 +20,11 @@ function setupAnalytics() {
 
   // Named events for the questions autocapture can't answer cleanly.
   document.addEventListener('click', (event) => {
+    const share = event.target.closest('[data-share]');
+    if (share) {
+      window.posthog.capture('insight_shared', { page, channel: share.dataset.share });
+      return;
+    }
     const link = event.target.closest('a[href], .case-card');
     if (!link) return;
     const href = link.getAttribute('href') || '';
@@ -28,6 +33,8 @@ function setupAnalytics() {
       window.posthog.capture('contact_clicked', { page, location: link.closest('header, .mobile-menu-panel') ? 'nav' : link.closest('footer') ? 'footer' : 'page' });
     } else if (link.classList.contains('case-card')) {
       window.posthog.capture('case_card_clicked', { page, case: link.querySelector('.case-meta h3')?.textContent.trim(), coming_soon: link.classList.contains('case-card--soon') });
+    } else if (link.classList.contains('insight-card')) {
+      window.posthog.capture('insight_card_clicked', { page, insight: href.replace(/^\/insights\/|\.html$/g, ''), category: link.dataset.category });
     } else if (link.classList.contains('case-visit')) {
       window.posthog.capture('company_site_clicked', { case: caseSlug, url: href });
     }

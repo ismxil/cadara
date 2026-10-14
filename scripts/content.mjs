@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises'
 import path from 'node:path'
 import {load} from 'cheerio'
+import {insights} from './insights.mjs'
 export const root = path.resolve(import.meta.dirname, '..')
 const clean = value => value.replace(/\s+/g, ' ').trim()
 const paragraphs = ($, selector) => $(selector).map((_, el) => clean($(el).text())).get()
@@ -57,5 +58,6 @@ export async function extractContent() {
     services: home('.service-card').toArray().map((el, i) => ({_key: `service-${i}`, _type: 'service', title: home(el).find('h3').text(), description: clean(home(el).find('p').text()), icon: path.basename(home(el).find('img').attr('src'), '.svg')})),
     socials: home('.footer-socials a').toArray().map((el, i) => ({_key: `social-${i}`, _type: 'socialLink', title: home(el).text(), url: home(el).attr('href')})),
   })
+  docs.push(...structuredClone(insights))
   return docs
 }

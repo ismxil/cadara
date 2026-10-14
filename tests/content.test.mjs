@@ -6,7 +6,7 @@ import path from 'node:path'
 import {load} from 'cheerio'
 import {extractContent} from '../scripts/content.mjs'
 import {buildSite, validateContent} from '../scripts/build.mjs'
-import {renderBody, safeUrl} from '../scripts/render.mjs'
+import {renderBody, safeUrl, headings} from '../scripts/render.mjs'
 const fixture = async () => {
   const docs = await extractContent()
   function assets(value) {
@@ -19,7 +19,7 @@ const fixture = async () => {
 }
 test('migration preserves source projects, duration, image count, text and layouts', async () => {
   const docs = await extractContent()
-  assert.equal(docs.length, 7)
+  assert.equal(docs.length, 8)
   assert.equal(docs.filter(d => d._type === 'caseStudy' && !d.comingSoon).length, 5)
   const mezovest = docs.find(d => d.title === 'Mezovest')
   assert.equal(mezovest.duration, '6 months')
@@ -38,7 +38,10 @@ test('migration preserves source projects, duration, image count, text and layou
     Object.values(value).forEach(collect)
   }
   docs.forEach(collect)
-  assert.equal(paths.size, 66)
+  assert.equal(paths.size, 68)
+  const banks = docs.find(d => d._id === 'insight-what-is-killing-traditional-banks')
+  assert.equal(banks.slug.current, 'what-is-killing-traditional-banks')
+  assert.equal(banks.body.filter(b => b.style === 'blockquote').length, 1)
 })
 test('published content generates new routes, edited copy, CMS images and safe article markup', async () => {
   const docs = await fixture()
@@ -70,6 +73,17 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(article('.insight-body script').length, 0)
     assert.equal(article('.insight-body p').text(), '<script>alert(1)</script>')
     assert.equal(article('.nav-links [href="/insights/index.html"]').length, 1)
+    const seeded = load(await readFile(path.join(output, 'insights/what-is-killing-traditional-banks.html'), 'utf8'))
+    assert.equal(seeded('.insight-category').first().text(), 'Opinion')
+    assert.match(seeded('.insight-meta').first().text(), /20 Nov 2021.*min read/)
+    assert.equal(seeded('.insight-body h2#how-can-this-be-best-approach').length, 1)
+    assert.equal(seeded('.insight-body a[href^="https://www.financial-ombudsman.org.uk/"]').length, 1)
+    assert.equal(seeded('.insight-related .insight-card').length, 1)
+    assert.equal(JSON.parse(seeded('script[type="application/ld+json"]').text()).datePublished, '2021-11-20')
+    const index = load(await readFile(path.join(output, 'insights/index.html'), 'utf8'))
+    assert.equal(index('.insight-card--featured h2').text(), 'A new insight')
+    assert.equal(index('.insight-filters button').length, 2)
+    assert.equal(index('.insight-filters [aria-pressed="true"]').text(), 'All2')
     // Unpublishing removes a previously generated page on the next build.
     await buildSite(docs.filter(d => d._id !== 'new-project' && d._id !== 'article'), output)
     await assert.rejects(access(path.join(output, 'cases/new-project.html')))
@@ -87,6 +101,7 @@ test('rejects duplicate and reserved slugs, missing studio content, and unsafe l
   docs[0].slug.current = 'work'
   assert.throws(() => validateContent(docs), /reserved/)
   assert.equal(safeUrl('javascript:alert(1)'), '')
+  assert.deepEqual(headings([{_type: 'block', style: 'h2', children: [{text: 'Same'}]}, {_type: 'block', style: 'h2', children: [{text: 'Same'}]}]).map(h => h.id), ['same', 'same-2'])
   const html = renderBody([{_type: 'block', style: 'normal', markDefs: [{_key: 'link', _type: 'link', href: 'javascript:alert(1)'}], children: [{_type: 'span', marks: ['link'], text: 'Click'}]}])
   assert.equal(html, '<p>Click</p>')
 })

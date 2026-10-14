@@ -123,7 +123,7 @@ function setupComingSoonCards() {
 
 function setupScrollReveal() {
   const targets = document.querySelectorAll(
-    '.case-card, .case-gallery-item, .case-gallery-text, .case-hero-cover, .case-next'
+    '.case-card, .case-gallery-item, .case-gallery-text, .case-hero-cover, .case-next, .insight-card, .insight-cover'
   );
   if (!targets.length) return;
 
@@ -197,7 +197,38 @@ function setupProjectPrefetch() {
   });
 }
 
+function setupInsightFilters() {
+  const buttons = document.querySelectorAll('.insight-filters button');
+  if (!buttons.length) return;
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const category = button.dataset.filter;
+      buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+      document.querySelectorAll('.insight-card').forEach((card) => {
+        card.hidden = Boolean(category) && card.dataset.category !== category;
+      });
+    });
+  });
+}
+
+function setupCopyLink() {
+  document.querySelectorAll('[data-share="copy"]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.url || window.location.href);
+        button.textContent = 'Link copied';
+      } catch {
+        button.textContent = 'Copy failed';
+      }
+      setTimeout(() => { button.textContent = 'Copy link'; }, 2000);
+    });
+  });
+}
+
 setupMobileMenu();
 setupComingSoonCards();
+setupInsightFilters();
+setupCopyLink();
 setupScrollReveal();
 setupProjectPrefetch();

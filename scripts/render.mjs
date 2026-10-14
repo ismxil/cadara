@@ -91,30 +91,102 @@ export function renderCase(template, studio, project, projects) {
   if (next) $('footer').before(`<a class="case-next container" href="/cases/${escape(next.slug.current)}.html" aria-label="View next project: ${escape(next.title)}">${image(next.cardImage, {className: 'case-next-cover'})}<span class="case-next-link">View work ↗</span></a>`)
   return $.html()
 }
+const siteUrl = 'https://cadarastudio.com'
+const blockText = block => (block.children || []).map(child => child.text || '').join('')
+export function formatDate(value) {
+  const date = new Date(`${value}T00:00:00Z`)
+  return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})
+}
+export function readingTime(body) {
+  const words = (body || []).filter(b => b._type === 'block').map(blockText).join(' ').split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.round(words / 225))
+}
+// Heading anchors for the table of contents; renderBody assigns the same ids in document order.
+export function headings(body) {
+  const used = new Set()
+  return (body || []).filter(b => b._type === 'block' && ['h2', 'h3'].includes(b.style)).map(block => {
+    const text = blockText(block).trim()
+    const base = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60).replace(/-$/, '') || 'section'
+    let id = base
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`
+    used.add(id)
+    return {id, text, level: block.style}
+  })
+}
 export function renderBody(body) {
+  const ids = headings(body).map(h => h.id)
+  const heading = tag => ({children}) => `<${tag} id="${escape(ids.shift())}">${children}</${tag}>`
   return toHTML(body || [], {components: {
+    block: {h2: heading('h2'), h3: heading('h3')},
     types: {contentImage: ({value}) => `<figure>${image(value)}</figure>`},
-    marks: {link: ({value, children}) => safeUrl(value?.href) ? `<a href="${escape(safeUrl(value.href))}" rel="noopener">${children}</a>` : children},
+    marks: {link: ({value, children}) => safeUrl(value?.href) ? `<a href="${escape(safeUrl(value.href))}" target="_blank" rel="noopener">${children}</a>` : children},
   }})
 }
-export function renderInsight(template, studio, insight) {
-  const $ = shell(template, studio)
-  metadata($, `${insight.title} — Cadara Insights`, insight.seoDescription || insight.excerpt, true)
-  $('.intro, .work-section, .services-section, .studio-section').remove()
-  $('footer').before(`<article class="insight-article container"><header><p>Insights${insight.author ? ` · ${escape(insight.author)}` : ''} · <time datetime="${escape(insight.publishedAt)}">${escape(insight.publishedAt)}</time></p>
-    <h1>${escape(insight.title)}</h1><p class="insight-excerpt">${escape(insight.excerpt)}</p></header>
-    ${image(insight.coverImage, {eager: true})}<div class="insight-body">${renderBody(insight.body)}</div><a href="/insights/index.html">← All insights</a></article>`)
+const insightMeta = insight => `<p class="insight-meta">${insight.category ? `<span class="insight-category">${escape(insight.category)}</span>` : ''}<time datetime="${escape(insight.publishedAt)}">${escape(formatDate(insight.publishedAt))}</time></p>`
+function insightCard(insight, {featured = false, heading = 'h2'} = {}) {
+  return `<a class="insight-card${featured ? ' insight-card--featured' : ''}" href="/insights/${escape(insight.slug.current)}.html" data-category="${escape(insight.category || '')}">
+    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured})}</figure>
+    <div class="insight-card-copy">${insightMeta(insight)}<${heading}>${escape(insight.title)}</${heading}><p class="insight-card-excerpt">${escape(insight.excerpt)}</p></div></a>`
+}
+function setNav($) {
+  $('.nav-links a').removeAttr('aria-current').filter('[href="/insights/index.html"]').attr('aria-current', 'page')
   $('head').append('<link rel="stylesheet" href="/css/insights.css">')
+}
+export function renderInsight(template, studio, insight, insights = []) {
+  const $ = shell(template, studio)
+  const url = `${siteUrl}/insights/${insight.slug.current}.html`
+  const description = insight.seoDescription || insight.excerpt
+  metadata($, `${insight.title} — Cadara Insights`, description, true)
+  $('head').append(`<link rel="canonical" href="${escape(url)}">`)
+  if (insight.coverImage?.asset) $('head').append(`<meta property="og:image" content="${escape(imageUrl(insight.coverImage, 1200))}">`)
+  $('head').append(`<script type="application/ld+json">${JSON.stringify({'@context': 'https://schema.org', '@type': 'BlogPosting', headline: insight.title, description, datePublished: insight.publishedAt, url,
+    ...(insight.author ? {author: {'@type': 'Person', name: insight.author}} : {}), ...(insight.coverImage?.asset ? {image: imageUrl(insight.coverImage, 1200)} : {}),
+    publisher: {'@type': 'Organization', name: 'Cadara Studio'}}).replace(/</g, '\\u003c')}</script>`)
+  setNav($)
+  $('main').addClass('insight-site')
+  $('.intro, .work-section, .services-section, .studio-section').remove()
+  const toc = headings(insight.body).filter(h => h.level === 'h2')
+  const share = [['LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`], ['X', `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(insight.title)}`], ['Facebook', `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`]]
+  const author = insight.author ? `<div class="insight-author">${image(insight.authorImage, {width: 160, ratio: 1, className: 'insight-author-photo'})}<div><p>${escape(insight.author)}</p>${insight.authorRole ? `<p>${escape(insight.authorRole)}</p>` : ''}</div></div>` : ''
+  const related = insights.filter(i => i._id !== insight._id).sort((a, b) => (b.category === insight.category) - (a.category === insight.category)).slice(0, 3)
+  $('footer').before(`<article class="insight-article">
+    <header class="insight-hero container">
+      <a class="insight-back" href="/insights/index.html">← All insights</a>
+      <div class="insight-hero-grid"><h1>${escape(insight.title)}</h1>
+        <div class="insight-hero-aside">${insightMeta(insight).replace('</p>', `<span>${readingTime(insight.body)} min read</span></p>`)}<p class="insight-excerpt">${escape(insight.excerpt)}</p>${author}</div></div>
+    </header>
+    ${insight.coverImage?.asset ? `<figure class="insight-cover container">${image(insight.coverImage, {eager: true})}${insight.coverCaption ? `<figcaption>${escape(insight.coverCaption)}</figcaption>` : ''}</figure>` : ''}
+    <div class="insight-layout container">
+      <aside class="insight-aside"><div class="insight-aside-inner">
+        ${toc.length > 1 ? `<nav class="insight-toc" aria-label="Table of contents"><p class="insight-label">Contents</p><ol>${toc.map(h => `<li><a href="#${escape(h.id)}">${escape(h.text)}</a></li>`).join('')}</ol></nav>` : ''}
+        <div class="insight-share"><p class="insight-label">Share</p><ul>${share.map(([name, href]) => `<li><a href="${escape(href)}" target="_blank" rel="noopener" data-share="${name.toLowerCase()}">${name}</a></li>`).join('')}<li><button type="button" data-share="copy" data-url="${escape(url)}">Copy link</button></li></ul></div>
+      </div></aside>
+      <div class="insight-main">
+        <div class="insight-body">${renderBody(insight.body)}</div>
+        ${(insight.tags || []).length ? `<ul class="insight-tags" aria-label="Tags">${insight.tags.map(tag => `<li>${escape(tag)}</li>`).join('')}</ul>` : ''}
+        ${insight.author ? `<div class="insight-author-box"><p class="insight-label">Written by</p>${author}</div>` : ''}
+      </div>
+    </div>
+    ${related.length ? `<section class="insight-related container" aria-labelledby="related-label"><h2 id="related-label" class="insight-label">Recommended reads</h2><div class="insight-grid">${related.map(i => insightCard(i, {heading: 'h3'})).join('')}</div></section>` : ''}
+  </article>`)
   return $.html()
 }
 export function renderInsights(template, studio, insights) {
   const $ = shell(template, studio)
-  metadata($, 'Insights — Cadara Studio', 'Ideas and perspectives from Cadara Studio.')
+  metadata($, 'Insights — Cadara Studio', 'Perspectives on brand, product design and the future of financial services from Cadara Studio.')
+  $('head').append(`<link rel="canonical" href="${siteUrl}/insights/index.html">`)
+  setNav($)
+  $('main').addClass('insight-site')
   $('.intro-headline').text('Insights')
+  $('.intro').append('<p class="intro-tagline">Perspectives on brand, product and the future of financial services.</p>')
   $('.services-section, .studio-section').remove()
-  $('.cases-grid').html(insights.length ? insights.map(insight => `<a class="case-card" href="/insights/${escape(insight.slug.current)}.html"><figure class="case-image">${image(insight.coverImage, {width: 1400})}</figure>
-    <div class="case-meta"><h3>${escape(insight.title)}</h3><p>${escape(insight.excerpt)}</p></div></a>`).join('') : '<p>Insights will appear here when published.</p>')
-  $('.work-section').attr('aria-label', 'Insights').attr('id', 'insights')
-  $('.nav-links a').removeAttr('aria-current').filter('[href="/insights/index.html"]').attr('aria-current', 'page')
+  const categories = [...new Set(insights.map(i => i.category).filter(Boolean))]
+  const [featured, ...rest] = insights
+  $('.work-section').attr('class', 'insights-section').attr('aria-label', 'Insights').attr('id', 'insights').html(insights.length ? `
+    <div class="insight-filters container" role="group" aria-label="Filter by category">
+      ${['All', ...categories].map((c, i) => `<button type="button" data-filter="${i ? escape(c) : ''}" aria-pressed="${i === 0}">${escape(c)}<sup>${i ? insights.filter(x => x.category === c).length : insights.length}</sup></button>`).join('')}
+    </div>
+    <div class="insight-list container">${insightCard(featured, {featured: true})}${rest.length ? `<div class="insight-grid">${rest.map(i => insightCard(i)).join('')}</div>` : ''}</div>`
+    : '<p class="container">Insights will appear here when published.</p>')
   return $.html()
 }
