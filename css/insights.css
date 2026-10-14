@@ -27,34 +27,12 @@
 
 /* ── Overview ──────────────────────────────── */
 
-.insight-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 32px;
-  margin-bottom: 48px;
-}
-
-.insight-filters button {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--footer-wordmark);
-  font: inherit;
-  font-size: 24px;
+.insight-summary {
+  margin: 0 0 48px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
   line-height: 22px;
-  cursor: pointer;
-  transition: color 200ms ease;
-}
-
-.insight-filters button:hover,
-.insight-filters button[aria-pressed="true"] {
-  color: var(--white);
-}
-
-.insight-filters sup {
-  margin-left: 4px;
-  font-size: 12px;
-  vertical-align: top;
 }
 
 .insight-list,
@@ -432,10 +410,6 @@
     gap: 12px 24px;
   }
 
-  .insight-filters button {
-    font-size: 20px;
-  }
-
   .insight-body {
     font-size: 18px;
   }
@@ -455,7 +429,7 @@
     grid-column: span 12;
   }
 
-  .insight-filters {
+  .insight-summary {
     margin-bottom: 32px;
   }
 }

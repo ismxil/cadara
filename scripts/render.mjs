@@ -196,15 +196,10 @@ export function renderInsights(template, studio, insights) {
   $('head').append(`<link rel="canonical" href="${siteUrl}/insights">`)
   setNav($)
   $('main').addClass('insight-site')
-  $('.intro-headline').text('Insights')
-  $('.intro').append('<p class="intro-tagline">Perspectives on brand, product and the future of financial services.</p>')
-  $('.services-section, .studio-section').remove()
-  const categories = [...new Set(insights.map(i => i.category).filter(Boolean))]
+  $('.intro, .services-section, .studio-section').remove()
   const [featured, ...rest] = insights
   $('.work-section').attr('class', 'insights-section').attr('aria-label', 'Insights').attr('id', 'insights').html(insights.length ? `
-    <div class="insight-filters container" role="group" aria-label="Filter by category">
-      ${['All', ...categories].map((c, i) => `<button type="button" data-filter="${i ? escape(c) : ''}" aria-pressed="${i === 0}">${escape(c)}<sup>${i ? insights.filter(x => x.category === c).length : insights.length}</sup></button>`).join('')}
-    </div>
+    <h1 class="insight-summary container">IDEAS, INSIGHTS, AND OPINIONS · ${insights.length} ${insights.length === 1 ? 'item' : 'items'}</h1>
     <div class="insight-list container">${insightCard(featured, {featured: true})}${rest.map(i => insightCard(i)).join('')}</div>`
     : '<p class="container">Insights will appear here when published.</p>')
   return $.html()

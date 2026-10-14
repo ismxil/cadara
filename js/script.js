@@ -197,21 +197,6 @@ function setupProjectPrefetch() {
   });
 }
 
-function setupInsightFilters() {
-  const buttons = document.querySelectorAll('.insight-filters button');
-  if (!buttons.length) return;
-
-  buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const category = button.dataset.filter;
-      buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
-      document.querySelectorAll('.insight-card').forEach((card) => {
-        card.hidden = Boolean(category) && card.dataset.category !== category;
-      });
-    });
-  });
-}
-
 function setupCopyLink() {
   document.querySelectorAll('[data-share="copy"]').forEach((button) => {
     button.addEventListener('click', async () => {
@@ -228,7 +213,6 @@ function setupCopyLink() {
 
 setupMobileMenu();
 setupComingSoonCards();
-setupInsightFilters();
 setupCopyLink();
 setupScrollReveal();
 setupProjectPrefetch();
