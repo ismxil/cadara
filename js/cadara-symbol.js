@@ -103,7 +103,8 @@ function setupBrandTypewriter() {
   document.querySelectorAll('.brand--animated').forEach((brand) => {
     const cMark = brand.querySelector('.cadara-mark--c');
     const wordmark = brand.querySelector('.brand-wordmark');
-    if (!cMark || !wordmark) return;
+    if (!cMark || !wordmark || brand.dataset.cadaraTypewriterMounted === 'true') return;
+    brand.dataset.cadaraTypewriterMounted = 'true';
 
     let timer = null;
     let loopTimer = null;

@@ -34,6 +34,8 @@ The site stays static HTML with the original styles, fonts, loader, and interact
 
 The production dataset is public, so website builds need no token. If it becomes private, set `SANITY_API_READ_TOKEN` in the build environment. Import credentials are never shipped in the site. The generated output contains only public website assets and HTML, not the source or Studio configuration.
 
+The decorative intro runs independently of fonts and images, with a 650 ms fallback. Reduced-motion visitors and late-loading scripts skip it. CMS images include responsive sizes; Studio photography is resized to WebP by Sharp during the build. Source photos remain unchanged.
+
 ## Import existing content
 
 The existing HTML files are retained as the migration source and layout templates. The frontend renders their editable content from Sanity; source copy changes are not the editing workflow after migration.

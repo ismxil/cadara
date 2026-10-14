@@ -3,6 +3,7 @@ import path from 'node:path'
 import {createClient} from '@sanity/client'
 import {root} from './content.mjs'
 import {shell, cards, metadata, renderCase, renderInsight, renderInsights} from './render.mjs'
+import {optimizeStudioImages} from './assets.mjs'
 export function validateContent(docs) {
   const studio = docs.find(d => d._type === 'studioPage' && d._id === 'studioPage')
   if (!studio) throw new Error('Studio content is missing. Run npm run import:content before building.')
@@ -31,7 +32,9 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   home('.cases-grid').html(cards(projects.filter(p => p.featured)))
   metadata(home, 'Cadara Studio', studio.headline)
   await writeFile(path.join(output, 'index.html'), home.html())
-  await writeFile(path.join(output, 'studio.html'), shell(studioTemplate, studio).html())
+  const studioPage = shell(studioTemplate, studio)
+  await optimizeStudioImages(studioPage, output)
+  await writeFile(path.join(output, 'studio.html'), studioPage.html())
   const work = shell(workTemplate, studio)
   work('.intro-headline').text(studio.workHeadline)
   work('.cases-grid').html(cards(projects))

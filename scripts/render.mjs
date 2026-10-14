@@ -10,28 +10,39 @@ export function imageUrl(image, width = 2000) {
   if (!image?.asset) return ''
   return builder.image(image).width(width).fit('max').auto('format').url()
 }
-function image(image, {className = '', width = 2000, eager = false, ratio} = {}) {
+function image(image, {className = '', width = 2000, eager = false, ratio, sizes = '(max-width: 900px) 100vw, 90vw'} = {}) {
   const src = imageUrl(image, width)
   if (!src) return ''
-  let url = builder.image(image).width(width)
-  if (ratio) url = url.height(Math.round(width / ratio)).fit('crop')
-  else url = url.fit('max')
-  return `<img src="${escape(url.auto('format').url())}" alt="${escape(image.alt)}" class="${escape(className)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
+  const dimensions = image.asset._ref?.match(/-(\d+)x(\d+)-/)
+  const crop = image.crop || {}
+  const sourceWidth = dimensions ? Math.max(1, Math.floor(Number(dimensions[1]) * (1 - (crop.left || 0) - (crop.right || 0)))) : width
+  const sourceHeight = dimensions ? Math.max(1, Math.floor(Number(dimensions[2]) * (1 - (crop.top || 0) - (crop.bottom || 0)))) : width
+  const maxWidth = Math.min(width, sourceWidth)
+  const aspect = ratio || sourceWidth / sourceHeight
+  const urlFor = w => {
+    let url = builder.image(image).width(w)
+    if (ratio) url = url.height(Math.max(1, Math.round(w / ratio))).fit('crop')
+    else url = url.fit('max')
+    return url.auto('format').url()
+  }
+  const widths = [...new Set([320, 480, 640, 960, 1400, maxWidth].filter(w => w <= maxWidth))].sort((a, b) => a - b)
+  return `<img src="${escape(urlFor(maxWidth))}" srcset="${escape(widths.map(w => `${urlFor(w)} ${w}w`).join(', '))}" sizes="${escape(sizes)}" width="${maxWidth}" height="${Math.max(1, Math.round(maxWidth / aspect))}" alt="${escape(image.alt)}" class="${escape(className)}" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
 }
 const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join('')
 export function cards(projects) {
-  return projects.map(project => {
+  return projects.map((project, index) => {
     const tag = project.comingSoon ? 'div' : 'a'
     const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}.html"`
     const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
     return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
-      <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400})}</figure>
+      <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw'})}</figure>
       <div class="case-meta"><h3>${escape(project.title)}</h3><p>${escape(project.summary)}</p></div>
       ${project.comingSoon ? '<span class="case-card-soon">Coming soon</span>' : ''}</${tag}>`
   }).join('\n')
 }
 export function shell(template, studio) {
   const $ = load(template)
+  $('body').removeClass('is-loading')
   // Root-relative paths work for both original and newly generated nested pages.
   $('a[href], img[src], script[src], link[href]').each((_, el) => {
     const attr = $(el).attr('href') !== undefined ? 'href' : 'src'
@@ -76,13 +87,13 @@ export function renderCase(template, studio, project, projects) {
     ${project.duration || date ? `<div class="meta-group"><p>${project.duration ? 'Duration' : 'Date'}</p><p class="meta-date">${escape(project.duration || date)}</p></div>` : ''}
     </div></div><div class="case-hero-intro"><div class="case-hero-copy">${paragraphs(project.intro)}
     ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company</a>` : ''}</div>
-    <figure class="case-hero-cover${appearance}">${image(project.coverImage, {eager: true})}</figure></div>`)
+    <figure class="case-hero-cover${appearance}">${image(project.coverImage, {eager: true, sizes: '(max-width: 900px) 100vw, 60vw'})}</figure></div>`)
   $('.case-gallery').attr('class', 'case-gallery container').html((project.gallery || []).map(block => {
     const style = `grid-column: ${block.width === 'half' ? 'span 1' : '1 / -1'}`
     if (block._type === 'galleryText') return `<div class="case-gallery-text" style="${style}"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</div>`
     const dimensions = block.image?.asset?._ref?.match(/-(\d+)x(\d+)-/)
     const ratio = Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : dimensions ? Number(dimensions[1]) / Number(dimensions[2]) : 16 / 9
-    return `<figure class="case-gallery-item${block.fit === 'contain' ? ' case-gallery-item--contain' : ''}" style="${style}; --ratio: ${ratio}">${image(block.image, {ratio: block.fit === 'contain' ? undefined : ratio})}</figure>`
+    return `<figure class="case-gallery-item${block.fit === 'contain' ? ' case-gallery-item--contain' : ''}" style="${style}; --ratio: ${ratio}">${image(block.image, {ratio: block.fit === 'contain' ? undefined : ratio, sizes: block.width === 'half' ? '(max-width: 900px) 100vw, 50vw' : '100vw'})}</figure>`
   }).join(''))
   $('.case-credit').remove()
   if (project.outcome?.length) $('.case-gallery').after(`<section class="case-credit container"><h2>${escape(project.outcomeHeading)}</h2>${paragraphs(project.outcome)}</section>`)
@@ -125,7 +136,7 @@ export function renderBody(body) {
 const insightMeta = insight => `<p class="insight-meta">${insight.category ? `<span class="insight-category">${escape(insight.category)}</span>` : ''}<time datetime="${escape(insight.publishedAt)}">${escape(formatDate(insight.publishedAt))}</time></p>`
 function insightCard(insight, {featured = false, heading = 'h2'} = {}) {
   return `<a class="insight-card${featured ? ' insight-card--featured' : ''}" href="/insights/${escape(insight.slug.current)}.html" data-category="${escape(insight.category || '')}">
-    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured})}</figure>
+    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured, sizes: featured ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw'})}</figure>
     <div class="insight-card-copy">${insightMeta(insight)}<${heading}>${escape(insight.title)}</${heading}><p class="insight-card-excerpt">${escape(insight.excerpt)}</p></div></a>`
 }
 function setNav($) {
@@ -147,7 +158,7 @@ export function renderInsight(template, studio, insight, insights = []) {
   $('.intro, .work-section, .services-section, .studio-section').remove()
   const toc = headings(insight.body).filter(h => h.level === 'h2')
   const share = [['LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`], ['X', `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(insight.title)}`], ['Facebook', `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`]]
-  const author = insight.author ? `<div class="insight-author">${image(insight.authorImage, {width: 160, ratio: 1, className: 'insight-author-photo'})}<div><p>${escape(insight.author)}</p>${insight.authorRole ? `<p>${escape(insight.authorRole)}</p>` : ''}</div></div>` : ''
+  const author = insight.author ? `<div class="insight-author">${image(insight.authorImage, {width: 160, ratio: 1, className: 'insight-author-photo', sizes: '64px'})}<div><p>${escape(insight.author)}</p>${insight.authorRole ? `<p>${escape(insight.authorRole)}</p>` : ''}</div></div>` : ''
   const related = insights.filter(i => i._id !== insight._id).sort((a, b) => (b.category === insight.category) - (a.category === insight.category)).slice(0, 3)
   $('footer').before(`<article class="insight-article">
     <header class="insight-hero container">
