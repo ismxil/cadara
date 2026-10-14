@@ -190,8 +190,9 @@
 .studio-team-grid {
   grid-column: 3 / span 4;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(3, minmax(0, 220px));
+  justify-content: end;
+  gap: 24px;
 }
 
 .studio-team-card {
@@ -202,7 +203,7 @@
 }
 
 .studio-team-image {
-  height: 478px;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   background: #eee;
 }
@@ -230,7 +231,6 @@
   .trusted-client-logos img { flex: 0 1 auto; max-width: 120px; }
   .studio-service-card { padding: 32px; }
   .studio-team-grid { gap: 20px; }
-  .studio-team-image { height: 36vw; max-height: 478px; }
 }
 
 @media (max-width: 900px) {
@@ -261,7 +261,7 @@
 
   .studio-team-copy,
   .studio-team-grid { grid-column: 1; }
-  .studio-team-image { height: 48vw; }
+  .studio-team-grid { justify-content: start; }
 }
 
 @media (max-width: 600px) {
@@ -275,6 +275,5 @@
   .studio-service-card > img { width: 56px; height: 56px; }
   .studio-service-card p,
   .studio-service-card ul { font-size: 19px; }
-  .studio-team-grid { grid-template-columns: 1fr; gap: 48px; }
-  .studio-team-image { height: 110vw; }
+  .studio-team-grid { grid-template-columns: repeat(2, minmax(0, 180px)); gap: 32px 20px; }
 }

@@ -17,7 +17,7 @@ export async function optimizeStudioImages($, output) {
     img.attr({
       src: `${stem}-${maxWidth}.webp`,
       srcset: widths.map(w => `${stem}-${w}.webp ${w}w`).join(', '),
-      sizes: portrait ? '(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw' : '(max-width: 900px) 100vw, 60vw',
+      sizes: portrait ? '(max-width: 600px) 180px, 220px' : '(max-width: 900px) 100vw, 60vw',
       width, height, loading: 'lazy', decoding: 'async',
     })
   }))
