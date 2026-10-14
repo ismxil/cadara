@@ -7,10 +7,10 @@ Content lives in Sanity project **o47ti8nx**, dataset **production**.
 The Studio has three sections:
 
 - **Case studies:** client name, card copy and image, homepage visibility, display order, coming-soon status, headline, services, project date or duration, introduction, company link, hero image, ordered image/text gallery, closing section, next project, and search description.
-- **Insights:** title, URL slug, excerpt, category, tags, cover image and caption, author name, role and photo, publication date, rich article body, and search description. Publish an article to create `/insights/<slug>.html`; the index is `/insights/index.html` and filters by category. Articles show reading time, a table of contents (when the body has two or more headings), share links, and up to three recommended reads. The importer seeds the articles in `scripts/insights.mjs`.
+- **Insights:** title, URL slug, excerpt, category, tags, cover image and caption, author name, role and photo, publication date, rich article body, and search description. Publish an article to create `/insights/<slug>`; the index is `/insights` and filters by category. Articles show reading time, a table of contents (when the body has two or more headings), share links, and up to three recommended reads. The importer seeds the articles in `scripts/insights.mjs`.
 - **Studio:** homepage and work headlines, studio statement, services heading, services and icons, contact email, and social links. This is a singleton shared by the homepage, work, services, and article pages.
 
-Gallery blocks can be reordered and set to full or half width. Images have editable alternative text, crop, and hotspot. Coming-soon projects show a card without a detail link. Case-study slugs create `/cases/<slug>.html`; retain existing slugs to preserve existing URLs.
+Gallery blocks can be reordered and set to full or half width. Images have editable alternative text, crop, and hotspot. Coming-soon projects show a card without a detail link. Case-study slugs create `/cases/<slug>`; retain existing slugs to preserve existing URLs.
 
 ## Local development
 
@@ -50,7 +50,7 @@ The importer uploads the existing images and creates deterministic document IDs.
 
 ## Publishing website updates
 
-`vercel.json` builds with `npm run build` and serves **dist/site**. The frontend changes must be deployed before the live site uses Sanity.
+`vercel.json` enables clean URLs (for example `/studio`), redirects old `.html` URLs permanently, and builds with `npm run build` and serves **dist/site**. The frontend changes must be deployed before the live site uses Sanity.
 
 Automatic updates are configured: the Sanity webhook **Cadara published content → Vercel main** sends published create/update/delete events to the existing Cadara Vercel project's **sanity-content** deploy hook on `main`. Draft edits and release versions do not trigger a rebuild. This becomes effective for the CMS-driven frontend when these repository changes are deployed to `main`.
 

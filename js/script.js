@@ -3,10 +3,10 @@ function setupMobileMenu() {
   if (!menuTrigger) return;
 
   const links = {
-    home: '/index.html',
-    work: '/cases/work.html',
-    studio: '/studio.html',
-    insights: '/insights/index.html',
+    home: '/',
+    work: '/cases/work',
+    studio: '/studio',
+    insights: '/insights',
     contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarastudio.com'}`,
   };
 

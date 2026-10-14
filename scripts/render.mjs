@@ -32,7 +32,7 @@ const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join
 export function cards(projects) {
   return projects.map((project, index) => {
     const tag = project.comingSoon ? 'div' : 'a'
-    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}.html"`
+    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}"`
     const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
     return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
       <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw'})}</figure>
@@ -52,8 +52,16 @@ export function shell(template, studio) {
       $(el).attr(attr, new URL(value, base).pathname)
     }
   })
+  // Public routes are extensionless; the build still emits static HTML files.
+  $('a[href^="/"]').each((_, el) => {
+    const href = $(el).attr('href')
+    if (href.startsWith('//')) return
+    const url = new URL(href, 'https://cadara.local')
+    url.pathname = url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/\/$/, '') || '/'
+    $(el).attr('href', `${url.pathname}${url.search}${url.hash}`)
+  })
   $('.nav-links').each((_, el) => {
-    if (!$(el).find('[href="/insights/index.html"]').length) $(el).find('a').first().after('<a href="/insights/index.html">Insights</a>')
+    if (!$(el).find('[href="/insights"]').length) $(el).find('a').first().after('<a href="/insights">Insights</a>')
   })
   $('.statement p').text(studio.statement)
   $('.services-heading').text(studio.servicesHeading)
@@ -99,7 +107,7 @@ export function renderCase(template, studio, project, projects) {
   if (project.outcome?.length) $('.case-gallery').after(`<section class="case-credit container"><h2>${escape(project.outcomeHeading)}</h2>${paragraphs(project.outcome)}</section>`)
   $('.case-next').remove()
   const next = projects.find(p => p._id === project.nextProject?._ref && !p.comingSoon)
-  if (next) $('footer').before(`<a class="case-next container" href="/cases/${escape(next.slug.current)}.html" aria-label="View next project: ${escape(next.title)}">${image(next.cardImage, {className: 'case-next-cover'})}<span class="case-next-link">View work ↗</span></a>`)
+  if (next) $('footer').before(`<a class="case-next container" href="/cases/${escape(next.slug.current)}" aria-label="View next project: ${escape(next.title)}">${image(next.cardImage, {className: 'case-next-cover'})}<span class="case-next-link">View work ↗</span></a>`)
   return $.html()
 }
 const siteUrl = 'https://cadarastudio.com'
@@ -135,17 +143,17 @@ export function renderBody(body) {
 }
 const insightMeta = insight => `<p class="insight-meta">${insight.category ? `<span class="insight-category">${escape(insight.category)}</span>` : ''}<time datetime="${escape(insight.publishedAt)}">${escape(formatDate(insight.publishedAt))}</time></p>`
 function insightCard(insight, {featured = false, heading = 'h2'} = {}) {
-  return `<a class="insight-card${featured ? ' insight-card--featured' : ''}" href="/insights/${escape(insight.slug.current)}.html" data-category="${escape(insight.category || '')}">
-    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured, sizes: featured ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw'})}</figure>
+  return `<a class="insight-card${featured ? ' insight-card--featured' : ''}" href="/insights/${escape(insight.slug.current)}" data-category="${escape(insight.category || '')}">
+    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured, sizes: featured ? '(max-width: 1200px) 100vw, 50vw' : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 25vw'})}</figure>
     <div class="insight-card-copy">${insightMeta(insight)}<${heading}>${escape(insight.title)}</${heading}><p class="insight-card-excerpt">${escape(insight.excerpt)}</p></div></a>`
 }
 function setNav($) {
-  $('.nav-links a').removeAttr('aria-current').filter('[href="/insights/index.html"]').attr('aria-current', 'page')
+  $('.nav-links a').removeAttr('aria-current').filter('[href="/insights"]').attr('aria-current', 'page')
   $('head').append('<link rel="stylesheet" href="/css/insights.css">')
 }
 export function renderInsight(template, studio, insight, insights = []) {
   const $ = shell(template, studio)
-  const url = `${siteUrl}/insights/${insight.slug.current}.html`
+  const url = `${siteUrl}/insights/${insight.slug.current}`
   const description = insight.seoDescription || insight.excerpt
   metadata($, `${insight.title} — Cadara Insights`, description, true)
   $('head').append(`<link rel="canonical" href="${escape(url)}">`)
@@ -162,7 +170,7 @@ export function renderInsight(template, studio, insight, insights = []) {
   const related = insights.filter(i => i._id !== insight._id).sort((a, b) => (b.category === insight.category) - (a.category === insight.category)).slice(0, 3)
   $('footer').before(`<article class="insight-article">
     <header class="insight-hero container">
-      <a class="insight-back" href="/insights/index.html">← All insights</a>
+      <a class="insight-back" href="/insights">← All insights</a>
       <div class="insight-hero-grid"><h1>${escape(insight.title)}</h1>
         <div class="insight-hero-aside">${insightMeta(insight).replace('</p>', `<span>${readingTime(insight.body)} min read</span></p>`)}<p class="insight-excerpt">${escape(insight.excerpt)}</p>${author}</div></div>
     </header>
@@ -185,7 +193,7 @@ export function renderInsight(template, studio, insight, insights = []) {
 export function renderInsights(template, studio, insights) {
   const $ = shell(template, studio)
   metadata($, 'Insights — Cadara Studio', 'Perspectives on brand, product design and the future of financial services from Cadara Studio.')
-  $('head').append(`<link rel="canonical" href="${siteUrl}/insights/index.html">`)
+  $('head').append(`<link rel="canonical" href="${siteUrl}/insights">`)
   setNav($)
   $('main').addClass('insight-site')
   $('.intro-headline').text('Insights')
@@ -197,7 +205,7 @@ export function renderInsights(template, studio, insights) {
     <div class="insight-filters container" role="group" aria-label="Filter by category">
       ${['All', ...categories].map((c, i) => `<button type="button" data-filter="${i ? escape(c) : ''}" aria-pressed="${i === 0}">${escape(c)}<sup>${i ? insights.filter(x => x.category === c).length : insights.length}</sup></button>`).join('')}
     </div>
-    <div class="insight-list container">${insightCard(featured, {featured: true})}${rest.length ? `<div class="insight-grid">${rest.map(i => insightCard(i)).join('')}</div>` : ''}</div>`
+    <div class="insight-list container">${insightCard(featured, {featured: true})}${rest.map(i => insightCard(i)).join('')}</div>`
     : '<p class="container">Insights will appear here when published.</p>')
   return $.html()
 }

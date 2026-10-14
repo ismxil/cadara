@@ -57,7 +57,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(home('.intro-headline').text(), 'An updated studio headline')
     assert.equal(home('.case-card').length, 6)
     assert.equal(home('.case-card--soon').length, 1)
-    assert.equal(home('[href="/cases/new-project.html"]').length, 0)
+    assert.equal(home('[href="/cases/new-project"]').length, 0)
     assert.match(home('.case-image img').first().attr('src'), /^https:\/\/cdn.sanity.io\//)
     assert.equal(home('body').hasClass('is-loading'), false)
     const firstImage = home('.case-image img').first()
@@ -71,7 +71,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.doesNotMatch(firstImage.attr('srcset'), /1400w/)
     assert.equal(home('.case-image img').last().attr('loading'), 'lazy')
     const studioPage = load(await readFile(path.join(output, 'studio.html'), 'utf8'))
-    assert.equal(studioPage('.nav-links [href="/studio.html"]').length, 1)
+    assert.equal(studioPage('.nav-links [href="/studio"]').length, 1)
     assert.equal(studioPage('link[href="/css/studio.css"]').length, 1)
     const studioPhoto = studioPage('.studio-media-placeholder--image img')
     assert.match(studioPhoto.attr('src'), /-1600\.webp$/)
@@ -79,7 +79,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(studioPhoto.attr('loading'), 'lazy')
     await access(path.join(output, studioPhoto.attr('src')))
     const work = load(await readFile(path.join(output, 'cases/work.html'), 'utf8'))
-    assert.equal(work('[href="/cases/new-project.html"]').length, 1)
+    assert.equal(work('[href="/cases/new-project"]').length, 1)
     await access(path.join(output, 'cases/new-project.html'))
     await assert.rejects(access(path.join(output, 'cases/sterling.html')))
     const casePage = load(await readFile(path.join(output, 'cases/mezovest.html'), 'utf8'))
@@ -90,7 +90,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(article('h1').text(), 'A new insight')
     assert.equal(article('.insight-body script').length, 0)
     assert.equal(article('.insight-body p').text(), '<script>alert(1)</script>')
-    assert.equal(article('.nav-links [href="/insights/index.html"]').length, 1)
+    assert.equal(article('.nav-links [href="/insights"]').length, 1)
     const seeded = load(await readFile(path.join(output, 'insights/what-is-killing-traditional-banks.html'), 'utf8'))
     assert.equal(seeded('.insight-category').first().text(), 'Opinion')
     assert.match(seeded('.insight-meta').first().text(), /20 Nov 2021.*min read/)
@@ -102,6 +102,17 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(index('.insight-card--featured h2').text(), 'A new insight')
     assert.equal(index('.insight-filters button').length, 2)
     assert.equal(index('.insight-filters [aria-pressed="true"]').text(), 'All2')
+    assert.equal(article('link[rel="canonical"]').attr('href'), 'https://cadarastudio.com/insights/a-new-insight')
+    assert.equal(JSON.parse(article('script[type="application/ld+json"]').text()).url, 'https://cadarastudio.com/insights/a-new-insight')
+    assert.equal(index('.insight-list > .insight-card').length, 2)
+    for (const page of [home, studioPage, work, casePage, article, index]) {
+      for (const link of page('a[href^="/"]').toArray()) {
+        const href = page(link).attr('href')
+        const pathname = new URL(href, 'https://cadara.local').pathname
+        assert.doesNotMatch(pathname, /\.html$/, `Legacy URL: ${href}`)
+        await access(path.join(output, pathname === '/' ? 'index.html' : pathname === '/insights' ? 'insights/index.html' : `${pathname}.html`))
+      }
+    }
     // Unpublishing removes a previously generated page on the next build.
     await buildSite(docs.filter(d => d._id !== 'new-project' && d._id !== 'article'), output)
     await assert.rejects(access(path.join(output, 'cases/new-project.html')))
