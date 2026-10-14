@@ -3,6 +3,7 @@ import path from 'node:path'
 import {createClient} from '@sanity/client'
 import {root} from './content.mjs'
 import {shell, cards, metadata, renderCase, renderInsight, renderInsights} from './render.mjs'
+import {optimizeStudioImages} from './assets.mjs'
 export function validateContent(docs) {
   const studio = docs.find(d => d._type === 'studioPage' && d._id === 'studioPage')
   if (!studio) throw new Error('Studio content is missing. Run npm run import:content before building.')
@@ -31,7 +32,9 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   home('.cases-grid').html(cards(projects.filter(p => p.featured)))
   metadata(home, 'Cadara Studio', studio.headline)
   await writeFile(path.join(output, 'index.html'), home.html())
-  await writeFile(path.join(output, 'studio.html'), shell(studioTemplate, studio).html())
+  const studioPage = shell(studioTemplate, studio)
+  await optimizeStudioImages(studioPage, output)
+  await writeFile(path.join(output, 'studio.html'), studioPage.html())
   const work = shell(workTemplate, studio)
   work('.intro-headline').text(studio.workHeadline)
   work('.cases-grid').html(cards(projects))
@@ -42,7 +45,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   await writeFile(path.join(output, 'cases/offer.html'), offer.html())
   for (const project of projects.filter(p => !p.comingSoon)) await writeFile(path.join(output, 'cases', `${project.slug.current}.html`), renderCase(caseTemplate, studio, project, projects))
   await writeFile(path.join(output, 'insights/index.html'), renderInsights(workTemplate, studio, insights))
-  for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(homeTemplate, studio, insight))
+  for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(homeTemplate, studio, insight, insights))
   console.log(`Built ${projects.length} project cards, ${projects.filter(p => !p.comingSoon).length} case studies, and ${insights.length} insights.`)
 }
 if (process.argv[1] === path.join(root, 'scripts/build.mjs')) {

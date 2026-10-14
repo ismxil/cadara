@@ -4,18 +4,14 @@
   --cadara-loader-hold: 345ms;
   --cadara-loader-star-hold: 146ms;
   --cadara-loader-settle: 74ms;
-  --cadara-loader-duration: 921ms;
-  --cadara-page-fade: 420ms;
+  --cadara-loader-duration: 420ms;
+  --cadara-page-fade: 180ms;
   --cadara-page-fade-out: 360ms;
-  --cadara-loader-fade: 195ms;
+  --cadara-loader-fade: 120ms;
 }
 
 body.is-loading {
   overflow: hidden;
-}
-
-body.is-ready {
-  overflow: visible;
 }
 
 body.is-loading .site {
@@ -46,7 +42,7 @@ body.is-ready .site {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   background: var(--black);
@@ -58,11 +54,18 @@ body.is-ready .site {
     visibility var(--cadara-loader-fade);
 }
 
+body.is-loading .site-loader,
 .site-loader.is-exiting {
+  display: flex;
+}
+
+.site-loader.is-exiting {
+  pointer-events: none;
   opacity: 0;
 }
 
 .site-loader.is-hidden {
+  display: none;
   visibility: hidden;
   pointer-events: none;
 }
@@ -80,7 +83,7 @@ body.is-ready .site {
   transition: opacity 180ms ease;
 }
 
-/* Loader: same angle path as studio — 45° → 0° → 45° (timing unchanged) */
+/* Keep the symbol intro brief and independent of network activity. */
 
 .site-loader .cadara-symbol-host--loader,
 .site-loader__symbol.cadara-symbol-host {

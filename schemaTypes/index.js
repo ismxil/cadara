@@ -37,12 +37,16 @@ const richText = defineType({name: 'richText', title: 'Article body', type: 'arr
     marks: {decorators: [{title: 'Bold', value: 'strong'}, {title: 'Italic', value: 'em'}], annotations: [{name: 'link', type: 'object', fields: [externalUrl('href', 'URL')]}]}},
   {type: 'contentImage'},
 ]})
+export const insightCategories = ['Opinion', 'Design', 'Strategy', 'Studio news']
 const insight = defineType({name: 'insight', title: 'Insight', type: 'document', fields: [
   string('title', 'Title', true), slug('title', ['index']), text('excerpt', 'Excerpt', true),
-  defineField({name: 'coverImage', title: 'Cover image', type: 'contentImage'}), string('author', 'Author'),
+  defineField({name: 'category', type: 'string', options: {list: insightCategories}, initialValue: 'Opinion', validation: required}),
+  defineField({name: 'tags', type: 'array', of: [{type: 'string'}], options: {layout: 'tags'}}),
+  defineField({name: 'coverImage', title: 'Cover image', type: 'contentImage'}), string('coverCaption', 'Cover caption or credit'),
+  string('author', 'Author'), string('authorRole', 'Author role'), defineField({name: 'authorImage', title: 'Author photo', type: 'contentImage'}),
   defineField({name: 'publishedAt', title: 'Publication date', type: 'date', validation: required}),
   defineField({name: 'body', type: 'richText', validation: Rule => Rule.required().min(1)}), text('seoDescription', 'Search description'),
-], preview: {select: {title: 'title', media: 'coverImage', subtitle: 'author'}}})
+], preview: {select: {title: 'title', media: 'coverImage', subtitle: 'category'}}})
 const studioPage = defineType({name: 'studioPage', title: 'Studio', type: 'document', fields: [
   text('headline', 'Homepage headline', true), text('workHeadline', 'Work page headline', true), text('statement', 'Studio statement', true),
   string('servicesHeading', 'Services heading', true), text('servicesTagline', 'Services page tagline'),

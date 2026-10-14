@@ -7,7 +7,7 @@ Content lives in Sanity project **o47ti8nx**, dataset **production**.
 The Studio has three sections:
 
 - **Case studies:** client name, card copy and image, homepage visibility, display order, coming-soon status, headline, services, project date or duration, introduction, company link, hero image, ordered image/text gallery, closing section, next project, and search description.
-- **Insights:** title, URL slug, excerpt, author, publication date, cover image, rich article body, and search description. Publish an article to create `/insights/<slug>.html`; the index is `/insights/index.html`. No existing articles were present in this repository.
+- **Insights:** title, URL slug, excerpt, category, tags, cover image and caption, author name, role and photo, publication date, rich article body, and search description. Publish an article to create `/insights/<slug>.html`; the index is `/insights/index.html` and filters by category. Articles show reading time, a table of contents (when the body has two or more headings), share links, and up to three recommended reads. The importer seeds the articles in `scripts/insights.mjs`.
 - **Studio:** homepage and work headlines, studio statement, services heading, services and icons, contact email, and social links. This is a singleton shared by the homepage, work, services, and article pages.
 
 Gallery blocks can be reordered and set to full or half width. Images have editable alternative text, crop, and hotspot. Coming-soon projects show a card without a detail link. Case-study slugs create `/cases/<slug>.html`; retain existing slugs to preserve existing URLs.
@@ -34,12 +34,14 @@ The site stays static HTML with the original styles, fonts, loader, and interact
 
 The production dataset is public, so website builds need no token. If it becomes private, set `SANITY_API_READ_TOKEN` in the build environment. Import credentials are never shipped in the site. The generated output contains only public website assets and HTML, not the source or Studio configuration.
 
+The decorative intro runs independently of fonts and images, with a 650 ms fallback. Reduced-motion visitors and late-loading scripts skip it. CMS images include responsive sizes; Studio photography is resized to WebP by Sharp during the build. Source photos remain unchanged.
+
 ## Import existing content
 
 The existing HTML files are retained as the migration source and layout templates. The frontend renders their editable content from Sanity; source copy changes are not the editing workflow after migration.
 
 ```sh
-npm run import:preview # Validate 7 source documents / 66 images; write .context/content-preview.json
+npm run import:preview # Validate 8 source documents / 68 images; write .context/content-preview.json
 npx sanity login
 npm run import:content
 ```
