@@ -35,7 +35,7 @@ export function cards(projects) {
     const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}"`
     const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
     return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
-      <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw'})}</figure>
+      <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, 50vw'})}</figure>
       <div class="case-meta"><h3>${escape(project.title)}</h3><p>${escape(project.summary)}</p></div>
       ${project.comingSoon ? '<span class="case-card-soon">Coming soon</span>' : ''}</${tag}>`
   }).join('\n')

@@ -15,6 +15,14 @@
 }
 
 @font-face {
+  font-family: 'Beirut Text';
+  src: url('../fonts/BeirutText-Book.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Suisse Intl';
   src: url('../fonts/SuisseIntl-Book.otf') format('opentype');
   font-weight: 400;
@@ -155,15 +163,21 @@ img {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 24px 36px;
   align-items: end;
+  padding: clamp(64px, 11vw, 200px) 0 clamp(32px, 9vw, 168px);
 }
 
 .intro-headline {
-  grid-column: 1 / span 3;
+  grid-column: 1 / -1;
+  justify-self: center;
+  max-width: 20ch;
   margin: 0;
-  font-size: clamp(36px, 4.8vw, 72px);
-  font-weight: 600;
-  line-height: 1;
+  font-family: 'Beirut Text', 'Suisse Intl', Arial, sans-serif;
+  font-size: clamp(40px, 6.4vw, 92px);
+  font-weight: 400;
+  line-height: 1.08;
   letter-spacing: -0.01em;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .intro-tagline {
@@ -182,20 +196,22 @@ img {
 
 .cases-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 124px var(--gutter);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 96px var(--gutter);
 }
 
 .case-card {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
+/* Landor-style 3:2 card image */
 .case-image {
   margin: 0;
-  height: 340px;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
+  border-radius: 12px;
   background: #111;
 }
 
@@ -254,12 +270,12 @@ img {
 .case-meta {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .case-meta h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 22px;
   color: var(--muted);
@@ -268,10 +284,10 @@ img {
 
 .case-meta p {
   margin: 0;
-  max-width: 32ch;
-  font-size: 18px;
+  max-width: 34ch;
+  font-size: 25px;
   font-weight: 400;
-  line-height: 22px;
+  line-height: 30px;
   color: var(--muted);
   transition: color 500ms ease;
 }
@@ -693,7 +709,6 @@ body.menu-open {
 
 @media (max-width: 1200px) {
   .cases-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 80px var(--gutter);
   }
 }
@@ -758,6 +773,7 @@ body.menu-open {
 
   .intro {
     grid-template-columns: 1fr;
+    padding: 48px 0 24px;
   }
 
   .intro-headline,
@@ -815,10 +831,6 @@ body.menu-open {
   .cases-grid {
     grid-template-columns: 1fr;
     gap: 56px var(--gutter);
-  }
-
-  .case-image {
-    height: 280px;
   }
 
   .services-section {
