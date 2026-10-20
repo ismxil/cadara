@@ -29,7 +29,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   for (const dir of ['css', 'js', 'asset', 'fonts', 'cases/css', 'cases/js']) await cp(path.join(root, dir), path.join(output, dir), {recursive: true, filter: source => !source.endsWith('.DS_Store')})
   const home = shell(homeTemplate, studio)
   home('.intro-headline').text(studio.headline)
-  home('.cases-grid').html(cards(projects.filter(p => p.featured)))
+  home('.cases-grid').html(cards(projects.filter(p => p.featured).slice(0, 4)))
   metadata(home, 'Cadara Studio', studio.headline)
   await writeFile(path.join(output, 'index.html'), home.html())
   const studioPage = shell(studioTemplate, studio)
