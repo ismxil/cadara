@@ -211,8 +211,46 @@ function setupCopyLink() {
   });
 }
 
+function setupTeamRoster() {
+  const section = document.querySelector('.studio-team');
+  if (!section) return;
+
+  const members = section.querySelectorAll('[data-team-member]');
+  const photos = section.querySelectorAll('[data-team-photo]');
+  const backdrop = section.querySelector('.studio-team-backdrop');
+
+  const activate = (key) => {
+    members.forEach((member) => {
+      const active = member.dataset.teamMember === key;
+      member.classList.toggle('is-active', active);
+      member.setAttribute('aria-pressed', String(active));
+    });
+    photos.forEach((photo) => {
+      const active = photo.dataset.teamPhoto === key;
+      photo.classList.toggle('is-active', active);
+      if (!active || !backdrop) return;
+      const img = photo.querySelector('img');
+      const src = img.currentSrc || img.src;
+      backdrop.style.setProperty('--team-backdrop', `url("${src}")`);
+      backdrop.classList.add('is-ready');
+    });
+  };
+
+  members.forEach((member) => {
+    const key = member.dataset.teamMember;
+    member.addEventListener('mouseenter', () => activate(key));
+    member.addEventListener('focus', () => activate(key));
+    member.addEventListener('click', () => activate(key));
+  });
+
+  const first = section.querySelector('[data-team-photo].is-active img');
+  if (first?.complete) activate(members[0].dataset.teamMember);
+  else first?.addEventListener('load', () => activate(members[0].dataset.teamMember), { once: true });
+}
+
 setupMobileMenu();
 setupComingSoonCards();
 setupCopyLink();
 setupScrollReveal();
 setupProjectPrefetch();
+setupTeamRoster();

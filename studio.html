@@ -254,44 +254,40 @@
                     </p>
                 </div>
 
-                <div class="studio-team-grid">
-                    <article class="studio-team-card">
-                        <div class="studio-team-image">
-                            <img
-                                src="asset/studio/team-ismail.png"
-                                alt="Ismail Ahmad"
-                            />
-                        </div>
-                        <div>
-                            <h3>Ismail Ahmad</h3>
-                            <p>Creative</p>
-                        </div>
-                    </article>
-                    <article class="studio-team-card">
-                        <div class="studio-team-image">
-                            <img
-                                src="asset/studio/team-wale.png"
-                                alt="Wale Muhammed"
-                            />
-                        </div>
-                        <div>
-                            <h3>Wale Muhammed</h3>
-                            <p>Operation</p>
-                        </div>
-                    </article>
-                    <article class="studio-team-card">
-                        <div class="studio-team-image">
-                            <img
-                                src="asset/studio/team-emmanuel.jpeg"
-                                alt="Emmanuel Popoola"
-                            />
-                        </div>
-                        <div>
-                            <h3>Emmanuel Popoola</h3>
-                            <p>Engineering</p>
-                        </div>
-                    </article>
+                <div class="studio-team-backdrop" aria-hidden="true"></div>
+
+                <div class="studio-team-photo">
+                    <div class="studio-team-image is-active" data-team-photo="ismail">
+                        <img src="asset/studio/team-ismail.png" alt="Ismail Ahmad" />
+                    </div>
+                    <div class="studio-team-image" data-team-photo="wale">
+                        <img src="asset/studio/team-wale.png" alt="Wale Muhammed" />
+                    </div>
+                    <div class="studio-team-image" data-team-photo="emmanuel">
+                        <img src="asset/studio/team-emmanuel.jpeg" alt="Emmanuel Popoola" />
+                    </div>
                 </div>
+
+                <ul class="studio-team-list">
+                    <li>
+                        <button class="studio-team-member is-active" type="button" data-team-member="ismail" aria-pressed="true">
+                            <span class="studio-team-name">Ismail Ahmad</span>
+                            <span class="studio-team-role">Creative</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="studio-team-member" type="button" data-team-member="wale" aria-pressed="false">
+                            <span class="studio-team-name">Wale Muhammed</span>
+                            <span class="studio-team-role">Operation</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="studio-team-member" type="button" data-team-member="emmanuel" aria-pressed="false">
+                            <span class="studio-team-name">Emmanuel Popoola</span>
+                            <span class="studio-team-role">Engineering</span>
+                        </button>
+                    </li>
+                </ul>
             </section>
 
             <footer class="footer">
