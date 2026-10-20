@@ -174,10 +174,14 @@
 }
 
 .studio-team {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 24px;
-  align-items: start;
+  align-items: center;
+  padding-top: 120px;
+  padding-bottom: 120px;
 }
 
 .studio-team-copy { grid-column: 1 / span 2; }
@@ -187,26 +191,53 @@
   line-height: 1.4;
 }
 
-.studio-team-grid {
-  grid-column: 3 / span 4;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 220px));
-  justify-content: end;
-  gap: 24px;
+/* Blurred wash of the active portrait, bled to the viewport edges. */
+.studio-team-backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto 0 50%;
+  width: 100vw;
+  overflow: hidden;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
-.studio-team-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-width: 0;
+.studio-team-backdrop.is-ready { opacity: 1; }
+
+.studio-team-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: -160px;
+  background: var(--team-backdrop) center / cover no-repeat;
+  filter: blur(80px) saturate(0.8);
+}
+
+.studio-team-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, var(--black), transparent 25%, transparent 75%, var(--black)),
+    rgba(0, 0, 0, 0.45);
+}
+
+.studio-team-photo {
+  grid-column: 3;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #222;
 }
 
 .studio-team-image {
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: #eee;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
+
+.studio-team-image.is-active { opacity: 1; }
 
 .studio-team-image img {
   width: 100%;
@@ -215,22 +246,55 @@
   object-position: center;
 }
 
-.studio-team-card h3,
-.studio-team-card p {
+.studio-team-list {
+  grid-column: 4 / span 3;
   margin: 0;
-  color: var(--muted);
-  font-size: 20px;
-  line-height: 23px;
+  padding: 0;
+  list-style: none;
 }
 
-.studio-team-card h3 { font-weight: 600; }
-.studio-team-card p { font-weight: 400; }
+.studio-team-member {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.25);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.studio-team-member.is-active,
+.studio-team-member:focus-visible { color: var(--white); }
+
+.studio-team-member:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+
+.studio-team-name {
+  font-size: clamp(36px, 3.4vw, 64px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.studio-team-role {
+  flex-shrink: 0;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
 @media (max-width: 1200px) {
   .trusted-client-logos { flex-wrap: wrap; }
   .trusted-client-logos img { flex: 0 1 auto; max-width: 120px; }
   .studio-service-card { padding: 32px; }
-  .studio-team-grid { gap: 20px; }
+  .studio-team-photo { grid-column: 3 / span 2; }
+  .studio-team-list { grid-column: 5 / span 2; }
+  .studio-team-member { flex-direction: column; gap: 8px; }
 }
 
 @media (max-width: 900px) {
@@ -255,13 +319,15 @@
   .studio-service-card { min-height: auto; }
 
   .studio-team {
-    grid-template-columns: 1fr;
-    gap: 48px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 24px;
+    padding-top: 72px;
+    padding-bottom: 72px;
   }
 
-  .studio-team-copy,
-  .studio-team-grid { grid-column: 1; }
-  .studio-team-grid { justify-content: start; }
+  .studio-team-copy { grid-column: 1 / -1; }
+  .studio-team-photo { grid-column: 1; }
+  .studio-team-list { grid-column: 2; }
 }
 
 @media (max-width: 600px) {
@@ -275,5 +341,8 @@
   .studio-service-card > img { width: 56px; height: 56px; }
   .studio-service-card p,
   .studio-service-card ul { font-size: 19px; }
-  .studio-team-grid { grid-template-columns: repeat(2, minmax(0, 180px)); gap: 32px 20px; }
+  .studio-team-photo,
+  .studio-team-list { grid-column: 1 / -1; }
+  .studio-team-photo { width: 60%; }
+  .studio-team-name { font-size: 32px; }
 }
