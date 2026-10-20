@@ -142,10 +142,11 @@ export function renderBody(body) {
   }})
 }
 const insightMeta = insight => `<p class="insight-meta">${insight.category ? `<span class="insight-category">${escape(insight.category)}</span>` : ''}<time datetime="${escape(insight.publishedAt)}">${escape(formatDate(insight.publishedAt))}</time></p>`
-function insightCard(insight, {featured = false, heading = 'h2'} = {}) {
-  return `<a class="insight-card${featured ? ' insight-card--featured' : ''}" href="/insights/${escape(insight.slug.current)}" data-category="${escape(insight.category || '')}">
-    <figure class="insight-card-image">${image(insight.coverImage, {width: featured ? 2000 : 1200, ratio: featured ? 3 / 2 : 4 / 3, eager: featured, sizes: featured ? '(max-width: 1200px) 100vw, 50vw' : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 25vw'})}</figure>
-    <div class="insight-card-copy">${insightMeta(insight)}<${heading}>${escape(insight.title)}</${heading}><p class="insight-card-excerpt">${escape(insight.excerpt)}</p></div></a>`
+const shortDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value.split('-').reverse().join('.') : ''
+function insightCard(insight, {heading = 'h2', eager = false} = {}) {
+  return `<a class="insight-card" href="/insights/${escape(insight.slug.current)}">
+    <figure class="insight-card-image">${image(insight.coverImage, {width: 1200, eager, sizes: '(max-width: 900px) 50vw, (max-width: 1200px) 33vw, 25vw'})}</figure>
+    <div class="insight-card-copy"><time class="insight-card-date" datetime="${escape(insight.publishedAt)}">${escape(shortDate(insight.publishedAt))}</time><${heading}>${escape(insight.title)}</${heading}><span class="insight-card-link">Read the article</span></div></a>`
 }
 function setNav($) {
   $('.nav-links a').removeAttr('aria-current').filter('[href="/insights"]').attr('aria-current', 'page')
@@ -197,10 +198,9 @@ export function renderInsights(template, studio, insights) {
   setNav($)
   $('main').addClass('insight-site')
   $('.intro, .services-section, .studio-section').remove()
-  const [featured, ...rest] = insights
   $('.work-section').attr('class', 'insights-section').attr('aria-label', 'Insights').attr('id', 'insights').html(insights.length ? `
-    <h1 class="insight-summary container">IDEAS, INSIGHTS, AND OPINIONS · ${insights.length} ${insights.length === 1 ? 'item' : 'items'}</h1>
-    <div class="insight-list container">${insightCard(featured, {featured: true})}${rest.map(i => insightCard(i)).join('')}</div>`
+    <h1 class="insights-title container">Insights</h1>
+    <div class="insight-list container">${insights.map((i, index) => insightCard(i, {eager: index < 4})).join('')}</div>`
     : '<p class="container">Insights will appear here when published.</p>')
   return $.html()
 }
