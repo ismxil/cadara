@@ -6,8 +6,8 @@ function setupMobileMenu() {
     home: '/',
     work: '/cases/work',
     studio: '/studio',
+    services: '/services',
     insights: '/insights',
-    contact: `mailto:${document.body.dataset.contactEmail || 'info@cadarastudio.com'}`,
   };
 
   const panel = document.createElement('div');
@@ -23,9 +23,9 @@ function setupMobileMenu() {
     </div>
     <nav class="mobile-menu-links" aria-label="Mobile navigation">
       <a href="${links.work}">Work</a>
-      <a href="${links.insights}">Insights</a>
       <a href="${links.studio}">Studio</a>
-      <a href="${links.contact}">Contact</a>
+      <a href="${links.services}">Services</a>
+      <a href="${links.insights}">Insights</a>
     </nav>
     <div class="mobile-menu-bottom">
       <nav class="mobile-menu-socials" aria-label="Social links">

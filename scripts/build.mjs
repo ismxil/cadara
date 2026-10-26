@@ -42,7 +42,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   const offer = shell(offerTemplate, studio)
   offer('.intro-headline').text(studio.servicesHeading)
   offer('.intro-tagline').text(studio.servicesTagline)
-  await writeFile(path.join(output, 'cases/offer.html'), offer.html())
+  await writeFile(path.join(output, 'services.html'), offer.html())
   for (const project of projects.filter(p => !p.comingSoon)) await writeFile(path.join(output, 'cases', `${project.slug.current}.html`), renderCase(caseTemplate, studio, project, projects))
   await writeFile(path.join(output, 'insights/index.html'), renderInsights(workTemplate, studio, insights))
   for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(homeTemplate, studio, insight, insights))

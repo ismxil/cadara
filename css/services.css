@@ -1,0 +1,133 @@
+/* ── Services page ─────────────────────────── */
+
+.services-hero {
+  display: block;
+  padding: clamp(64px, 9vw, 160px) var(--gutter) clamp(64px, 8vw, 140px);
+}
+
+.services-hero .intro-headline {
+  justify-self: start;
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(48px, 7.4vw, 136px);
+  line-height: 1;
+  text-align: left;
+}
+
+.services-hero .intro-tagline {
+  max-width: 36ch;
+  margin: clamp(24px, 3vw, 40px) 0 0;
+  color: var(--copy-muted);
+  text-align: left;
+}
+
+.services-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(96px, 10vw, 180px);
+  padding-bottom: clamp(120px, 12vw, 220px);
+}
+
+.services-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px var(--gutter);
+  align-items: start;
+}
+
+.services-row-title {
+  grid-column: 1 / span 6;
+  margin: 0;
+  font-size: clamp(56px, 7.4vw, 136px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.services-row-body {
+  grid-column: 7 / -1;
+  max-width: 680px;
+}
+
+.services-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0.6em;
+}
+
+.services-prose p {
+  margin: 0;
+  font-size: clamp(18px, 1.35vw, 24px);
+  line-height: 1.3;
+}
+
+.services-prose a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 200ms ease;
+}
+
+.services-prose a:hover {
+  color: var(--lime);
+}
+
+.services-offerings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.services-offering {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 16px;
+  padding: 28px 0 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.services-offering:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.services-offering-number {
+  padding-top: 0.5em;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.services-offering h3 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 2vw, 32px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.services-offering p {
+  margin: 0;
+  color: var(--copy-muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .services-row {
+    grid-template-columns: 1fr;
+  }
+
+  .services-row-title,
+  .services-row-body {
+    grid-column: auto;
+  }
+
+  .services-prose {
+    padding-top: 0;
+  }
+
+  .services-offering {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+}

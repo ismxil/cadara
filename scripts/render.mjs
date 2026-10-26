@@ -58,10 +58,8 @@ export function shell(template, studio) {
     if (href.startsWith('//')) return
     const url = new URL(href, 'https://cadara.local')
     url.pathname = url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/\/$/, '') || '/'
+    if (url.pathname === '/cases/offer') url.pathname = '/services'
     $(el).attr('href', `${url.pathname}${url.search}${url.hash}`)
-  })
-  $('.nav-links').each((_, el) => {
-    if (!$(el).find('[href="/insights"]').length) $(el).find('a').first().after('<a href="/insights">Insights</a>')
   })
   $('.statement p').text(studio.statement)
   $('.services-heading').text(studio.servicesHeading)
@@ -70,8 +68,7 @@ export function shell(template, studio) {
     <div class="service-copy"><h3>${escape(service.title)}</h3><p>${escape(service.description)}</p></div></article>`).join(''))
   $('a[href^="mailto:"]').attr('href', `mailto:${studio.contactEmail}`)
   $('.footer-socials').html((studio.socials || []).map(social => `<a href="${escape(safeUrl(social.url))}" target="_blank" rel="noopener">${escape(social.title)}</a>`).join(''))
-  // Mobile navigation reads the same published contact and social fields.
-  $('body').attr('data-contact-email', studio.contactEmail)
+  // Mobile navigation reads the same published social links.
   $('body').attr('data-social-links', JSON.stringify(studio.socials || []))
   return $
 }

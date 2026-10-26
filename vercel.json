@@ -3,5 +3,8 @@
   "outputDirectory": "dist/site",
   "framework": null,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {"source": "/cases/offer", "destination": "/services", "permanent": true}
+  ]
 }
