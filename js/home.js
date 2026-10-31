@@ -106,6 +106,8 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
     feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2500);
   };
   copyEmail.addEventListener('click', copyContactEmail);
-  // Keep the mailto default action so the same click also opens the mail app.
-  contactLink.addEventListener('click', copyContactEmail);
+  contactLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    copyContactEmail();
+  });
 }
