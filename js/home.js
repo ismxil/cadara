@@ -41,8 +41,58 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
     if (showGrid) projectGrid.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
     engagements.hidden = showGrid;
     viewToggle.setAttribute('aria-pressed', String(showGrid));
-    viewToggle.setAttribute('aria-label', showGrid ? 'Show engagement list' : 'Show project grid');
-    viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'List' : 'Grid';
+    viewToggle.setAttribute('aria-label', showGrid ? 'Show index' : 'Show work');
+    viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'Index' : 'Work';
     viewToggle.querySelector('img').src = showGrid ? '/asset/home/list.svg' : '/asset/home/grid.svg';
+  });
+}
+
+// Match the original brand typeout timing, without an idle animation.
+const homeBrand = document.querySelector('.home-brand');
+const brandSuffix = homeBrand?.querySelector('.home-brand-suffix');
+if (brandSuffix) {
+  const wideHeader = matchMedia('(min-width: 640px)');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let typing;
+  const resetBrand = () => {
+    clearInterval(typing);
+    brandSuffix.textContent = '';
+    homeBrand.classList.remove('is-typing');
+  };
+  const typeBrand = () => {
+    if (!wideHeader.matches) return;
+    resetBrand();
+    if (reduceMotion.matches) { brandSuffix.textContent = 'adara'; return; }
+    let count = 0;
+    homeBrand.classList.add('is-typing');
+    typing = setInterval(() => {
+      brandSuffix.textContent = 'adara'.slice(0, ++count);
+      if (count === 5) { clearInterval(typing); homeBrand.classList.remove('is-typing'); }
+    }, 90);
+  };
+  homeBrand.addEventListener('mouseenter', typeBrand);
+  homeBrand.addEventListener('focus', typeBrand);
+  homeBrand.addEventListener('mouseleave', () => { if (document.activeElement !== homeBrand) resetBrand(); });
+  homeBrand.addEventListener('blur', () => { if (!homeBrand.matches(':hover')) resetBrand(); });
+  wideHeader.addEventListener('change', resetBrand);
+  reduceMotion.addEventListener('change', resetBrand);
+}
+const copyEmail = document.querySelector('.home-copy-email');
+const contactLink = document.querySelector('.home-contact a');
+if (copyEmail && contactLink && navigator.clipboard?.writeText) {
+  const status = document.querySelector('.home-copy-status');
+  let feedbackTimer;
+  const email = contactLink.textContent.trim();
+  copyEmail.hidden = false;
+  copyEmail.setAttribute('aria-label', `Copy ${email}`);
+  copyEmail.addEventListener('click', async () => {
+    clearTimeout(feedbackTimer);
+    try {
+      await navigator.clipboard.writeText(email);
+      status.textContent = 'Email copied';
+    } catch {
+      status.textContent = 'Could not copy. Select the address to copy it.';
+    }
+    feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2500);
   });
 }

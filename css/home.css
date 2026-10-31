@@ -678,3 +678,89 @@ button {
 .home-wordmark > svg {
   transform: translateZ(0);
 }
+
+/* Home link interactions have their own treatments instead of the generic underline. */
+.home-socials a {
+  transition: opacity 180ms ease;
+}
+.home-socials a:hover,
+.home-socials a:focus-visible {
+  text-decoration: none;
+  opacity: 0.5;
+}
+.home-brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 48px;
+  width: auto;
+  padding-inline: 5px;
+  white-space: nowrap;
+}
+.home-brand:hover,
+.home-brand:focus-visible {
+  text-decoration: none;
+}
+.home-brand.is-typing .home-brand-suffix::after {
+  content: "|";
+  margin-left: 0.04em;
+}
+.home-email-controls {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+.home-contact a,
+.home-copy-email {
+  transition: color 180ms ease;
+}
+.home-contact a:hover,
+.home-contact a:focus-visible,
+.home-copy-email:hover,
+.home-copy-email:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+[data-theme="light"] .home-contact a:hover,
+[data-theme="light"] .home-contact a:focus-visible,
+[data-theme="light"] .home-copy-email:hover,
+[data-theme="light"] .home-copy-email:focus-visible {
+  color: #000;
+}
+.home-copy-email {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.home-copy-icon {
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: url("../asset/home/copy.svg") center / contain no-repeat;
+}
+.home-copy-status {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font:
+    400 12px/1.4 "Suisse Intl",
+    Arial,
+    sans-serif;
+  color: var(--home-heading);
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-socials a,
+  .home-contact a,
+  .home-copy-email {
+    transition: none;
+  }
+}
