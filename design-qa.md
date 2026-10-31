@@ -1,36 +1,35 @@
-# Project card and wordmark control QA
+# Full-width project row QA
 
-Source visual truth: `.context/attachments/a8nXUY/CleanShot 2026-10-31 at 6.58.23 PM@2x.png` (4112 × 1204 pixels). Control color reference: `.context/attachments/qL8Wcw/CleanShot 2026-10-31 at 7.02.25 PM@2x.png`, with the user's explicit replacements #A5C174 and #00E935.
+Source visual truth: `.context/attachments/z2ZdRM/CleanShot 2026-10-31 at 7.13.07 PM@2x.png` (4112 × 2336 px, normalized to 2056 × 1168 CSS px). Scrollbar-removal reference: `.context/attachments/FnVaHm/CleanShot 2026-10-31 at 7.16.39 PM@2x.png`. Live inspiration: https://www.mintlify.com/?utm_source=tailwindcss, captured in Chrome as `.context/mintlify-reference.png`.
 
-Implementation: `.context/project-cards-desktop.png`, `.context/project-cards-light.png` (661 × 300 pixels), `.context/project-cards-mobile.png` (348 × 584 pixels), and `.context/wordmark-olive-active.png` (1440 × 357 pixels). Chrome viewport: 1440 × 1000 desktop and 390 × 844 mobile, deviceScaleFactor 1. Work view selected; dark and light themes tested.
+Implementation: `.context/wide-project-layout.png` and `.context/wide-project-light.png` at 2056 × 1168 px, deviceScaleFactor 1; `.context/wide-project-mobile.png` at a 390px viewport. Work view, dark and light themes.
 
 ## Comparison evidence
 
-Full row comparison: `.context/cards-full-comparison.png`. Reference and implementation rows are displayed together at 1024 pixels wide for composition inspection. Their containing page widths differ intentionally: the reference is a wide marketing site, while the implementation retains Cadara's existing compact homepage column.
+`.context/wide-project-comparison.png` places the normalized user mockup beside the implementation at the same viewport size. `.context/wide-row-comparison.png` combines the reference row and implementation row at the same 2056px width, aligning the component rather than the capture's 7px vertical offset.
 
-Focused card comparison: `.context/card-comparison.png`. The reference's first complete card is cropped using the source image's approximately 2× density and normalized to a 622 × 278 region. The implementation's first card is 622 × 300. Both are combined in the same image for comparison. This focused comparison is the size-normalized fidelity check; the full row comparison demonstrates the split structure and next-card preview.
+The row now extends across the viewport rather than being clipped by the 720px content column. Its first card begins 40px after the headline's left edge, matching the supplied mockup. Subsequent cards continue to the viewport edge; top and bottom borders span the row. The source mockup's grey placeholder neighbors are intentionally replaced by the real published project cards, and the existing project order is preserved.
 
 ## Required fidelity surfaces
 
-- Typography: retains Cadara's Suisse Intl. Uppercase client label, prominent summary, smaller service text, and compact CTA reproduce the source hierarchy. Real CMS summaries replace the reference's unrelated company copy.
-- Spacing/layout: approximately equal text/image halves, small corner radius, consistent internal padding, bottom-aligned action, and next-card preview. The card is slightly taller to accommodate existing summaries. Mobile stacks the text and image without clipping or page overflow.
-- Colors: use project brand colors with legible text. Handles and guides are #A5C174; the dragged handle fill and its line use #00E935. These user-specified colors replace the reference blue.
-- Images: existing published CMS project images are used, with responsive sources and their intended crop. No fabricated logos, illustrations, or metrics. The source's venue photo is intentionally replaced by each project's existing image.
-- Copy: real client names, summaries, and services. View project leads to the existing project viewer. Services replace the reference's numerical metrics because no equivalent published metrics exist.
+- Typography: existing split-card label, summary, services, and action hierarchy retained in Suisse Intl.
+- Spacing/layout: 622px desktop cards, 12px gaps, full-width strip, small corner radius, matched left inset, and stacked mobile cards. No page-level horizontal overflow at 320, 390, 540, 721, 1024, 1440, or 2056px.
+- Colors/tokens: existing brand-colored cards and theme-aware background/borders retained. Both scrollbar-width and the WebKit scrollbar pseudo-element hide the scrollbar in Chrome.
+- Images: existing responsive CMS project imagery retained without fabricated or placeholder artwork.
+- Content: existing published client copy, services, destinations, and order retained. The mockup shows Gomoney as an example; the first published project remains Lemfi.
 
 ## Findings and iteration history
 
-No actionable visual P0/P1/P2 findings remain. First browser interaction pass found that focusing the partially visible next card did not consistently scroll it fully into view. Fixed with focus-driven scrolling and left/right arrow navigation. The subsequent Chrome run confirmed scrolling, focus navigation, and opening the intended project; the post-fix visual evidence is listed above.
+The previous implementation was confined to the centered column and exposed a horizontal scrollbar: fixed with a viewport-width section, hidden-scrollbar styles, and an independent card width.
+
+Initial expanded-row capture used headline-aligned padding. Compared with the user's mockup, the intended first-card inset was 40px farther right. Updated the desktop inset and kept a 21px inset on narrow screens. Post-fix evidence is recorded above; no actionable P0/P1/P2 findings remain.
 
 ## Verification
 
-- Production build passes; all 16 tests pass, including escaping, published card navigation, service copy, and coming-soon behavior.
-- Chrome: split cards, horizontally scrollable row, keyboard focus navigation, project viewer destination, light/dark themes, stacked mobile layout, no page overflow.
-- Wordmark: idle handle fill and curve stroke are #A5C174; dragging makes the selected point #00E935.
-- No page JavaScript errors observed.
+Production build and all 16 tests pass. Chrome checks verify full-width geometry, intended desktop inset, hidden scrollbar via standard and WebKit CSS rules, keyboard navigation, preserved project navigation, both themes, mobile stacking, and absence of page overflow. Existing card/control checks also pass. No JavaScript errors observed.
 
 ## Follow-up polish
 
-None required for this change. The source site's background dot decoration and unrelated numerical statistics are outside this card adaptation.
+None required. Mintlify's unrelated site decoration and customer metrics remain outside this adaptation.
 
 final result: passed

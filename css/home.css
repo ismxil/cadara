@@ -572,19 +572,35 @@ button {
 .home-engagements[hidden] {
   display: none;
 }
+.home-projects {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  margin-left: calc((100% - 100vw) / 2);
+  background: var(--home-bg);
+}
 .home-projects-grid {
+  --card-row-inset: calc(max(0px, (100vw - 720px) / 2) + 69.8px);
   display: flex;
   gap: 12px;
+  padding-inline: var(--card-row-inset);
+  border-block: 1px solid var(--home-border);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
-  padding-bottom: 16px;
-  scrollbar-width: thin;
+  scroll-padding-inline: var(--card-row-inset);
+  scrollbar-width: none;
+}
+.home-projects-grid::-webkit-scrollbar {
+  display: none;
 }
 .home-control img {
   flex-shrink: 0;
 }
 @media (max-width: 720px) {
+  .home-projects-grid {
+    --card-row-inset: 21px;
+  }
   .home-footer-row {
     grid-template-columns: 80px minmax(0, 1fr);
     gap: 24px;
@@ -614,7 +630,7 @@ button {
 .home-projects .case-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  flex: 0 0 94%;
+  flex: 0 0 min(622px, calc(100vw - 40px));
   min-height: 300px;
   border-radius: 4px;
   overflow: hidden;
@@ -698,7 +714,7 @@ button {
 }
 @media (max-width: 540px) {
   .home-projects .case-card {
-    flex-basis: 92%;
+    flex-basis: calc(100vw - 56px);
     grid-template-columns: 1fr;
   }
   .home-project-copy {
