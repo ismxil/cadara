@@ -60,7 +60,7 @@
   --home-panel: rgba(0, 0, 0, 0.06);
   --home-border: rgba(0, 0, 0, 0.1);
   --home-control: rgba(0, 0, 0, 0.1);
-  --home-accent: #687100;
+  --home-accent: #00e935;
 }
 * {
   box-sizing: border-box;
@@ -445,7 +445,16 @@ button {
 }
 [data-theme="light"] .home-mark img,
 [data-theme="light"] .home-clock img {
-  filter: brightness(0.45);
+  filter: none;
+}
+[data-theme="light"] .statement-mark img {
+  content: url("../asset/home/statement-mark-light.svg");
+}
+[data-theme="light"] .footer-mark img {
+  content: url("../asset/home/footer-mark-light.svg");
+}
+[data-theme="light"] .home-clock img {
+  content: url("../asset/home/clock-light.svg");
 }
 @media (max-width: 720px) {
   .home {
@@ -769,4 +778,7 @@ button {
 .engagement[aria-disabled="true"]:hover {
   opacity: 0.35;
   cursor: default;
+}
+:root[data-theme="light"] ::selection {
+  color: #000;
 }
