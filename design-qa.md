@@ -1,8 +1,16 @@
-# Project carousel proportion and hover QA
+# Project carousel spacing QA
 
 Source visual truth: `.context/attachments/lB0jrm/centered-carousel-desktop.png` (2056 × 1171px). Annotations request card edges aligned to the text column, vertical gaps matching the column side padding, slightly taller cards, and an image hover effect. Colored markup is explanatory and is not part of the interface.
 
 Implementation: `.context/refined-carousel-desktop.png` and `.context/refined-carousel-overview.png` (2056 × 1171px at deviceScaleFactor 1), `.context/refined-carousel-hover.png`, `.context/refined-carousel-light.png`, and `.context/refined-carousel-mobile.png` (390px viewport). Cadana is centered in the desktop captures; the detail capture uses the same 266px page scroll as the prior reference.
+
+## Latest spacing correction
+
+Primary reference: `.context/attachments/1bvKWU/CleanShot 2026-10-31 at 9.11.23 PM@2x.png` (3598 × 1128px, normalized from 2× density to 1799 × 564 CSS px). Its marked column-side spacing is the requested gap between neighboring projects. Replaced the independent 12px column gap with the same `--card-row-gap` token used by vertical padding: 28.8px desktop and 20px mobile.
+
+Latest rendered evidence: `.context/equal-gap-carousel-desktop.png`, `.context/equal-gap-carousel-mobile.png`, and `.context/equal-gap-detail.png`. The detail comparison combines the normalized annotation's spacing markers and the rendered card boundary at equal CSS density. The reference is a cropped developer-tools view, so the existing full-page proportion comparison below remains context rather than a claim of matching viewport state.
+
+Browser assertions confirm column gap equals block padding at every tested width from 320px to 2056px. Center snapping, dim neighbors, hover, desktop/touch dragging, edge springs, keyboard access, both themes, and reduced motion continue to pass. Production build passes. No new visual findings remain.
 
 ## Comparison evidence
 
