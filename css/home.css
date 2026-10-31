@@ -232,13 +232,13 @@ button {
 }
 .engagement[href]::after {
   content: "";
-  flex: 0 0 18px;
-  height: 18px;
+  flex: 0 0 16px;
+  height: 16px;
   margin-left: auto;
   margin-right: 2px;
   opacity: 0.7;
   background: currentColor;
-  mask: url("../asset/home/external-mask.svg") center / contain no-repeat;
+  mask: url("../asset/home/external-mask.svg") center / 10.0672px 10.0669px no-repeat;
 }
 .engagement-tags {
   display: flex;
@@ -408,7 +408,7 @@ button {
 }
 .home-booking .home-external-icon {
   background: currentColor;
-  mask: url("../asset/home/external-mask.svg") center / contain no-repeat;
+  mask: url("../asset/home/external-mask.svg") center / 10.0672px 10.0669px no-repeat;
 }
 .home-booking[aria-busy="true"] {
   cursor: progress;
