@@ -8,7 +8,7 @@ The Studio has three sections:
 
 - **Case studies:** client name, card copy and image, homepage visibility, display order, coming-soon status, headline, services, project date or duration, introduction, company link, hero image, ordered image/text gallery, closing section, next project, and search description.
 - **Insights:** title, URL slug, excerpt, category, tags, cover image and caption, author name, role and photo, publication date, rich article body, and search description. Publish an article to create `/insights/<slug>`; the index is `/insights` and shows the published article count. Articles show reading time, a table of contents (when the body has two or more headings), share links, and up to three recommended reads. The importer seeds the articles in `scripts/insights.mjs`.
-- **Studio:** homepage and work headlines, studio statement, services heading, services and icons, contact email, and social links. This is a singleton shared by the homepage, work, services, and article pages.
+- **Studio:** homepage copy, engagements, contact and social links (under **Homepage**), work headline, studio statement, services heading, services and icons, contact email, and social links. This is a singleton shared by the homepage, work, services, and article pages.
 
 Gallery blocks can be reordered and set to full or half width. Images have editable alternative text, crop, and hotspot. Coming-soon projects show a card without a detail link. Case-study slugs create `/cases/<slug>`; retain existing slugs to preserve existing URLs.
 
@@ -30,6 +30,10 @@ To view the generated website:
 python3 -m http.server 8080 --directory dist/site
 ```
 
+The homepage follows the compact studio design in Figma (node `1088:6741`), with locally hosted fonts and SVGs, a saved light/dark preference, and a visitor-local clock. Optional fields under **Studio → Homepage** override the design defaults; the shared studio statement and services remain CMS-driven. The Gallery button opens the existing work page. Engagements link only to published case studies; clients without a case study remain plain text.
+
+The three empty team panels and `jobs@otherkind.design` hiring address are present in the supplied design. The hiring address is editable in **Studio → Homepage**. The footer uses the existing verified Instagram and Behance destinations; add an X destination through Homepage social links when available. New schema fields require the normal Studio deployment to appear in the editor; the website defaults work with the existing published content.
+
 The site stays static HTML with the original styles, fonts, loader, and interactions. All content is rendered during the build for search engines and visitors without JavaScript. Production builds read published documents directly from Sanity, bypassing the CDN. Drafts and release versions are excluded. Failed content queries fail the build, preserving the last successful deployment rather than deploying incomplete content.
 
 The production dataset is public, so website builds need no token. If it becomes private, set `SANITY_API_READ_TOKEN` in the build environment. Import credentials are never shipped in the site. The generated output contains only public website assets and HTML, not the source or Studio configuration.
@@ -38,7 +42,7 @@ The decorative intro runs independently of fonts and images, with a 650 ms fallb
 
 ## Import existing content
 
-The existing HTML files are retained as the migration source and layout templates. The frontend renders their editable content from Sanity; source copy changes are not the editing workflow after migration.
+The original homepage is retained in `scripts/templates/legacy-home.html` for the content importer and article shell. The existing HTML files are retained as the migration source and layout templates. The frontend renders their editable content from Sanity; source copy changes are not the editing workflow after migration.
 
 ```sh
 npm run import:preview # Validate 8 source documents / 68 images; write .context/content-preview.json

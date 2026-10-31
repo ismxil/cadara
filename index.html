@@ -1,183 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description"
-    content="Cadara is a design studio helping ambitious financial brands.">
+  <meta name="description" content="Cadara Studio is an independent design studio. Bold by instinct. Deliberate by design. Driven by curiosity.">
   <meta property="og:title" content="Cadara Studio">
-  <meta property="og:description" content="Branding and digital product design for financial brands.">
+  <meta property="og:description" content="Bold by instinct. Deliberate by design. Driven by curiosity.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="asset/cadara-fav.svg" type="image/svg+xml">
-  <link rel="icon" href="asset/cadara-fav.png" type="image/png">
   <title>Cadara Studio</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/cadara-symbol.css">
-  <link rel="stylesheet" href="css/loader.css">
+  <link rel="stylesheet" href="css/home.css">
+  <script src="js/home-theme.js"></script>
+  <script src="js/home.js" defer></script>
   <script src="js/analytics.js" defer></script>
 </head>
-
 <body>
-  <div class="site-loader" id="site-loader" aria-hidden="true">
-    <span class="site-loader__symbol" data-cadara-symbol="loader" data-cadara-size="lg" aria-hidden="true"></span>
-  </div>
-  <main class="site">
-    <header class="header">
-      <div class="header-inner container">
-        <a class="brand" href="index.html" aria-label="Cadara Studio home">
-          <img src="asset/cadara-symbol.svg" alt="" class="brand-symbol" aria-hidden="true">
-        </a>
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="cases/work.html">Work</a>
-          <a href="studio.html">Studio</a>
-          <a href="cases/offer.html">Services</a>
-          <a href="/insights">Insights</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="home">
+    <div class="home-column">
+      <header class="home-header">
+        <a class="home-brand" href="/" aria-label="Cadara Studio home">C</a>
+        <nav class="home-controls" aria-label="Main navigation">
+          <a class="home-control gallery-link" href="cases/work.html"><span class="gallery-icon" aria-hidden="true"><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""></span>Gallery</a>
+          <button class="home-control theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" hidden><img src="asset/home/theme.svg" alt="" aria-hidden="true"></button>
         </nav>
-        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"
-          aria-controls="mobile-menu">
-          <span class="nav-toggle-label">Menu</span>
-        </button>
-      </div>
-    </header>
-
-    <section class="intro container">
-      <h1 class="intro-headline">Cadara is a design studio helping ambitious financial brands.</h1>
-    </section>
-
-    <section class="work-section" id="work">
-      <div class="cases-grid container">
-
-        <a class="case-card" href="cases/lemfi.html">
-          <figure class="case-image">
-            <img src="cases/images/lemfi.png" alt="Lemfi case study">
-          </figure>
-          <div class="case-meta">
-            <h3>Lemfi</h3>
-            <p>Global card features designed to expand payment access for customers across the US, Canada, and the UK.
-            </p>
+      </header>
+      <main id="main" class="home-main">
+        <section class="home-intro" aria-labelledby="home-headline">
+          <h1 id="home-headline" class="home-headline">Bold by instinct. Deliberate by design. Driven by curiosity.</h1>
+          <div class="home-intro-copy home-prose">
+            <p>Cadara Studio is an independent design studio. We combine thoughtful design with business thinking to challenge conventions, explore unconventional ideas, and create experiences that make a difference.</p>
+            <p>We're selectively impulsive, but intentional in our approach, turning bold ideas into meaningful solutions that work for people and the businesses behind them.</p>
+            <p>Led by Ismail Ahmad, our team embeds within your team to create inspiration, find clarity in ambiguity, and walk alongside you as you build your bold vision.</p>
           </div>
-        </a>
-
-        <a class="case-card" href="cases/foma.html">
-          <figure class="case-image case-image--foma">
-            <img src="cases/images/foma.png" alt="Foma case study">
-          </figure>
-          <div class="case-meta">
-            <h3>FoMA</h3>
-            <p>The future of money, made for a generation that ignores finance conversation.</p>
+          <p class="home-contact">Get in touch: <a href="mailto:work@cadarastudio.com">work@cadarastudio.com</a></p>
+        </section>
+        <section class="home-engagements" aria-labelledby="engagements-title">
+          <h2 id="engagements-title" class="home-section-title">Past engagement</h2>
+          <ul class="engagement-list">
+            <li><a class="engagement" href="cases/cadana.html"><span class="engagement-tags"><span>Identity</span><span>Product</span></span><span class="engagement-name">Cadana</span><span class="engagement-year">2020</span></a></li>
+            <li><div class="engagement"><span class="engagement-tags"><span>Identity</span><span>Product</span></span><span class="engagement-name">Brass</span><span class="engagement-year">2019</span></div></li>
+            <li><div class="engagement"><span class="engagement-tags"><span>Identity</span><span>Product</span></span><span class="engagement-name">Biscons</span><span class="engagement-year">2019</span></div></li>
+            <li><a class="engagement" href="cases/foma.html"><span class="engagement-tags"><span>Identity</span></span><span class="engagement-name">FoMA</span><span class="engagement-year">2021</span></a></li>
+            <li><a class="engagement" href="cases/lemfi.html"><span class="engagement-tags"><span>Design System</span></span><span class="engagement-name">LEMFI</span><span class="engagement-year">07</span></a></li>
+            <li><div class="engagement"><span class="engagement-tags"><span>Design System</span></span><span class="engagement-name">Salarify</span><span class="engagement-year">07</span></div></li>
+          </ul>
+        </section>
+        <section class="home-services" aria-labelledby="home-statement">
+          <div class="home-mark statement-mark"><img src="asset/home/statement-mark.svg" alt="" aria-hidden="true"></div>
+          <h2 id="home-statement" class="home-statement">We help financial brands become easier to understand, easier to trust, and harder to ignore.</h2>
+          <div class="home-services-grid">
+            <article class="home-service"><div class="home-service-icon"><img src="asset/home/strategy.svg" alt="" aria-hidden="true"></div><div><h3>Strategy</h3><p>Insight-led positioning, product direction, and leading clarity workshop for financial teams.</p></div></article>
+            <article class="home-service"><div class="home-service-icon"><img src="asset/home/design.svg" alt="" aria-hidden="true"></div><div><h3>Design</h3><p>Digital design, identity design, system design, interface craft, and launch-ready brand assets.</p></div></article>
+            <article class="home-service"><div class="home-service-icon"><img src="asset/home/build.svg" alt="" aria-hidden="true"></div><div><h3>Build</h3><p>Customer journeys, onboarding flows, service touchpoints, and product moments built around trust.</p></div></article>
           </div>
-        </a>
-
-        <a class="case-card" href="cases/cadana.html">
-          <figure class="case-image case-image--cadana">
-            <img src="cases/images/cadana.png" alt="Cadana case study">
-          </figure>
-          <div class="case-meta">
-            <h3>Cadana</h3>
-            <p>Before there was a product, there was a vision. We built the brand to carry it.</p>
-          </div>
-        </a>
-
-        <a class="case-card" href="cases/gomoney.html">
-          <figure class="case-image">
-            <img src="cases/images/gomoney.png" alt="Gomoney case study">
-          </figure>
-          <div class="case-meta">
-            <h3>Gomoney</h3>
-            <p>Turning registration drop-off into sign-ups for gomoney.</p>
-          </div>
-        </a>
-
-        <a class="case-card" href="cases/mezovest.html">
-          <figure class="case-image">
-            <img src="cases/images/mezovest.png" alt="Mezovest case study">
-          </figure>
-          <div class="case-meta">
-            <h3>Mezovest</h3>
-            <p>A platform foundation for better business credit.</p>
-          </div>
-        </a>
-
-        <div class="case-card case-card--soon" aria-label="Sterling — coming soon">
-          <figure class="case-image">
-            <img src="cases/images/sterling.png" alt="Sterling case study">
-          </figure>
-          <div class="case-meta">
-            <h3>Sterling</h3>
-            <p>Global card features designed to expand payment access for customers across the US, Canada, and the UK.
-            </p>
-          </div>
-          <span class="case-card-soon">Coming soon</span>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="services-section" id="offer">
-      <div class="container">
-        <h2 class="services-heading">
-          <span>Designing for the</span>
-          <span>financial moment.</span>
-        </h2>
-        <div class="services-grid">
-          <article class="service-card">
-            <img src="asset/strategy.svg" alt="" class="service-icon" aria-hidden="true">
-            <div class="service-copy">
-              <h3>Strategy</h3>
-              <p>Insight-led positioning, product direction, and leading clarity workshop for financial teams.</p>
-            </div>
-          </article>
-          <article class="service-card">
-            <img src="asset/design.svg" alt="" class="service-icon" aria-hidden="true">
-            <div class="service-copy">
-              <h3>Design</h3>
-              <p>Digital design, identity design, system design, interface craft, and launch-ready brand assets.</p>
-            </div>
-          </article>
-          <article class="service-card">
-            <img src="asset/build.svg" alt="" class="service-icon" aria-hidden="true">
-            <div class="service-copy">
-              <h3>Build</h3>
-              <p>Customer journeys, onboarding flows, service touchpoints, and product moments built around trust.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="studio-section" id="studio">
-      <div class="statement container">
-        <img src="asset/cadara-symbol.svg" alt="" aria-hidden="true" class="statement-emblem">
-        <p>We help financial brands become easier to understand, easier to trust, and harder to ignore.</p>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-inner container">
-        <div class="footer-cta">
-          <div class="footer-actions">
-            <a class="pill" href="mailto:info@cadarastudio.com">Contact us<span class="pill-arrow" aria-hidden="true"></span></a>
-            <a class="pill" href="cases/work.html">View work<span class="pill-arrow" aria-hidden="true"></span></a>
-          </div>
-          <nav class="footer-socials" aria-label="Social links">
-            <a href="https://www.linkedin.com/company/cadarastudio" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://www.instagram.com/cadarastudio" target="_blank" rel="noopener">Instagram</a>
-            <a href="https://behance.net/cadara" target="_blank" rel="noopener">Behance</a>
+        </section>
+        <section class="home-team" aria-labelledby="team-title">
+          <h2 id="team-title" class="home-section-title">Team</h2>
+          <div class="home-team-copy home-prose"><p>We exist to create a sanctuary for creativity. We want to inspire ourselves and everyone who collaborates with us. Aside from that, we also exist to have fun. Everyone internally and externally should enjoy the process of design.</p><p>If this resonates with you, we're currently hiring for product, web, and visual designers. Email <a href="mailto:jobs@otherkind.design">jobs@otherkind.design</a> with your portfolio.</p></div>
+        </section>
+        <div class="home-team-panels" aria-hidden="true"><div></div><div></div><div></div></div>
+      </main>
+    </div>
+    <footer class="home-footer">
+      <div class="home-footer-column">
+        <div class="home-footer-row">
+          <div class="home-mark footer-mark"><img src="asset/home/footer-mark.svg" alt="" aria-hidden="true"></div>
+          <div class="home-footer-note"><p>New work goes up regularly.<br>Come back soon.</p><div class="home-clock" hidden><img src="asset/home/clock.svg" alt="" aria-hidden="true"><time id="local-time" aria-label="Your local time"></time></div></div>
+          <nav class="home-socials" aria-label="Social links">
+            <a href="mailto:work@cadarastudio.com">Email<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
+            <a href="https://www.instagram.com/cadarastudio" target="_blank" rel="noopener">Instagram<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
+            <a href="https://behance.net/cadara" target="_blank" rel="noopener">Behance<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
           </nav>
         </div>
-        <p class="footer-copyright">Copyright &copy; 2026 Cadara Studio.<span class="copyright-rest">All rights reserved.</span></p>
       </div>
-      <div class="footer-logo-wrap" aria-hidden="true">
-        <div class="footer-logo">Cadara</div>
-      </div>
+      <div class="home-wordmark" aria-hidden="true"><span>Cadara</span></div>
     </footer>
-  </main>
-
-  <script src="js/cadara-symbol.js"></script>
-  <script src="js/loader.js"></script>
-  <script src="js/script.js"></script>
+  </div>
 </body>
-
 </html>
