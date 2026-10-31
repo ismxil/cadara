@@ -10,10 +10,7 @@ export function renderHome(template, studio, projects) {
   if (home.intro) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
   $('.home-contact a').attr('href', `mailto:${email}`).text(email)
   $('.home-socials a[href^="mailto:"]').attr('href', `mailto:${email}`)
-  // Restore the hiring address after shell applies the shared contact address.
-  $('.home-team-copy a').attr('href', `mailto:${home.hiringEmail || 'jobs@otherkind.design'}`).text(home.hiringEmail || 'jobs@otherkind.design')
   if (home.teamCopy) $('.home-team-copy p').first().text(home.teamCopy)
-  if (home.hiringCopy) $('.home-team-copy p').last().html(`${escape(home.hiringCopy)} <a href="mailto:${escape(home.hiringEmail || 'jobs@otherkind.design')}">${escape(home.hiringEmail || 'jobs@otherkind.design')}</a> with your portfolio.`)
   if (studio.statement) $('.home-statement').text(studio.statement)
   if (studio.services) $('.home-services-grid').html(studio.services.map(service => `<article class="home-service">
     ${['strategy', 'design', 'build'].includes(service.icon) ? `<div class="home-service-icon"><img src="/asset/home/${service.icon}.svg" alt="" aria-hidden="true"></div>` : ''}
