@@ -194,6 +194,11 @@ button {
   color: var(--home-heading);
   white-space: nowrap;
 }
+.home-founder:hover,
+.home-founder:focus-visible {
+  color: var(--home-accent);
+  text-decoration: none;
+}
 .home-contact {
   font-size: 20px;
   line-height: 1.4;
