@@ -5,11 +5,11 @@ const projectCards = projects => projects.map((project, index) => {
   const theme = ['lemfi', 'foma', 'cadana', 'gomoney', 'mezovest'].includes(slug) ? slug : 'default'
   const tag = project.comingSoon ? 'article' : 'a'
   return `<${tag} class="case-card home-project-card home-project-card--${theme}" ${project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/projects?project=${escape(slug)}"`}>
-    <div class="home-project-copy"><h3>${escape(project.title)}</h3><p class="home-project-summary">${escape(project.summary)}</p>
+    <div class="home-project-card-content"><div class="home-project-copy"><h3>${escape(project.title)}</h3><p class="home-project-summary">${escape(project.summary)}</p>
       ${project.services?.length ? `<ul class="home-project-services" aria-label="Services">${project.services.map(service => `<li>${escape(service)}</li>`).join('')}</ul>` : ''}
       <span class="home-project-action">${project.comingSoon ? 'Coming soon' : 'View project<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span>'}</span>
     </div>
-    <figure class="case-image">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 540px) calc(100vw - 42px), (max-width: 720px) calc(50vw - 21px), 331px'})}</figure>
+    <figure class="case-image">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 540px) calc(100vw - 42px), (max-width: 720px) calc(50vw - 21px), 331px'})}</figure></div>
   </${tag}>`
 }).join('')
 
