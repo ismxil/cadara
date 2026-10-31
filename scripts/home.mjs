@@ -1,4 +1,4 @@
-import {shell, escape, safeUrl, metadata} from './render.mjs'
+import {shell, escape, safeUrl, metadata, cards} from './render.mjs'
 
 // New fields are optional so existing published Studio documents render the design
 // immediately, without replacing legacy content or requiring a content migration.
@@ -28,8 +28,9 @@ export function renderHome(template, studio, projects) {
   $('.engagement[href]').each((_, el) => {
     if (!published.has($(el).attr('href'))) $(el).replaceWith(`<div class="engagement">${$(el).html()}</div>`)
   })
+  $('.home-projects-grid').html(cards(projects.filter(project => project.featured).slice(0, 4)))
   if (home.socials) {
-    $('.home-socials').html(`<a href="mailto:${escape(email)}">Email<img src="/asset/home/external.svg" alt="" aria-hidden="true"></a>` + home.socials.filter(social => safeUrl(social.url)).map(social => `<a href="${escape(safeUrl(social.url))}" target="_blank" rel="noopener">${escape(social.title)}<img src="/asset/home/external.svg" alt="" aria-hidden="true"></a>`).join(''))
+    $('.home-socials').html(`<a href="mailto:${escape(email)}">Email<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>` + home.socials.filter(social => safeUrl(social.url)).map(social => `<a href="${escape(safeUrl(social.url))}" target="_blank" rel="noopener">${escape(social.title)}<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>`).join(''))
   }
   metadata($, 'Cadara Studio', home.seoDescription || $('.home-headline').text())
   return $.html()

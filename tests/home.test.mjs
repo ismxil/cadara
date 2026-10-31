@@ -14,7 +14,8 @@ test('existing Studio content uses design defaults and only published engagement
   assert.deepEqual($('.engagement[href]').map((_, el) => $(el).attr('href')).get(), ['/cases/cadana'])
   assert.equal($('.engagement').length, 6)
   assert.equal($('.home-services-grid .home-service').length, 3)
-  assert.equal($('.home-socials a').length, 3)
+  assert.equal($('.home-socials a').length, 4)
+  assert.equal($('.home-socials [href="https://x.com/cadarastudio"]').text(), 'X')
   assert.equal($('a[href="/cases/work"]').length, 1)
 })
 

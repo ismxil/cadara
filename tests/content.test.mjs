@@ -60,7 +60,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(home('.gallery-link').attr('href'), '/cases/work')
     assert.equal(home('.home-services-grid .home-service').length, 3)
     assert.equal(home('.home-team-panels > div').length, 3)
-    assert.equal(home('.case-card').length, 0)
+    assert.equal(home('#home-projects[hidden] .case-card').length, 4)
     assert.equal(home('[href="/cases/new-project"]').length, 0)
     assert.equal(home('link[href="/css/style.css"]').length, 0)
     assert.equal(home('body').hasClass('is-loading'), false)
