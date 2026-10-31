@@ -580,27 +580,40 @@ button {
   background: var(--home-bg);
 }
 .home-projects-grid {
-  --card-row-inset: calc(max(0px, (100vw - 720px) / 2) + 69.8px);
+  --project-card-width: min(622px, calc(100vw - 40px));
+  --card-row-inset: calc((100vw - var(--project-card-width)) / 2);
+  position: relative;
   display: flex;
   gap: 12px;
   padding-inline: var(--card-row-inset);
+  padding-block: 16px;
   border-block: 1px solid var(--home-border);
   overflow-x: auto;
-  overscroll-behavior-x: contain;
+  overscroll-behavior-x: none;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--card-row-inset);
   scrollbar-width: none;
+  touch-action: pan-y pinch-zoom;
 }
 .home-projects-grid::-webkit-scrollbar {
   display: none;
+}
+.home-projects-grid.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.home-projects-grid.is-dragging .home-project-card {
+  transition: opacity 180ms ease;
+  cursor: grabbing;
+}
+.home-projects-grid.is-carousel-ready .home-project-card:not(.is-active) {
+  opacity: 0.3;
 }
 .home-control img {
   flex-shrink: 0;
 }
 @media (max-width: 720px) {
-  .home-projects-grid {
-    --card-row-inset: 21px;
-  }
   .home-footer-row {
     grid-template-columns: 80px minmax(0, 1fr);
     gap: 24px;
@@ -630,12 +643,16 @@ button {
 .home-projects .case-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  flex: 0 0 min(622px, calc(100vw - 40px));
+  flex: 0 0 var(--project-card-width);
   min-height: 300px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transform: translateX(var(--card-pull, 0px));
+  transition: opacity 180ms ease, transform 460ms cubic-bezier(0.22, 1.4, 0.36, 1);
+  touch-action: pan-y pinch-zoom;
   background: var(--project-card-bg, #183c32);
   color: var(--project-card-ink, #fff);
   font-family: "Suisse Intl", Arial, sans-serif;
@@ -705,7 +722,6 @@ button {
 }
 .home-projects a:hover,
 .home-projects a:focus-visible {
-  opacity: 1;
   text-decoration: none;
 }
 .home-projects a:hover .home-project-action,
@@ -713,8 +729,10 @@ button {
   background: #00e935;
 }
 @media (max-width: 540px) {
+  .home-projects-grid {
+    --project-card-width: calc(100vw - 56px);
+  }
   .home-projects .case-card {
-    flex-basis: calc(100vw - 56px);
     grid-template-columns: 1fr;
   }
   .home-project-copy {
@@ -726,6 +744,11 @@ button {
   }
   .home-projects .case-image {
     height: 240px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-projects .case-card {
+    transition: none;
   }
 }
 .footer-mark img {

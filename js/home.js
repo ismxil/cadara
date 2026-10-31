@@ -44,18 +44,107 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
 
 const projectCardRail = document.querySelector('.home-projects-grid');
 if (projectCardRail) {
-  const projectCards = [...projectCardRail.querySelectorAll('a.home-project-card')];
+  const projectCards = [...projectCardRail.querySelectorAll('.home-project-card')];
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let activeIndex = 0, drag, frame, settleTimer, suppressClick = false;
+  const targetLeft = (index) => projectCards[index].offsetLeft - (projectCardRail.clientWidth - projectCards[index].offsetWidth) / 2;
+  const nearestIndex = () => projectCards.reduce((nearest, _, index) =>
+    Math.abs(targetLeft(index) - projectCardRail.scrollLeft) < Math.abs(targetLeft(nearest) - projectCardRail.scrollLeft) ? index : nearest, 0);
+  const updateActive = () => {
+    frame = null;
+    if (!projectCardRail.clientWidth || !projectCards.length) return;
+    activeIndex = nearestIndex();
+    projectCards.forEach((card, index) => card.classList.toggle('is-active', index === activeIndex));
+  };
+  const centerCard = (index, smooth = true) => {
+    if (!projectCardRail.clientWidth || !projectCards.length) return;
+    const left = targetLeft(index);
+    if (Math.abs(projectCardRail.scrollLeft - left) > 1)
+      projectCardRail.scrollTo({left, behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant'});
+    updateActive();
+  };
+  const releasePull = () => {
+    projectCardRail.style.setProperty('--card-pull', '0px');
+  };
+  const pull = (distance) => {
+    if (!reducedMotion.matches)
+      projectCardRail.style.setProperty('--card-pull', `${Math.sign(distance) * Math.min(72, Math.sqrt(Math.abs(distance)) * 5)}px`);
+  };
+  projectCardRail.classList.add('is-carousel-ready');
+  projectCardRail.addEventListener('scroll', () => {
+    if (!frame) frame = requestAnimationFrame(updateActive);
+  }, {passive: true});
   projectCardRail.addEventListener('focusin', (event) => {
-    const card = event.target.closest('.home-project-card');
-    card?.scrollIntoView({block: 'nearest', inline: 'start', behavior: 'instant'});
+    if (drag) return;
+    const index = projectCards.indexOf(event.target.closest('.home-project-card'));
+    if (index >= 0) centerCard(index, false);
   });
   projectCardRail.addEventListener('keydown', (event) => {
-    if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || !projectCards.length) return;
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key) || !projectCards.length) return;
     event.preventDefault();
-    const index = projectCards.indexOf(document.activeElement);
-    const next = Math.max(0, Math.min(projectCards.length - 1, index + (event.key === 'ArrowRight' ? 1 : -1)));
-    projectCards[next].focus();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? projectCards.length - 1
+      : Math.max(0, Math.min(projectCards.length - 1, activeIndex + (event.key === 'ArrowRight' ? 1 : -1)));
+    projectCards[next].focus({preventScroll: true});
+    centerCard(next);
   });
+  projectCardRail.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0) return;
+    clearTimeout(settleTimer);
+    releasePull();
+    suppressClick = false;
+    drag = {id: event.pointerId, x: event.clientX, y: event.clientY, left: projectCardRail.scrollLeft, moved: false};
+  });
+  projectCardRail.addEventListener('pointermove', (event) => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+    if (!drag.moved) {
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) { drag = null; return; }
+      if (Math.abs(dx) < 6) return;
+      drag.moved = true;
+      projectCardRail.classList.add('is-dragging');
+      projectCardRail.setPointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+    const requested = drag.left - dx;
+    const max = projectCards.length ? targetLeft(projectCards.length - 1) : 0;
+    projectCardRail.scrollLeft = Math.max(0, Math.min(max, requested));
+    pull(requested < 0 ? -requested : requested > max ? max - requested : 0);
+  });
+  const endDrag = (event) => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const moved = drag.moved;
+    const index = projectCards.length ? nearestIndex() : 0;
+    drag = null;
+    projectCardRail.classList.remove('is-dragging');
+    releasePull();
+    if (projectCardRail.hasPointerCapture(event.pointerId)) projectCardRail.releasePointerCapture(event.pointerId);
+    if (moved) {
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 0);
+      centerCard(index);
+    }
+  };
+  projectCardRail.addEventListener('pointerup', endDrag);
+  projectCardRail.addEventListener('pointercancel', endDrag);
+  projectCardRail.addEventListener('lostpointercapture', (event) => {
+    if (event.target === projectCardRail) endDrag(event);
+  });
+  projectCardRail.addEventListener('click', (event) => {
+    if (suppressClick) { event.preventDefault(); event.stopPropagation(); }
+  }, true);
+  projectCardRail.addEventListener('dragstart', (event) => event.preventDefault());
+  projectCardRail.addEventListener('wheel', (event) => {
+    if (event.ctrlKey || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+    const max = projectCards.length ? targetLeft(projectCards.length - 1) : 0;
+    if ((projectCardRail.scrollLeft <= 1 && event.deltaX < 0) || (projectCardRail.scrollLeft >= max - 1 && event.deltaX > 0)) {
+      event.preventDefault();
+      pull(-event.deltaX);
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(releasePull, 160);
+    }
+  }, {passive: false});
+  new ResizeObserver(() => centerCard(activeIndex, false)).observe(projectCardRail);
+  centerCard(0, false);
 }
 
 // Match the original brand typeout timing, without an idle animation.
