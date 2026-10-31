@@ -611,6 +611,81 @@ button {
 .home-projects-grid.is-carousel-ready .home-project-card:not(.is-active) {
   opacity: 0.3;
 }
+.home-project-resize {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: -12px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--home-border);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+}
+.home-project-resize::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: currentColor;
+}
+.home-project-resize > span {
+  pointer-events: none;
+}
+.home-project-resize-grip {
+  z-index: 1;
+  width: 44px;
+  height: 5px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  background: var(--home-bg);
+}
+.home-project-resize-label {
+  position: absolute;
+  top: calc(100% + 4px);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #00e935;
+  color: #000;
+  font: 12px/16px "Suisse Intl", Arial, sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+}
+.home-project-resize:hover,
+.home-project-resize:focus-visible,
+.home-projects.is-resizing .home-project-resize {
+  color: #00e935;
+}
+.home-project-resize:focus-visible {
+  outline: none;
+}
+.home-project-resize:focus-visible .home-project-resize-grip {
+  outline: 2px solid #00e935;
+  outline-offset: 3px;
+}
+.home-project-resize:hover .home-project-resize-label,
+.home-project-resize:focus-visible .home-project-resize-label,
+.home-projects.is-resizing .home-project-resize-label {
+  opacity: 1;
+}
+.home-projects.is-resizing {
+  user-select: none;
+}
+@media (pointer: coarse) {
+  .home-project-resize {
+    height: 45px;
+    bottom: -22px;
+  }
+  .home-project-resize::before {
+    top: 22px;
+  }
+}
 .home-control img {
   flex-shrink: 0;
 }
@@ -649,7 +724,7 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   flex: 0 0 var(--project-card-width);
-  min-height: 340px;
+  min-height: calc(340px + var(--project-size-extra, 0px));
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -744,7 +819,7 @@ button {
 @media (max-width: 540px) {
   .home-projects .case-card {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 240px;
+    grid-template-rows: 1fr calc(240px + var(--project-size-extra, 0px));
   }
   .home-project-copy {
     min-height: 290px;
@@ -754,7 +829,7 @@ button {
     font-size: 24px;
   }
   .home-projects .case-image {
-    height: 240px;
+    height: calc(240px + var(--project-size-extra, 0px));
   }
 }
 @media (prefers-reduced-motion: reduce) {

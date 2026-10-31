@@ -1,41 +1,45 @@
-# Project carousel spacing QA
+# Bottom-edge project resize QA
 
-Source visual truth: `.context/attachments/lB0jrm/centered-carousel-desktop.png` (2056 × 1171px). Annotations request card edges aligned to the text column, vertical gaps matching the column side padding, slightly taller cards, and an image hover effect. Colored markup is explanatory and is not part of the interface.
+## Visual references
 
-Implementation: `.context/refined-carousel-desktop.png` and `.context/refined-carousel-overview.png` (2056 × 1171px at deviceScaleFactor 1), `.context/refined-carousel-hover.png`, `.context/refined-carousel-light.png`, and `.context/refined-carousel-mobile.png` (390px viewport). Cadana is centered in the desktop captures; the detail capture uses the same 266px page scroll as the prior reference.
+- `.context/attachments/pCSo4A/CleanShot 2026-10-31 at 9.26.41 PM@2x.png` (4112 × 1236 pixels, normalized from 2× density to 2056 × 618 CSS px) identifies the existing bottom divider as the resize edge.
+- `.context/attachments/5UljBV/image.png` (1440 × 1000 pixels) supplies the portfolio's outlined grip and drag-tooltip interaction. The implementation follows the requested bottom position and Cadara green hover state.
 
-## Latest spacing correction
+## Rendered evidence
 
-Primary reference: `.context/attachments/1bvKWU/CleanShot 2026-10-31 at 9.11.23 PM@2x.png` (3598 × 1128px, normalized from 2× density to 1799 × 564 CSS px). Its marked column-side spacing is the requested gap between neighboring projects. Replaced the independent 12px column gap with the same `--card-row-gap` token used by vertical padding: 28.8px desktop and 20px mobile.
+Chrome desktop viewport: 1440 × 1000, deviceScaleFactor 1. `.context/project-resize-hover.png` shows the hover line and grip; `.context/project-resize-expanded.png` shows cards expanded from 340px to 500px. `.context/project-resize-states.png` combines both states at the same normalized 720px width for full-view comparison. Mobile: `.context/project-resize-mobile.png`, viewport 390 × 844.
 
-Latest rendered evidence: `.context/equal-gap-carousel-desktop.png`, `.context/equal-gap-carousel-mobile.png`, and `.context/equal-gap-detail.png`. The detail comparison combines the normalized annotation's spacing markers and the rendered card boundary at equal CSS density. The reference is a cropped developer-tools view, so the existing full-page proportion comparison below remains context rather than a claim of matching viewport state.
-
-Browser assertions confirm column gap equals block padding at every tested width from 320px to 2056px. Center snapping, dim neighbors, hover, desktop/touch dragging, edge springs, keyboard access, both themes, and reduced motion continue to pass. Production build passes. No new visual findings remain.
-
-## Comparison evidence
-
-`.context/refined-carousel-comparison.png` combines the source and implementation at their matching native pixel dimensions. `.context/refined-carousel-detail.png` combines focused 720px-wide column crops to inspect card alignment and spacing. The source's shorter height and narrower card are intentionally changed according to the annotations.
+Focused comparison: `.context/project-resize-line-comparison.png` combines the normalized source divider band and the rendered hover divider band at the same 2056px CSS width. The reference is a cropped lower-page view; the focused comparison aligns the divider rather than claiming an identical whole-page scroll position.
 
 ## Required fidelity surfaces
 
-- Typography: existing client, summary, services, and action hierarchy retained in Suisse Intl. Wider cards reduce wrapping naturally.
-- Layout: desktop width is 660.4px, matching the headline/content column. Minimum desktop card height increases from 300px to 340px. Top/bottom padding is 28.8px on desktop and 20px on mobile, matching the column's side padding. Browser measurements verify both card edges match the heading across 320–2056px viewports.
-- Colors: active card remains fully opaque; neighbors remain at 0.3 opacity. Existing project colors, theme borders, and hidden scrollbar are preserved.
-- Images: active imagery zooms 4% within a clipped image frame on hover and keyboard focus. Reduced motion disables the zoom and transition; touch devices do not receive a sticky hover treatment. Updated responsive sizes match the larger image panels. Mobile images finish flush with the card bottom.
-- Content: published project copy, services, order, and destinations are unchanged.
+- Typography: existing card typography is unchanged. Drag tooltip uses the site's Suisse Intl at 12px/16px.
+- Layout: only the bottom divider is a resize target. Its small horizontal grip stays centered. Default card heights, widths, gap values, center snapping, and inactive opacity are unchanged. Dragging increases height by the vertical pointer delta; mobile cover images grow with the cards.
+- Colors: hover, focus, and active drag use #00E935. The top border keeps its original theme color. The idle divider remains subtle in both themes.
+- Images: existing CMS assets are preserved. Responsive image sizes are recalculated for the actual enlarged cover crop so higher-resolution candidates load when necessary.
+- Copy: project copy and destinations are unchanged. The tooltip reads “Drag to resize”; the adjustable separator exposes its current height and keyboard instructions to assistive technology.
 
 ## Findings and iteration history
 
-The prior 622px width and 16px gaps did not match the annotated column. Updated width, height, and theme-independent padding, then verified alignment geometrically and visually. Mobile review exposed a blank strip below shorter cards because implicit grid tracks shared extra height; setting an explicit image row corrected it. Post-fix screenshots and browser checks pass.
+The first focus capture inherited the site's generic outline around the entire full-width hit area, creating multiple green horizontal lines. Replaced this with a focus indicator around the small grip, leaving one full-width bottom line. Updated captures verify the correction.
 
-No actionable P0/P1/P2 findings remain.
+Initial enlargement used source candidates sized for the original cover. Updated responsive sizes to account for the larger crop and rechecked expanded imagery after decoding.
+
+No actionable P0/P1/P2 visual or interaction findings remain.
 
 ## Verification
 
-Production build and all 16 tests pass. Chrome checks verify column-matched card edges and padding at 320, 390, 540, 721, 1024, 1440, and 2056px; 340px desktop height; hover scale; reduced-motion suppression; mobile image alignment; centered selection and dim neighbors; mouse/touch dragging; elastic edge pulls and spring-back; wheel edge feedback; keyboard navigation; both themes; and no page overflow or JavaScript errors.
+Production build and all 16 tests pass. Chrome checks verify:
+
+- Bottom-line mouse drag grows 340px cards to 500px while width, centering, dimming, gap values, and page scroll remain steady.
+- The top border is unchanged; the resize line is green in dark and light themes.
+- Keyboard Up/Down and shifted steps, min/max limits, Home/End, and Escape cancellation; accessible range values update correctly.
+- Real CDP touch dragging enlarges mobile cards and cover images by the pointer delta, with a 45px hit area and no horizontal carousel movement or page overflow.
+- Enlarged covers request larger image candidates; existing carousel drag, spring-back, touch swiping, navigation, hover, and reduced-motion checks continue to pass.
+- No JavaScript errors observed.
 
 ## Follow-up polish
 
-None required.
+None required for this change.
 
 final result: passed
