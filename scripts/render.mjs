@@ -10,7 +10,7 @@ export function imageUrl(image, width = 2000) {
   if (!image?.asset) return ''
   return builder.image(image).width(width).fit('max').auto('format').url()
 }
-function image(image, {className = '', width = 2000, eager = false, ratio, sizes = '(max-width: 900px) 100vw, 90vw'} = {}) {
+export function image(image, {className = '', width = 2000, eager = false, ratio, sizes = '(max-width: 900px) 100vw, 90vw'} = {}) {
   const src = imageUrl(image, width)
   if (!src) return ''
   const dimensions = image.asset._ref?.match(/-(\d+)x(\d+)-/)
@@ -32,7 +32,7 @@ const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join
 export function cards(projects) {
   return projects.map((project, index) => {
     const tag = project.comingSoon ? 'div' : 'a'
-    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}"`
+    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/projects?project=${escape(project.slug.current)}"`
     const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
     return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
       <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, 50vw'})}</figure>

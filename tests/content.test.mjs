@@ -73,7 +73,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(studioPhoto.attr('loading'), 'lazy')
     await access(path.join(output, studioPhoto.attr('src')))
     const work = load(await readFile(path.join(output, 'cases/work.html'), 'utf8'))
-    assert.equal(work('[href="/cases/new-project"]').length, 1)
+    assert.equal(work('[href="/projects?project=new-project"]').length, 1)
     const firstImage = work('.case-image img').first()
     assert.equal(firstImage.attr('loading'), 'eager')
     assert.equal(firstImage.attr('fetchpriority'), 'high')

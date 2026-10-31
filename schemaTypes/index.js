@@ -53,9 +53,10 @@ const studioPage = defineType({name: 'studioPage', title: 'Studio', type: 'docum
     defineField({name: 'contactEmail', title: 'Homepage contact email', type: 'string', validation: Rule => Rule.email()}),
     text('teamCopy', 'Team description'),
     defineField({name: 'engagements', title: 'Past engagements', type: 'array', of: [{type: 'object', name: 'engagement', fields: [
-      string('name', 'Client name', true), string('year', 'Year / label'),
+      string('name', 'Client name', true), string('year', 'Year / label'), externalUrl('website', 'Company website (external URL)'),
+      defineField({name: 'disabled', title: 'Disable link (grey out)', type: 'boolean', initialValue: false}),
       defineField({name: 'services', title: 'Service tags', type: 'array', of: [{type: 'string'}]}),
-      defineField({name: 'project', title: 'Case study (optional)', type: 'reference', to: [{type: 'caseStudy'}]}),
+      defineField({name: 'project', title: 'Use company website from project (optional)', type: 'reference', to: [{type: 'caseStudy'}]}),
     ], preview: {select: {title: 'name', subtitle: 'year'}}}]}),
     defineField({name: 'socials', title: 'Homepage social links', type: 'array', of: [{type: 'object', name: 'homeSocialLink', fields: [string('title', 'Label', true), externalUrl('url', 'URL')]}]}),
     text('seoDescription', 'Search description'),

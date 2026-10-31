@@ -4,16 +4,21 @@ import {readFile} from 'node:fs/promises'
 import {load} from 'cheerio'
 import {renderHome} from '../scripts/home.mjs'
 const template = await readFile(new URL('../index.html', import.meta.url), 'utf8')
-const projects = [{_id: 'cadana', slug: {current: 'cadana'}}, {_id: 'foma', slug: {current: 'foma'}, comingSoon: true}]
+const projects = [{_id: 'cadana', slug: {current: 'cadana'}, website: 'https://cadana.example/'}, {_id: 'foma', slug: {current: 'foma'}, comingSoon: true}]
 
-test('existing Studio content uses design defaults and only published engagement links', () => {
+test('existing Studio content uses design defaults and only external company engagement links', () => {
   const $ = load(renderHome(template, {contactEmail: 'legacy@example.com', headline: 'Legacy headline'}, projects))
   assert.equal($('.home-headline').text(), 'Bold by instinct. Deliberate by design. Driven by curiosity.')
   assert.equal($('.home-contact a').attr('href'), 'mailto:work@cadarastudio.com')
   assert.equal($('.home-team-copy p').length, 1)
   assert.doesNotMatch($('.home-team-copy').text(), /hiring|jobs@/)
-  assert.deepEqual($('.engagement[href]').map((_, el) => $(el).attr('href')).get(), ['/cases/cadana'])
+  assert.deepEqual($('.engagement[href]').map((_, el) => $(el).attr('href')).get(), ['https://cadanapay.com/', 'https://trybrass.com/', 'https://foma.money/', 'https://lemfi.com/en-gb/cards'])
   assert.equal($('.engagement').length, 6)
+  assert.deepEqual($('.engagement-name').map((_, el) => $(el).text()).get(), ['Cadana', 'Brass', 'FoMA', 'LEMFI', 'Biscons', 'Salarify'])
+  assert.deepEqual($('.engagement[aria-disabled="true"] .engagement-name').map((_, el) => $(el).text()).get(), ['Biscons', 'Salarify'])
+  assert.equal($('.engagement').filter((_, el) => $(el).find('.engagement-name').text() === 'LEMFI').find('.engagement-year').text(), '2023')
+  assert.equal($('.engagement').last().find('.engagement-year').text(), '2019')
+
   assert.equal($('.home-services-grid .home-service').length, 3)
   assert.equal($('.home-socials a').length, 4)
   assert.equal($('.home-socials [href="https://x.com/cadarastudio"]').text(), 'X')

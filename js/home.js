@@ -34,8 +34,7 @@ const projectGrid = document.querySelector('#home-projects');
 if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case-card')) {
   document.querySelector('.gallery-link').hidden = true;
   viewToggle.hidden = false;
-  viewToggle.addEventListener('click', () => {
-    const showGrid = projectGrid.hidden;
+  function setWorkView(showGrid) {
     document.querySelector('.home').classList.toggle('is-grid', showGrid);
     projectGrid.hidden = !showGrid;
     if (showGrid) projectGrid.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
@@ -44,6 +43,15 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
     viewToggle.setAttribute('aria-label', showGrid ? 'Show index' : 'Show work');
     viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'Index' : 'Work';
     viewToggle.querySelector('img').src = showGrid ? '/asset/home/list.svg' : '/asset/home/grid.svg';
+  }
+  setWorkView(new URL(location.href).searchParams.get('view') === 'work');
+  viewToggle.addEventListener('click', () => {
+    const showGrid = projectGrid.hidden;
+    setWorkView(showGrid);
+    const url = new URL(location.href);
+    if (showGrid) url.searchParams.set('view', 'work');
+    else url.searchParams.delete('view');
+    history.replaceState(null, '', url);
   });
 }
 

@@ -4,6 +4,7 @@ import {createClient} from '@sanity/client'
 import {root} from './content.mjs'
 import {shell, cards, renderCase, renderInsight, renderInsights} from './render.mjs'
 import {renderHome} from './home.mjs'
+import {renderProjects} from './projects.mjs'
 import {optimizeStudioImages} from './assets.mjs'
 export function validateContent(docs) {
   const studio = docs.find(d => d._type === 'studioPage' && d._id === 'studioPage')
@@ -29,6 +30,8 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   await mkdir(path.join(output, 'insights'), {recursive: true})
   for (const dir of ['css', 'js', 'asset', 'fonts', 'cases/css', 'cases/js']) await cp(path.join(root, dir), path.join(output, dir), {recursive: true, filter: source => !source.endsWith('.DS_Store')})
   await writeFile(path.join(output, 'index.html'), renderHome(homeTemplate, studio, projects))
+  const projectsTemplate = await readFile(path.join(root, 'projects.html'), 'utf8')
+  await writeFile(path.join(output, 'projects.html'), renderProjects(projectsTemplate, studio, projects))
   const studioPage = shell(studioTemplate, studio)
   await optimizeStudioImages(studioPage, output)
   await writeFile(path.join(output, 'studio.html'), studioPage.html())
