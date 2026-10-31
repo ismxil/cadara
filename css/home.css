@@ -585,7 +585,7 @@ button {
   --card-row-inset: calc((100vw - var(--project-card-width)) / 2);
   position: relative;
   display: flex;
-  gap: 12px;
+  gap: var(--card-row-gap);
   padding-inline: var(--card-row-inset);
   padding-block: var(--card-row-gap);
   border-block: 1px solid var(--home-border);
