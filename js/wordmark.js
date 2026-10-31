@@ -36,7 +36,7 @@
     await document.fonts.ready;
     const { densifyPaths } = await import(geometryUrl);
     const originalPaths = densifyPaths(original.paths);
-    let commands = structuredClone(originalPaths);
+    const commands = structuredClone(originalPaths);
     let geometry, cursor, selected, frame;
     const svg = make("svg", { "aria-hidden": "true" });
     const controls = make("g", { "pointer-events": "none" });
@@ -200,10 +200,10 @@
       readout.hidden = false;
       schedule();
     }
-    function reset() {
+    // Dismiss editing controls without discarding edits; a reload restores the outlines.
+    function endInteraction() {
       selected = null;
       cursor = null;
-      commands = structuredClone(originalPaths);
       readout.hidden = true;
       schedule();
     }
@@ -252,16 +252,16 @@
         event.clientY < rect.top ||
         event.clientY > rect.bottom
       )
-        reset();
+        endInteraction();
     });
     host.addEventListener("pointerleave", () => {
-      if (!selected) reset();
+      if (!selected) endInteraction();
     });
-    host.addEventListener("pointercancel", reset);
+    host.addEventListener("pointercancel", endInteraction);
     pointerQuery.addEventListener("change", () => {
       host.classList.toggle("is-interactive", pointerQuery.matches);
       svg.toggleAttribute("hidden", !pointerQuery.matches);
-      reset();
+      endInteraction();
     });
     new ResizeObserver(resize).observe(host);
     resize();
