@@ -1,97 +1,640 @@
-@font-face { font-family: 'Beirut Display'; src: url('../fonts/BeirutDisplay-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Beirut Display'; src: url('../fonts/BeirutDisplay-SemiBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
-@font-face { font-family: 'Beirut Display'; src: url('../fonts/BeirutDisplay-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
-@font-face { font-family: 'Beirut Text'; src: url('../fonts/BeirutText-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Beirut Text Book'; src: url('../fonts/BeirutText-Book.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: Inter; src: url('../fonts/InterVariable.ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
-:root { color-scheme: dark; --home-bg: #000; --home-heading: rgba(255,255,255,.9); --home-copy: rgba(255,255,255,.75); --home-muted: rgba(255,255,255,.65); --home-panel: rgba(255,255,255,.1); --home-border: rgba(255,255,255,.1); --home-control: rgba(255,255,255,.7); --home-accent: #ecff00; }
-:root[data-theme='light'] { color-scheme: light; --home-bg: #fff; --home-heading: rgba(0,0,0,.9); --home-copy: rgba(0,0,0,.75); --home-muted: rgba(0,0,0,.65); --home-panel: rgba(0,0,0,.06); --home-border: rgba(0,0,0,.1); --home-control: rgba(0,0,0,.1); --home-accent: #687100; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--home-bg); color: var(--home-copy); font-family: 'Beirut Text', Georgia, serif; -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: .15em; }
-button { font: inherit; cursor: pointer; }
-:focus-visible { outline: 2px solid var(--home-accent); outline-offset: 6px; }
-[hidden] { display: none !important; }
-::selection { background: var(--home-accent); color: var(--home-bg); }
-.skip-link { position: absolute; left: 16px; top: -100px; z-index: 10; padding: 12px; background: var(--home-bg); }
-.skip-link:focus { top: 16px; }
-.home { padding-top: 32px; }
-.home-column, .home-footer-column { width: min(100%,720px); margin-inline: auto; border-inline: 1px solid var(--home-border); padding-inline: 28.8px; }
-.home-header { display: flex; justify-content: space-between; align-items: center; }
-.home-brand { width: 48px; color: var(--home-heading); font: 900 48px/48px 'Beirut Display', Georgia, serif; letter-spacing: -.96px; text-align: center; }
-.home-controls { display: flex; align-items: center; gap: 8px; }
-.home-control { border: 0; border-radius: 16px; background: var(--home-control); color: #0c0c0c; display: inline-flex; align-items: center; justify-content: center; min-height: 47.88px; padding: 0 16.368px; gap: 7.44px; font: 400 16px/24px Inter, Arial, sans-serif; backdrop-filter: blur(30px); }
-.gallery-icon { display: grid; grid-template-columns: repeat(2, 5.27563px); gap: 2px; }
-.gallery-icon img { display: block; }
-.theme-toggle { width: 47.88px; padding: 0; }
-.theme-toggle img { display: block; }
-.home-main { display: flex; flex-direction: column; gap: 64px; margin-top: 64px; }
-.home-intro { padding-top: 48px; letter-spacing: -.868px; }
-.home-headline { color: var(--home-heading); font: 400 64px/1.2 'Beirut Display', Georgia, serif; margin: 0 0 72px; }
-.home-prose { font-size: 20px; line-height: 1.4; letter-spacing: -.868px; }
-.home-prose p { margin: 0 0 28px; }
-.home-prose p:last-child { margin-bottom: 0; }
-.home-intro-copy { max-width: 499.057px; }
-.home-contact { font-size: 20px; line-height: 1.4; margin: 28px 0 0; }
-.home-section-title { color: var(--home-heading); font: 400 32px/42px Inter, Arial, sans-serif; letter-spacing: -.868px; margin: 0; }
-.engagement-list { display: grid; gap: 12px; padding: 0; margin: 32px 0 0; list-style: none; }
-.engagement { display: flex; align-items: center; gap: 2px; min-height: 42.06px; width: fit-content; color: var(--home-heading); font-family: Inter, Arial, sans-serif; }
-.engagement-tags { display: flex; gap: 3px; }
-.engagement-tags > span { border-radius: 999px; background: var(--home-panel); padding: 7.6px 10.254px; font-size: 15px; line-height: 15.3px; letter-spacing: .459px; text-transform: uppercase; white-space: nowrap; }
-.engagement-name { font-size: 42.4px; line-height: 42px; letter-spacing: -.868px; }
-.engagement-year { font: 11.3px/11.28px ui-monospace, 'SF Mono', monospace; opacity: .7; align-self: flex-start; padding-top: 2px; margin-left: 6px; }
-.home-services { display: flex; flex-direction: column; align-items: center; gap: 48px; padding-block: 115.2px; }
-.home-mark { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.statement-mark { width: 92px; height: 92px; }
-.home-statement { margin: 0; color: var(--home-heading); text-align: center; font: 400 36px/1.2 'Beirut Display', Georgia, serif; letter-spacing: -.868px; }
-.home-services-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; width: 100%; }
-.home-service { background: var(--home-panel); border-radius: 24px; padding: 16px 12px; min-height: 230px; display: flex; flex-direction: column; gap: 40px; }
-.home-service-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
-.home-service h3 { margin: 0 0 16px; color: var(--home-heading); font: 700 20px/1.2 'Beirut Display', Georgia, serif; text-transform: uppercase; }
-.home-service p { margin: 0; font-size: 16px; line-height: 1.4; }
-.home-team-copy { max-width: 533.791px; margin-top: 24px; }
-.home-team-panels { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
-.home-team-panels > div { height: 230px; background: var(--home-panel); border-radius: 24px; }
-.home-footer { margin-top: 72px; }
-.home-footer-column { padding-top: 63.98px; padding-bottom: 72px; }
-.home-footer-row { border-top: 1px solid var(--home-border); padding-top: 18px; display: grid; grid-template-columns: 2fr 4fr 4fr; gap: 24px; min-height: 95px; }
-.footer-mark { width: 76.75px; height: 76.75px; }
-.footer-mark img { transform: scale(.64); }
-.home-footer-note { font: 400 16px/19.2px 'Beirut Text Book', Georgia, serif; color: var(--home-muted); }
-.home-footer-note p { margin: 0 0 17.59px; }
-.home-clock { display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 16px; }
-.home-clock img { display: block; }
-.home-socials { display: flex; flex-direction: column; align-items: flex-start; font: 400 16px/19.2px 'Beirut Text Book', Georgia, serif; color: var(--home-heading); }
-.home-socials a { display: inline-flex; align-items: center; gap: 4px; }
-.home-socials img { display: block; }
-.home-wordmark { position: relative; height: 24.8192vw; overflow: hidden; color: #878b89; }
-.home-wordmark span { position: absolute; width: 103.88%; left: 50.833%; top: -2.674vw; transform: translateX(-50%); font: 700 31.0755vw/1.3088 'Beirut Display', Georgia, serif; letter-spacing: -1.15214vw; text-align: center; white-space: nowrap; }
-[data-theme='light'] .home-control { color: #0c0c0c; }
-[data-theme='light'] .home-socials img { filter: invert(1); }
-[data-theme='light'] .home-mark img, [data-theme='light'] .home-clock img { filter: brightness(.45); }
+@font-face {
+  font-family: "Beirut Display";
+  src: url("../fonts/BeirutDisplay-SemiBold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beirut Display";
+  src: url("../fonts/BeirutDisplay-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beirut Text";
+  src: url("../fonts/BeirutText-Book.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beirut Text Book";
+  src: url("../fonts/BeirutText-Book.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl";
+  src: url("../fonts/SuisseIntl-Book.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl";
+  src: url("../fonts/SuisseIntl-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl";
+  src: url("../fonts/SuisseIntl-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --home-bg: #000;
+  --home-heading: rgba(255, 255, 255, 0.9);
+  --home-copy: rgba(255, 255, 255, 0.75);
+  --home-muted: rgba(255, 255, 255, 0.65);
+  --home-panel: rgba(255, 255, 255, 0.1);
+  --home-border: rgba(255, 255, 255, 0.1);
+  --home-control: rgba(255, 255, 255, 0.7);
+  --home-accent: #ecff00;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --home-bg: #fff;
+  --home-heading: rgba(0, 0, 0, 0.9);
+  --home-copy: rgba(0, 0, 0, 0.75);
+  --home-muted: rgba(0, 0, 0, 0.65);
+  --home-panel: rgba(0, 0, 0, 0.06);
+  --home-border: rgba(0, 0, 0, 0.1);
+  --home-control: rgba(0, 0, 0, 0.1);
+  --home-accent: #687100;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--home-bg);
+  color: var(--home-copy);
+  font-family: "Beirut Text", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+:focus-visible {
+  outline: 2px solid var(--home-accent);
+  outline-offset: 6px;
+}
+[hidden] {
+  display: none !important;
+}
+::selection {
+  background: var(--home-accent);
+  color: var(--home-bg);
+}
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 10;
+  padding: 12px;
+  background: var(--home-bg);
+}
+.skip-link:focus {
+  top: 16px;
+}
+.home {
+  padding-top: 32px;
+}
+.home-column {
+  width: min(100%, 720px);
+  margin-inline: auto;
+  border-inline: 1px solid var(--home-border);
+  padding-inline: 28.8px;
+}
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.home-brand {
+  width: 48px;
+  color: var(--home-heading);
+  font:
+    900 48px/48px "Beirut Display",
+    Georgia,
+    serif;
+  letter-spacing: -0.96px;
+  text-align: center;
+}
+.home-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.home-control {
+  border: 0;
+  border-radius: 16px;
+  background: var(--home-control);
+  color: #0c0c0c;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 47.88px;
+  padding: 0 16.368px;
+  gap: 7.44px;
+  font:
+    400 16px/24px "Suisse Intl",
+    Arial,
+    sans-serif;
+  backdrop-filter: blur(30px);
+}
+.theme-toggle {
+  width: 47.88px;
+  padding: 0;
+}
+.theme-toggle img {
+  display: block;
+}
+.home-main {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  margin-top: 64px;
+}
+.home-intro {
+  padding-top: 48px;
+}
+.home-headline {
+  color: var(--home-heading);
+  font:
+    700 64px/1.2 "Beirut Display",
+    Georgia,
+    serif;
+  margin: 0 0 72px;
+}
+.home-prose {
+  font-size: 20px;
+  line-height: 1.4;
+}
+.home-prose p {
+  margin: 0 0 28px;
+}
+.home-prose p:last-child {
+  margin-bottom: 0;
+}
+.home-intro-copy {
+  max-width: 499.057px;
+}
+.home-contact {
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 28px 0 0;
+}
+.home-section-title {
+  color: var(--home-heading);
+  font:
+    400 32px/42px "Suisse Intl",
+    Arial,
+    sans-serif;
+  letter-spacing: -0.868px;
+  margin: 0;
+}
+.engagement-list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin: 32px 0 0;
+  list-style: none;
+}
+.engagement {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 42.06px;
+  width: fit-content;
+  color: var(--home-heading);
+  font-family: "Suisse Intl", Arial, sans-serif;
+}
+.engagement-tags {
+  display: flex;
+  gap: 3px;
+}
+.engagement-tags > span {
+  border-radius: 999px;
+  background: var(--home-panel);
+  padding: 7.6px 10.254px;
+  font-size: 15px;
+  line-height: 15.3px;
+  letter-spacing: 0.459px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.engagement-name {
+  font-size: 42.4px;
+  line-height: 42px;
+  letter-spacing: -0.868px;
+}
+.engagement-year {
+  font:
+    400 11.3px/11.28px "Suisse Intl",
+    Arial,
+    sans-serif;
+  opacity: 0.7;
+  align-self: flex-start;
+  padding-top: 2px;
+  margin-left: 6px;
+}
+.home-services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  padding-block: 115.2px;
+}
+.home-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.statement-mark {
+  width: 92px;
+  height: 92px;
+}
+.home-statement {
+  margin: 0;
+  max-width: 591.356px;
+  color: var(--home-heading);
+  text-align: center;
+  font:
+    700 36px/1.2 "Beirut Display",
+    Georgia,
+    serif;
+  letter-spacing: -0.868px;
+}
+.home-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+.home-service {
+  background: var(--home-panel);
+  border-radius: 24px;
+  padding: 16px 12px 20px;
+  min-height: 258px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.home-service-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-service h3 {
+  margin: 0 0 16px;
+  color: var(--home-heading);
+  font:
+    700 20px/1.2 "Beirut Display",
+    Georgia,
+    serif;
+  text-transform: none;
+}
+.home-service p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.home-team-copy {
+  max-width: 533.791px;
+  margin-top: 24px;
+}
+.home-team-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.home-team-panels > div {
+  min-height: 230px;
+  background: var(--home-panel);
+  border-radius: 24px;
+  padding: 12px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  color: var(--home-muted);
+  font-size: 16px;
+  line-height: 20px;
+}
+.home-team-role {
+  font-size: 12px;
+}
+.home-footer {
+  margin-top: 64px;
+}
+.home-footer-column {
+  padding-bottom: 102px;
+}
+.home-footer-row {
+  border-top: 1px solid var(--home-border);
+  padding-top: 64px;
+  display: grid;
+  grid-template-columns: 122.48px 244.97px minmax(0, 1fr);
+  gap: 24px;
+  min-height: 169.59px;
+}
+.footer-mark {
+  width: 104.59px;
+  height: 104.59px;
+}
+.home-footer-note {
+  font:
+    400 16px/19.2px "Beirut Text Book",
+    Georgia,
+    serif;
+  color: var(--home-muted);
+}
+.home-footer-note p {
+  margin: 0;
+}
+.home-footer-note .home-footer-prompt {
+  font-size: 12px;
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+.home-footer-note .home-footer-invitation {
+  margin-bottom: 17.59px;
+}
+.home-clock {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.home-clock img {
+  display: block;
+}
+.home-socials {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  font:
+    400 16px/19.2px "Beirut Text Book",
+    Georgia,
+    serif;
+  color: var(--home-heading);
+}
+.home-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.home-socials img {
+  display: block;
+}
+.home-external-icon,
+.home-theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.home-external-icon {
+  width: 16px;
+  height: 16px;
+}
+.home-theme-icon {
+  width: 24px;
+  height: 24px;
+}
+.home-wordmark {
+  position: relative;
+  height: 24.8192vw;
+  overflow: hidden;
+  color: #878b89;
+}
+.home-wordmark span {
+  position: absolute;
+  width: 103.88%;
+  left: 50.833%;
+  top: -2.674vw;
+  transform: translateX(-50%);
+  font:
+    700 31.0755vw/1.3088 "Beirut Display",
+    Georgia,
+    serif;
+  letter-spacing: -1.15214vw;
+  text-align: center;
+  white-space: nowrap;
+}
+[data-theme="light"] .home-control {
+  color: #0c0c0c;
+}
+[data-theme="light"] .home-socials img {
+  filter: invert(1);
+}
+[data-theme="light"] .home-mark img,
+[data-theme="light"] .home-clock img {
+  filter: brightness(0.45);
+}
 @media (max-width: 720px) {
-  .home { padding-top: 24px; }
-  .home-column, .home-footer-column { padding-inline: 20px; }
-  .home-main { margin-top: 48px; gap: 48px; }
-  .home-intro { padding-top: 24px; }
-  .home-headline { font-size: clamp(36px,8.9vw,64px); margin-bottom: 48px; }
-  .home-services { padding-block: 64px; gap: 36px; }
-  .home-statement { font-size: clamp(28px,5vw,36px); }
-  .home-footer-row { grid-template-columns: 64px 1fr; gap: 20px; }
-  .footer-mark { width: 64px; height: 64px; }
-  .home-socials { grid-column: 2; }
+  .home {
+    padding-top: 24px;
+  }
+  .home-column {
+    padding-inline: 20px;
+  }
+  .home-main {
+    margin-top: 48px;
+    gap: 48px;
+  }
+  .home-intro {
+    padding-top: 24px;
+  }
+  .home-headline {
+    font-size: clamp(36px, 8.9vw, 64px);
+    margin-bottom: 48px;
+  }
+  .home-services {
+    padding-block: 64px;
+    gap: 36px;
+  }
+  .home-statement {
+    font-size: clamp(28px, 5vw, 36px);
+  }
+  .home-socials {
+    grid-column: 2;
+  }
 }
 @media (max-width: 480px) {
-  .home-services-grid { grid-template-columns: 1fr; gap: 12px; }
-  .home-service { min-height: auto; flex-direction: row; gap: 24px; padding: 24px 20px; }
-  .home-service-icon { flex-shrink: 0; }
-  .home-service h3 { margin-bottom: 12px; }
-  .home-team-panels { gap: 8px; }
-  .home-team-panels > div { height: 150px; border-radius: 16px; }
-  .engagement-tags > span { font-size: 10px; line-height: 12px; padding: 6px 7px; }
-  .engagement-name { font-size: 32px; line-height: 38px; }
-  .engagement-year { margin-left: 3px; }
-  .home-section-title { font-size: 28px; }
-  .home-clock { white-space: normal; font-size: 14px; }
+  .home-services-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .home-service {
+    min-height: auto;
+    flex-direction: row;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+  .home-service-icon {
+    flex-shrink: 0;
+  }
+  .home-service h3 {
+    margin-bottom: 12px;
+  }
+  .home-team-panels {
+    gap: 8px;
+  }
+  .home-team-panels > div {
+    min-height: 150px;
+    border-radius: 16px;
+  }
+  .engagement-tags > span {
+    font-size: 10px;
+    line-height: 12px;
+    padding: 6px 7px;
+  }
+  .engagement-name {
+    font-size: 32px;
+    line-height: 38px;
+  }
+  .engagement-year {
+    margin-left: 3px;
+  }
+  .home-section-title {
+    font-size: 28px;
+  }
+  .home-clock {
+    white-space: normal;
+    font-size: 14px;
+  }
+}
+
+/* Engagements fade as a unit instead of underlining each text fragment. */
+.engagement {
+  transition: opacity 180ms ease;
+}
+.engagement:hover,
+.engagement:focus-visible {
+  text-decoration: none;
+  opacity: 0.5;
+}
+.home-wordmark {
+  margin-top: 72px;
+}
+.home-projects[hidden],
+.home-engagements[hidden] {
+  display: none;
+}
+.home-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.home-control img {
+  flex-shrink: 0;
+}
+@media (max-width: 720px) {
+  .home-footer-row {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 24px;
+  }
+  .footer-mark {
+    width: 80px;
+    height: 80px;
+  }
+  .home-footer-column {
+    padding-bottom: 64px;
+  }
+}
+@media (max-width: 380px) {
+  .home-footer-row {
+    grid-template-columns: 1fr;
+  }
+  .home-socials {
+    grid-column: 1;
+  }
+  .home-projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .engagement {
+    transition: none;
+  }
+}
+
+.home-projects .case-card {
+  display: block;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 322.2 / 340;
+  background: var(--home-panel);
+}
+.home-projects .case-image {
+  margin: 0;
+  height: 100%;
+}
+.home-projects .case-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.home-projects .case-meta {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.home-projects .case-card-soon {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: var(--home-bg);
+  color: var(--home-heading);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-family: "Suisse Intl", Arial, sans-serif;
+}
+.home-projects a:hover,
+.home-projects a:focus-visible {
+  opacity: 0.65;
+}
+.footer-mark img {
+  transform: scale(0.87167);
+}
+@media (max-width: 720px) {
+  .footer-mark img {
+    transform: scale(0.6667);
+  }
+}
+
+.home-view-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.home.is-grid .home-intro-copy,
+.home.is-grid .home-contact {
+  display: none;
+}
+.home.is-grid .home-headline {
+  margin-bottom: 0;
 }

@@ -27,3 +27,22 @@ if (clock) {
   clock.parentElement.hidden = false;
   setInterval(updateClock, 60_000);
 }
+
+const viewToggle = document.querySelector('.view-toggle');
+const engagements = document.querySelector('#home-engagements');
+const projectGrid = document.querySelector('#home-projects');
+if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case-card')) {
+  document.querySelector('.gallery-link').hidden = true;
+  viewToggle.hidden = false;
+  viewToggle.addEventListener('click', () => {
+    const showGrid = projectGrid.hidden;
+    document.querySelector('.home').classList.toggle('is-grid', showGrid);
+    projectGrid.hidden = !showGrid;
+    if (showGrid) projectGrid.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
+    engagements.hidden = showGrid;
+    viewToggle.setAttribute('aria-pressed', String(showGrid));
+    viewToggle.setAttribute('aria-label', showGrid ? 'Show engagement list' : 'Show project grid');
+    viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'List' : 'Grid';
+    viewToggle.querySelector('img').src = showGrid ? '/asset/home/list.svg' : '/asset/home/grid.svg';
+  });
+}

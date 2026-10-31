@@ -22,8 +22,9 @@
       <header class="home-header">
         <a class="home-brand" href="/" aria-label="Cadara Studio home">C</a>
         <nav class="home-controls" aria-label="Main navigation">
-          <a class="home-control gallery-link" href="cases/work.html"><span class="gallery-icon" aria-hidden="true"><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""><img src="asset/home/gallery-cell.svg" alt=""></span>Gallery</a>
-          <button class="home-control theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" hidden><img src="asset/home/theme.svg" alt="" aria-hidden="true"></button>
+          <a class="home-control gallery-link" href="cases/work.html"><span class="home-view-icon"><img src="asset/home/grid.svg" alt="" aria-hidden="true"></span><span class="home-view-label">Grid</span></a>
+          <button class="home-control view-toggle" type="button" aria-label="Show project grid" aria-controls="home-engagements home-projects" aria-pressed="false" hidden><span class="home-view-icon"><img src="asset/home/grid.svg" alt="" aria-hidden="true"></span><span class="home-view-label">Grid</span></button>
+          <button class="home-control theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" hidden><span class="home-theme-icon"><img src="asset/home/theme.svg" alt="" aria-hidden="true"></span></button>
         </nav>
       </header>
       <main id="main" class="home-main">
@@ -36,7 +37,7 @@
           </div>
           <p class="home-contact">Get in touch: <a href="mailto:work@cadarastudio.com">work@cadarastudio.com</a></p>
         </section>
-        <section class="home-engagements" aria-labelledby="engagements-title">
+        <section id="home-engagements" class="home-engagements" aria-labelledby="engagements-title">
           <h2 id="engagements-title" class="home-section-title">Past engagement</h2>
           <ul class="engagement-list">
             <li><a class="engagement" href="cases/cadana.html"><span class="engagement-tags"><span>Identity</span><span>Product</span></span><span class="engagement-name">Cadana</span><span class="engagement-year">2020</span></a></li>
@@ -47,6 +48,7 @@
             <li><div class="engagement"><span class="engagement-tags"><span>Design System</span></span><span class="engagement-name">Salarify</span><span class="engagement-year">07</span></div></li>
           </ul>
         </section>
+        <section id="home-projects" class="home-projects" aria-label="Selected work" hidden><div class="home-projects-grid"></div></section>
         <section class="home-services" aria-labelledby="home-statement">
           <div class="home-mark statement-mark"><img src="asset/home/statement-mark.svg" alt="" aria-hidden="true"></div>
           <h2 id="home-statement" class="home-statement">We help financial brands become easier to understand, easier to trust, and harder to ignore.</h2>
@@ -60,23 +62,24 @@
           <h2 id="team-title" class="home-section-title">Team</h2>
           <div class="home-team-copy home-prose"><p>We exist to create a sanctuary for creativity. We want to inspire ourselves and everyone who collaborates with us. Aside from that, we also exist to have fun. Everyone internally and externally should enjoy the process of design.</p><p>If this resonates with you, we're currently hiring for product, web, and visual designers. Email <a href="mailto:jobs@otherkind.design">jobs@otherkind.design</a> with your portfolio.</p></div>
         </section>
-        <div class="home-team-panels" aria-hidden="true"><div></div><div></div><div></div></div>
+        <div class="home-team-panels" role="list" aria-label="Team members"><div role="listitem"><span class="home-team-role">Engineering</span><span>Emmanuel</span></div><div role="listitem"><span class="home-team-role">Design</span><span>Ahmad</span></div><div role="listitem"><span class="home-team-role">Strategy</span><span>Olawale</span></div></div>
       </main>
-    </div>
-    <footer class="home-footer">
-      <div class="home-footer-column">
-        <div class="home-footer-row">
-          <div class="home-mark footer-mark"><img src="asset/home/footer-mark.svg" alt="" aria-hidden="true"></div>
-          <div class="home-footer-note"><p>New work goes up regularly.<br>Come back soon.</p><div class="home-clock" hidden><img src="asset/home/clock.svg" alt="" aria-hidden="true"><time id="local-time" aria-label="Your local time"></time></div></div>
-          <nav class="home-socials" aria-label="Social links">
-            <a href="mailto:work@cadarastudio.com">Email<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
-            <a href="https://www.instagram.com/cadarastudio" target="_blank" rel="noopener">Instagram<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
-            <a href="https://behance.net/cadara" target="_blank" rel="noopener">Behance<img src="asset/home/external.svg" alt="" aria-hidden="true"></a>
-          </nav>
+      <footer class="home-footer">
+        <div class="home-footer-column">
+          <div class="home-footer-row">
+            <div class="home-mark footer-mark"><img src="asset/home/footer-mark.svg" alt="" aria-hidden="true"></div>
+            <div class="home-footer-note"><p class="home-footer-prompt">Have something in mind?</p><p class="home-footer-invitation">Good ideas deserve a little impulse.</p><div class="home-clock" hidden><img src="asset/home/clock.svg" alt="" aria-hidden="true"><time id="local-time" aria-label="Your local time"></time></div></div>
+            <nav class="home-socials" aria-label="Social links">
+              <a href="mailto:work@cadarastudio.com">Email<span class="home-external-icon"><img src="asset/home/external.svg" alt="" aria-hidden="true"></span></a>
+              <a href="https://www.instagram.com/cadarastudio" target="_blank" rel="noopener">Instagram<span class="home-external-icon"><img src="asset/home/external.svg" alt="" aria-hidden="true"></span></a>
+              <a href="https://www.linkedin.com/company/cadarastudio" target="_blank" rel="noopener">LinkedIn<span class="home-external-icon"><img src="asset/home/external.svg" alt="" aria-hidden="true"></span></a>
+            <a href="https://x.com/cadarastudio" target="_blank" rel="noopener">X<span class="home-external-icon"><img src="asset/home/external.svg" alt="" aria-hidden="true"></span></a>
+            </nav>
+          </div>
         </div>
-      </div>
-      <div class="home-wordmark" aria-hidden="true"><span>Cadara</span></div>
-    </footer>
+      </footer>
+    </div>
+    <div class="home-wordmark" aria-hidden="true"><span>Cadara</span></div>
   </div>
 </body>
 </html>
