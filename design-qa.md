@@ -1,5 +1,11 @@
 # Desktop proportional card scaling QA
 
+## Latest divider contrast correction
+
+Reference: `.context/attachments/4ZC2MF/CleanShot 2026-10-31 at 10.04.40 PM@2x.png` (2380 × 1452 pixels). The native bottom border and idle resize overlay were both painting the same translucent stroke, doubling its contrast. The overlay is now transparent at rest and only paints the opaque green hover/focus/drag state.
+
+Chrome at 1440 × 1000 CSS px and deviceScaleFactor 2 verifies integrated rendered pixel contrast of 52 for each of the top, bottom, and side strokes in both themes. This directly confirms one equal-opacity stroke rather than relying on matching CSS color declarations. Green hover and mobile divider removal also pass. Evidence: `.context/divider-contrast-dark.png`, `.context/divider-contrast-light.png`, and `.context/divider-contrast-detail.png`. Production build passes; the rest of the component is unchanged.
+
 ## Visual references and evidence
 
 Primary source: `.context/attachments/40jCPz/CleanShot 2026-10-31 at 9.46.08 PM@2x.png`. Source pixels: 934 × 514. The enlarged detail shows the unwanted outer grip stroke and Drag to resize label. The user additionally requires proportional whole-card scaling on desktop and no resize control or divider strokes on mobile.

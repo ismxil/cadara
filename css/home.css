@@ -634,7 +634,7 @@ button {
   left: 0;
   right: 0;
   height: 1px;
-  background: currentColor;
+  background: transparent;
 }
 .home-project-resize > span {
   pointer-events: none;
@@ -651,6 +651,11 @@ button {
 .home-project-resize:focus-visible,
 .home-projects.is-resizing .home-project-resize {
   color: #00e935;
+}
+.home-project-resize:hover::before,
+.home-project-resize:focus-visible::before,
+.home-projects.is-resizing .home-project-resize::before {
+  background: currentColor;
 }
 .home-project-resize:focus-visible {
   outline: none;
