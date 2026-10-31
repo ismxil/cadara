@@ -48,7 +48,20 @@ const insight = defineType({name: 'insight', title: 'Insight', type: 'document',
   defineField({name: 'body', type: 'richText', validation: Rule => Rule.required().min(1)}), text('seoDescription', 'Search description'),
 ], preview: {select: {title: 'title', media: 'coverImage', subtitle: 'category'}}})
 const studioPage = defineType({name: 'studioPage', title: 'Studio', type: 'document', fields: [
-  text('headline', 'Homepage headline', true), text('workHeadline', 'Work page headline', true), text('statement', 'Studio statement', true),
+  defineField({name: 'home', title: 'Homepage', type: 'object', description: 'Optional overrides for the new homepage. Empty fields use the Figma design copy.', fields: [
+    text('headline', 'Headline'), paragraphs('intro', 'Introduction paragraphs'),
+    defineField({name: 'contactEmail', title: 'Homepage contact email', type: 'string', validation: Rule => Rule.email()}),
+    text('teamCopy', 'Team description'), text('hiringCopy', 'Hiring invitation (before email)'),
+    defineField({name: 'hiringEmail', title: 'Hiring email', type: 'string', validation: Rule => Rule.email()}),
+    defineField({name: 'engagements', title: 'Past engagements', type: 'array', of: [{type: 'object', name: 'engagement', fields: [
+      string('name', 'Client name', true), string('year', 'Year / label'),
+      defineField({name: 'services', title: 'Service tags', type: 'array', of: [{type: 'string'}]}),
+      defineField({name: 'project', title: 'Case study (optional)', type: 'reference', to: [{type: 'caseStudy'}]}),
+    ], preview: {select: {title: 'name', subtitle: 'year'}}}]}),
+    defineField({name: 'socials', title: 'Homepage social links', type: 'array', of: [{type: 'object', name: 'homeSocialLink', fields: [string('title', 'Label', true), externalUrl('url', 'URL')]}]}),
+    text('seoDescription', 'Search description'),
+  ]}),
+  text('headline', 'Legacy homepage headline', true), text('workHeadline', 'Work page headline', true), text('statement', 'Studio statement', true),
   string('servicesHeading', 'Services heading', true), text('servicesTagline', 'Services page tagline'),
   defineField({name: 'services', type: 'array', of: [{type: 'object', name: 'service', fields: [string('title', 'Title', true), text('description', 'Description', true), defineField({name: 'icon', type: 'string', options: {list: ['strategy', 'design', 'build']}})]}]}),
   defineField({name: 'contactEmail', type: 'string', validation: Rule => Rule.required().email()}),

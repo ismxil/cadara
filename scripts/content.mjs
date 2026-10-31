@@ -6,7 +6,7 @@ export const root = path.resolve(import.meta.dirname, '..')
 const clean = value => value.replace(/\s+/g, ' ').trim()
 const paragraphs = ($, selector) => $(selector).map((_, el) => clean($(el).text())).get()
 export async function extractContent() {
-  const home = load(await readFile(path.join(root, 'index.html'), 'utf8'))
+  const home = load(await readFile(path.join(root, 'scripts/templates/legacy-home.html'), 'utf8'))
   const css = await readFile(path.join(root, 'cases/css/case.css'), 'utf8')
   const docs = []
   const image = ($, el, base) => {

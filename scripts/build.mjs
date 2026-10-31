@@ -2,7 +2,8 @@ import {mkdir, readFile, writeFile, cp, rm} from 'node:fs/promises'
 import path from 'node:path'
 import {createClient} from '@sanity/client'
 import {root} from './content.mjs'
-import {shell, cards, metadata, renderCase, renderInsight, renderInsights} from './render.mjs'
+import {shell, cards, renderCase, renderInsight, renderInsights} from './render.mjs'
+import {renderHome} from './home.mjs'
 import {optimizeStudioImages} from './assets.mjs'
 export function validateContent(docs) {
   const studio = docs.find(d => d._type === 'studioPage' && d._id === 'studioPage')
@@ -22,16 +23,12 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   const studio = validateContent(docs)
   const projects = docs.filter(d => d._type === 'caseStudy').sort((a, b) => (a.order || 0) - (b.order || 0))
   const insights = docs.filter(d => d._type === 'insight').sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
-  const [homeTemplate, workTemplate, offerTemplate, caseTemplate, studioTemplate] = await Promise.all(['index.html', 'cases/work.html', 'cases/offer.html', 'cases/lemfi.html', 'studio.html'].map(file => readFile(path.join(root, file), 'utf8')))
+  const [homeTemplate, workTemplate, offerTemplate, caseTemplate, studioTemplate, articleTemplate] = await Promise.all(['index.html', 'cases/work.html', 'cases/offer.html', 'cases/lemfi.html', 'studio.html', 'scripts/templates/legacy-home.html'].map(file => readFile(path.join(root, file), 'utf8')))
   await rm(output, {recursive: true, force: true})
   await mkdir(path.join(output, 'cases'), {recursive: true})
   await mkdir(path.join(output, 'insights'), {recursive: true})
   for (const dir of ['css', 'js', 'asset', 'fonts', 'cases/css', 'cases/js']) await cp(path.join(root, dir), path.join(output, dir), {recursive: true, filter: source => !source.endsWith('.DS_Store')})
-  const home = shell(homeTemplate, studio)
-  home('.intro-headline').text(studio.headline)
-  home('.cases-grid').html(cards(projects.filter(p => p.featured).slice(0, 4)))
-  metadata(home, 'Cadara Studio', studio.headline)
-  await writeFile(path.join(output, 'index.html'), home.html())
+  await writeFile(path.join(output, 'index.html'), renderHome(homeTemplate, studio, projects))
   const studioPage = shell(studioTemplate, studio)
   await optimizeStudioImages(studioPage, output)
   await writeFile(path.join(output, 'studio.html'), studioPage.html())
@@ -45,7 +42,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   await writeFile(path.join(output, 'services.html'), offer.html())
   for (const project of projects.filter(p => !p.comingSoon)) await writeFile(path.join(output, 'cases', `${project.slug.current}.html`), renderCase(caseTemplate, studio, project, projects))
   await writeFile(path.join(output, 'insights/index.html'), renderInsights(workTemplate, studio, insights))
-  for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(homeTemplate, studio, insight, insights))
+  for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(articleTemplate, studio, insight, insights))
   console.log(`Built ${projects.length} project cards, ${projects.filter(p => !p.comingSoon).length} case studies, and ${insights.length} insights.`)
 }
 if (process.argv[1] === path.join(root, 'scripts/build.mjs')) {
