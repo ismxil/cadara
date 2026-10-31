@@ -774,16 +774,6 @@ button {
   color: #000;
 }
 
-.home-brand {
-  min-height: 48px;
-  min-width: 48px;
-  padding-inline: 10px;
-  border-radius: 14px;
-  background: #00e935;
-  color: #000;
-  font-size: 36px;
-  line-height: 48px;
-}
 .home-copy-status:not(:empty) {
   top: calc(100% + 8px);
   width: max-content;
