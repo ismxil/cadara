@@ -764,3 +764,9 @@ button {
     transition: none;
   }
 }
+
+.engagement[aria-disabled="true"],
+.engagement[aria-disabled="true"]:hover {
+  opacity: 0.35;
+  cursor: default;
+}
