@@ -1,35 +1,33 @@
-# Centered project carousel QA
+# Project carousel proportion and hover QA
 
-Source visual truth: `.context/attachments/qPooph/CleanShot 2026-10-31 at 7.36.41 PM@2x.png` (4112 × 2342 pixels, normalized to 2056 × 1171 CSS px). The annotation requests center snapping, dim neighbors, elastic movement, and gaps between covers and the row borders. Its red markup is explanatory, not product content.
+Source visual truth: `.context/attachments/lB0jrm/centered-carousel-desktop.png` (2056 × 1171px). Annotations request card edges aligned to the text column, vertical gaps matching the column side padding, slightly taller cards, and an image hover effect. Colored markup is explanatory and is not part of the interface.
 
-Implementation: `.context/centered-carousel-desktop.png` (2056 × 1171 px, deviceScaleFactor 1), `.context/centered-carousel-overview.png`, `.context/centered-carousel-light.png`, and `.context/centered-carousel-mobile.png` (390px viewport). Desktop shows Cadana active with both neighboring projects visible; the screenshot is scrolled 266px to match the source's visible page region.
+Implementation: `.context/refined-carousel-desktop.png` and `.context/refined-carousel-overview.png` (2056 × 1171px at deviceScaleFactor 1), `.context/refined-carousel-hover.png`, `.context/refined-carousel-light.png`, and `.context/refined-carousel-mobile.png` (390px viewport). Cadana is centered in the desktop captures; the detail capture uses the same 266px page scroll as the prior reference.
 
 ## Comparison evidence
 
-`.context/centered-carousel-comparison.png` places the normalized source beside the rendered implementation at the same viewport. `.context/centered-carousel-row-comparison.png` aligns the source and implementation row crops at 2056px width. The added 16px vertical padding intentionally increases the row's height by 32px. Cadana is centered on the viewport rather than preserving the source screenshot's slightly offset position.
+`.context/refined-carousel-comparison.png` combines the source and implementation at their matching native pixel dimensions. `.context/refined-carousel-detail.png` combines focused 720px-wide column crops to inspect card alignment and spacing. The source's shorter height and narrower card are intentionally changed according to the annotations.
 
 ## Required fidelity surfaces
 
-- Typography: existing Suisse Intl project label, summary, services, and action hierarchy retained.
-- Layout: the active card snaps to the exact horizontal center; first/last padding permits every card to center. Top and bottom borders each have a 16px clear gap from the covers. Cards remain 622px on desktop and stack content/images on narrow screens.
-- Colors: active card is fully opaque; every other card has 0.3 opacity. The scrollbar stays hidden. Brand colors, theme backgrounds, and borders are preserved.
-- Images: existing responsive CMS imagery and crops retained; no fabricated or placeholder artwork.
-- Copy: published client names, summaries, services, order, and project destinations preserved.
+- Typography: existing client, summary, services, and action hierarchy retained in Suisse Intl. Wider cards reduce wrapping naturally.
+- Layout: desktop width is 660.4px, matching the headline/content column. Minimum desktop card height increases from 300px to 340px. Top/bottom padding is 28.8px on desktop and 20px on mobile, matching the column's side padding. Browser measurements verify both card edges match the heading across 320–2056px viewports.
+- Colors: active card remains fully opaque; neighbors remain at 0.3 opacity. Existing project colors, theme borders, and hidden scrollbar are preserved.
+- Images: active imagery zooms 4% within a clipped image frame on hover and keyboard focus. Reduced motion disables the zoom and transition; touch devices do not receive a sticky hover treatment. Updated responsive sizes match the larger image panels. Mobile images finish flush with the card bottom.
+- Content: published project copy, services, order, and destinations are unchanged.
 
 ## Findings and iteration history
 
-1. Previous row had start snapping, uniformly bright cards, and borders touching covers. Replaced with center snapping, nearest-card active state, dim neighbors, elastic edge pull, and 16px block padding.
-2. First touch check exposed an implicit pointer-capture transfer from the child to the rail. Its bubbling capture-loss event prematurely ended swipes. Restricted capture-loss handling to the rail itself; real CDP touch gestures then passed.
-3. Kept pointer-driven focus from repositioning the row at the beginning of a drag, and based elastic bounds on the final card's center target. Post-fix mouse, touch, keyboard, and edge checks pass.
+The prior 622px width and 16px gaps did not match the annotated column. Updated width, height, and theme-independent padding, then verified alignment geometrically and visually. Mobile review exposed a blank strip below shorter cards because implicit grid tracks shared extra height; setting an explicit image row corrected it. Post-fix screenshots and browser checks pass.
 
-No actionable P0/P1/P2 visual or interaction findings remain.
+No actionable P0/P1/P2 findings remain.
 
 ## Verification
 
-Production build and all 16 tests pass. Chrome checks confirm a single active centered card, dim neighbors, 16px gaps, hidden scrollbar, mouse dragging without accidental project navigation, elastic pulls and spring-back at both ends, horizontal wheel edge feedback, mobile touch swiping, arrow/Home/End navigation, resizing from 320px to 2056px without overflow, both themes, and reduced-motion behavior. Existing project-navigation and wordmark-color checks also pass. No JavaScript errors observed.
+Production build and all 16 tests pass. Chrome checks verify column-matched card edges and padding at 320, 390, 540, 721, 1024, 1440, and 2056px; 340px desktop height; hover scale; reduced-motion suppression; mobile image alignment; centered selection and dim neighbors; mouse/touch dragging; elastic edge pulls and spring-back; wheel edge feedback; keyboard navigation; both themes; and no page overflow or JavaScript errors.
 
 ## Follow-up polish
 
-None required for this change.
+None required.
 
 final result: passed
