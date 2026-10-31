@@ -6,6 +6,25 @@ import {renderHome} from '../scripts/home.mjs'
 const template = await readFile(new URL('../index.html', import.meta.url), 'utf8')
 const projects = [{_id: 'cadana', slug: {current: 'cadana'}, website: 'https://cadana.example/'}, {_id: 'foma', slug: {current: 'foma'}, comingSoon: true}]
 
+test('homepage project cards expose real copy and services with safe navigation and coming-soon states', () => {
+  const $ = load(renderHome(template, {}, [
+    {title: '<Client>', summary: '<script>unsafe()</script>', services: ['Product Design', 'Visual Design'], slug: {current: 'client'}, featured: true},
+    {title: 'Upcoming', summary: 'A new project', slug: {current: 'upcoming'}, featured: true, comingSoon: true},
+    {title: 'Hidden', slug: {current: 'hidden'}, featured: false},
+  ]))
+  assert.equal($('.home-project-card').length, 2)
+  assert.equal($('.home-project-card').first().attr('href'), '/projects?project=client')
+  assert.equal($('.home-project-card h3').first().text(), '<Client>')
+  assert.equal($('.home-project-summary').first().text(), '<script>unsafe()</script>')
+  assert.equal($('.home-project-card script, .home-project-card Client').length, 0)
+  assert.deepEqual($('.home-project-services li').map((_, el) => $(el).text()).get(), ['Product Design', 'Visual Design'])
+  assert.equal($('.home-project-action').first().text(), 'View project')
+  assert.equal($('.home-project-card').last().is('article'), true)
+  assert.equal($('.home-project-card').last().attr('href'), undefined)
+  assert.equal($('.home-project-action').last().text(), 'Coming soon')
+  assert.equal($('.home-projects-grid').attr('tabindex'), '0')
+})
+
 test('existing Studio content uses design defaults and only external company engagement links', () => {
   const $ = load(renderHome(template, {contactEmail: 'legacy@example.com', headline: 'Legacy headline'}, projects))
   assert.equal($('.home-headline').text(), 'Bold by instinct. Deliberate by design. Driven by curiosity.')

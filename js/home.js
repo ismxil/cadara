@@ -42,6 +42,22 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
   });
 }
 
+const projectCardRail = document.querySelector('.home-projects-grid');
+if (projectCardRail) {
+  const projectCards = [...projectCardRail.querySelectorAll('a.home-project-card')];
+  projectCardRail.addEventListener('focusin', (event) => {
+    const card = event.target.closest('.home-project-card');
+    card?.scrollIntoView({block: 'nearest', inline: 'start', behavior: 'instant'});
+  });
+  projectCardRail.addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || !projectCards.length) return;
+    event.preventDefault();
+    const index = projectCards.indexOf(document.activeElement);
+    const next = Math.max(0, Math.min(projectCards.length - 1, index + (event.key === 'ArrowRight' ? 1 : -1)));
+    projectCards[next].focus();
+  });
+}
+
 // Match the original brand typeout timing, without an idle animation.
 const homeBrand = document.querySelector('.home-brand');
 const brandSuffix = homeBrand?.querySelector('.home-brand-suffix');

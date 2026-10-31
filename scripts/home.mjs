@@ -1,4 +1,17 @@
-import {shell, escape, safeUrl, metadata, cards} from './render.mjs'
+import {shell, escape, safeUrl, metadata, image} from './render.mjs'
+
+const projectCards = projects => projects.map((project, index) => {
+  const slug = project.slug.current
+  const theme = ['lemfi', 'foma', 'cadana', 'gomoney', 'mezovest'].includes(slug) ? slug : 'default'
+  const tag = project.comingSoon ? 'article' : 'a'
+  return `<${tag} class="case-card home-project-card home-project-card--${theme}" ${project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/projects?project=${escape(slug)}"`}>
+    <div class="home-project-copy"><h3>${escape(project.title)}</h3><p class="home-project-summary">${escape(project.summary)}</p>
+      ${project.services?.length ? `<ul class="home-project-services" aria-label="Services">${project.services.map(service => `<li>${escape(service)}</li>`).join('')}</ul>` : ''}
+      <span class="home-project-action">${project.comingSoon ? 'Coming soon' : 'View project<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span>'}</span>
+    </div>
+    <figure class="case-image">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 540px) 85vw, 320px'})}</figure>
+  </${tag}>`
+}).join('')
 
 const companyUrl = value => {
   const url = safeUrl(value)
@@ -41,7 +54,8 @@ export function renderHome(template, studio, projects) {
   const rows = $('.engagement-list > li').toArray()
   rows.sort((a, b) => Number(!$(a).find('.engagement[href]').length) - Number(!$(b).find('.engagement[href]').length))
   $('.engagement-list').append(rows)
-  $('.home-projects-grid').html(cards(projects.filter(project => project.featured).slice(0, 4)))
+  $('.home-projects-grid').html(projectCards(projects.filter(project => project.featured).slice(0, 4)))
+  $('.home-projects-grid').attr({'role': 'region', 'aria-label': 'Selected projects', 'tabindex': '0'})
   if (home.socials) {
     $('.home-socials').html(`<a href="mailto:${escape(email)}">Email<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>` + home.socials.filter(social => safeUrl(social.url)).map(social => `<a href="${escape(safeUrl(social.url))}" target="_blank" rel="noopener">${escape(social.title)}<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>`).join(''))
   }
