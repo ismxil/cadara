@@ -29,7 +29,7 @@ export function renderProjects(template, studio, projects) {
   if (!published.length) $('.project-rail').html('<p class="projects-empty">New work is on its way. <a href="/">Back to the studio</a></p>')
   $('.project-dock').html(published.map(project => {
     const slug = escape(project.slug.current)
-    const icon = ['lemfi', 'cadana', 'gomoney'].includes(project.slug.current)
+    const icon = ['lemfi', 'cadana', 'gomoney', 'foma', 'mezovest'].includes(project.slug.current)
       ? `<img src="/asset/app-icon/${slug}.svg" alt="" width="48" height="48">`
       : project.cardImage?.asset ? image({...project.cardImage, alt: ''}, {width: 160, ratio: 1, eager: true, sizes: '80px'})
       : `<span class="dock-monogram" aria-hidden="true">${escape(project.title.charAt(0))}</span>`

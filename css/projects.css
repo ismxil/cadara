@@ -182,9 +182,30 @@
   margin: 24px 0;
 }
 .project-background summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  list-style: none;
   cursor: pointer;
   font-size: 13px;
   color: var(--home-heading);
+}
+.project-background summary::-webkit-details-marker {
+  display: none;
+}
+.project-background summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  margin-right: 3px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+.project-background[open] summary::after {
+  transform: rotate(225deg);
 }
 .project-background[open] summary {
   margin-bottom: 20px;
@@ -232,7 +253,7 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  padding: 12px;
+  padding: 12px 12px 22px;
   border: 1px solid var(--home-border);
   border-radius: 22px;
   background: var(--home-panel);
@@ -258,8 +279,16 @@
   object-fit: cover;
   border-radius: inherit;
 }
-.project-dock-link[aria-current="true"] {
-  box-shadow: 0 0 0 3px #00e935;
+.project-dock-link[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  bottom: -12px;
+  left: 50%;
+  border-radius: 50%;
+  background: var(--home-muted);
+  transform: translateX(-50%) scale(calc(1 / var(--dock-scale, 1)));
 }
 .projects-page .project-dock-link:hover,
 .projects-page .project-dock-link:focus-visible {
@@ -300,7 +329,7 @@
   .project-dock {
     --dock-icon-size: 40px;
     gap: 8px;
-    padding: 10px;
+    padding: 10px 10px 22px;
     bottom: max(16px, env(safe-area-inset-bottom));
   }
 }

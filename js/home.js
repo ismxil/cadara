@@ -93,7 +93,7 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
   const email = contactLink.textContent.trim();
   copyEmail.hidden = false;
   copyEmail.setAttribute('aria-label', `Copy ${email}`);
-  copyEmail.addEventListener('click', async () => {
+  const copyContactEmail = async () => {
     clearTimeout(feedbackTimer);
     try {
       await navigator.clipboard.writeText(email);
@@ -104,5 +104,8 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
     status.classList.remove('is-above');
     status.classList.toggle('is-above', status.getBoundingClientRect().bottom > innerHeight - 8);
     feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2500);
-  });
+  };
+  copyEmail.addEventListener('click', copyContactEmail);
+  // Keep the mailto default action so the same click also opens the mail app.
+  contactLink.addEventListener('click', copyContactEmail);
 }
