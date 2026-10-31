@@ -145,6 +145,77 @@ if (projectCardRail) {
   }, {passive: false});
   new ResizeObserver(() => centerCard(activeIndex, false)).observe(projectCardRail);
   centerCard(0, false);
+
+  const projectSection = projectCardRail.closest('.home-projects');
+  const resizeHandle = projectSection.querySelector('.home-project-resize');
+  if (resizeHandle && projectCards.length) {
+    const maximumExtra = 480;
+    let sizeExtra = 0, resizeDrag;
+    const setSize = (extra) => {
+      sizeExtra = Math.max(0, Math.min(maximumExtra, extra));
+      projectSection.style.setProperty('--project-size-extra', `${sizeExtra}px`);
+    };
+    const syncSizeRange = () => {
+      if (!projectCardRail.clientWidth) return;
+      const height = projectCards[0].offsetHeight;
+      resizeHandle.setAttribute('aria-valuenow', height);
+      resizeHandle.setAttribute('aria-valuemin', height - Math.round(sizeExtra));
+      resizeHandle.setAttribute('aria-valuemax', height - Math.round(sizeExtra) + maximumExtra);
+      resizeHandle.setAttribute('aria-valuetext', `${height} pixels tall. Use up and down arrow keys to resize.`);
+      // A taller cover paints a wider crop; request enough source pixels for it.
+      projectCards.forEach((card) => {
+        const cover = card.querySelector('.case-image');
+        const image = cover?.querySelector('img');
+        if (!image) return;
+        const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
+        if (!Number.isFinite(ratio) || ratio <= 0) return;
+        image.sizes = `${Math.ceil(Math.max(cover.clientWidth, cover.clientHeight * ratio))}px`;
+      });
+    };
+    const endResize = (cancel = false) => {
+      if (!resizeDrag) return;
+      const {id, extra} = resizeDrag;
+      resizeDrag = null;
+      if (cancel) setSize(extra);
+      projectSection.classList.remove('is-resizing');
+      if (resizeHandle.hasPointerCapture(id)) resizeHandle.releasePointerCapture(id);
+      syncSizeRange();
+    };
+    resizeHandle.hidden = false;
+    resizeHandle.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || !event.isPrimary) return;
+      event.preventDefault();
+      resizeHandle.focus({preventScroll: true});
+      resizeDrag = {id: event.pointerId, y: event.clientY, extra: sizeExtra};
+      projectSection.classList.add('is-resizing');
+      resizeHandle.setPointerCapture(event.pointerId);
+    });
+    resizeHandle.addEventListener('pointermove', (event) => {
+      if (resizeDrag?.id !== event.pointerId) return;
+      event.preventDefault();
+      setSize(resizeDrag.extra + event.clientY - resizeDrag.y);
+    });
+    resizeHandle.addEventListener('pointerup', (event) => {
+      if (resizeDrag?.id === event.pointerId) endResize();
+    });
+    resizeHandle.addEventListener('pointercancel', (event) => {
+      if (resizeDrag?.id === event.pointerId) endResize(true);
+    });
+    resizeHandle.addEventListener('lostpointercapture', (event) => {
+      if (event.target === resizeHandle && resizeDrag?.id === event.pointerId) endResize();
+    });
+    resizeHandle.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && resizeDrag) { event.preventDefault(); endResize(true); return; }
+      if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      if (resizeDrag) endResize();
+      const step = event.shiftKey ? 64 : 24;
+      setSize(event.key === 'Home' ? 0 : event.key === 'End' ? maximumExtra
+        : sizeExtra + (event.key === 'ArrowDown' ? step : -step));
+    });
+    new ResizeObserver(syncSizeRange).observe(projectCardRail);
+    syncSizeRange();
+  }
 }
 
 // Match the original brand typeout timing, without an idle animation.
