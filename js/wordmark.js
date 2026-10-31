@@ -8,6 +8,10 @@
     "../asset/home/wordmark-outline.json",
     document.currentScript.src,
   );
+  const geometryUrl = new URL(
+    "./wordmark-geometry.js",
+    document.currentScript.src,
+  );
   const ns = "http://www.w3.org/2000/svg";
   const make = (tag, attrs = {}) => {
     const el = document.createElementNS(ns, tag);
@@ -30,7 +34,9 @@
     if (!response.ok) return;
     const original = await response.json();
     await document.fonts.ready;
-    let commands = structuredClone(original.paths);
+    const { densifyPaths } = await import(geometryUrl);
+    const originalPaths = densifyPaths(original.paths);
+    let commands = structuredClone(originalPaths);
     let geometry, cursor, selected, frame;
     const svg = make("svg", { "aria-hidden": "true" });
     const controls = make("g", { "pointer-events": "none" });
@@ -57,8 +63,14 @@
         x: geometry.x + x * geometry.scale,
         y: geometry.y + y * geometry.scale,
       });
-      const near = (point) =>
-        Math.hypot(point.x - cursor.x, point.y - cursor.y) < 85;
+      const influence = (point) =>
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (165 - Math.hypot(point.x - cursor.x, point.y - cursor.y)) / 65,
+          ),
+        );
       for (const glyph of commands) {
         let previous;
         for (const command of glyph) {
@@ -72,40 +84,63 @@
             handles.push([screen(command.x1, command.y1), previous || anchor]);
           if (command.x2 !== undefined)
             handles.push([screen(command.x2, command.y2), anchor]);
+          const opacity = influence(anchor);
+          if (command.type === "C" && previous) {
+            const from = previous;
+            const first = screen(command.x1, command.y1),
+              second = screen(command.x2, command.y2);
+            const curveOpacity = Math.max(opacity, influence(from));
+            if (curveOpacity)
+              controls.append(
+                make("path", {
+                  d: `M${from.x} ${from.y}C${first.x} ${first.y} ${second.x} ${second.y} ${anchor.x} ${anchor.y}`,
+                  fill: "none",
+                  stroke: "#2d9ede",
+                  "stroke-width": 0.9,
+                  opacity: curveOpacity * 0.65,
+                  "data-wordmark-guide": "curve",
+                }),
+              );
+          }
           for (const [point, from] of handles) {
-            if (!near(point) && !near(from)) continue;
+            const handleOpacity = Math.max(influence(point), influence(from));
+            if (!handleOpacity) continue;
             controls.append(
               make("line", {
                 x1: point.x,
                 y1: point.y,
                 x2: from.x,
                 y2: from.y,
-                stroke: "#69bff2",
-                "stroke-width": 0.7,
-                opacity: 0.65,
+                stroke: "#2d9ede",
+                "stroke-width": 1.3,
+                opacity: handleOpacity * 0.8,
               }),
             );
             controls.append(
-              make("rect", {
-                x: point.x - 2,
-                y: point.y - 2,
-                width: 4,
-                height: 4,
-                fill: "#d7efff",
-                stroke: "#69bff2",
-                "stroke-width": 0.8,
+              make("circle", {
+                cx: point.x,
+                cy: point.y,
+                r: 4.5,
+                fill: "#2d9ede",
+                stroke: "#fff",
+                "stroke-width": 1.3,
+                opacity: handleOpacity,
+                "data-wordmark-point": "handle",
               }),
             );
           }
-          if (near(anchor))
+          if (opacity)
             controls.append(
-              make("circle", {
-                cx: anchor.x,
-                cy: anchor.y,
-                r: 3.4,
-                fill: "#269de1",
-                stroke: "#e8f6ff",
-                "stroke-width": 1,
+              make("rect", {
+                x: anchor.x - 3.25,
+                y: anchor.y - 3.25,
+                width: 6.5,
+                height: 6.5,
+                fill: "#fff",
+                stroke: "#161616",
+                "stroke-width": 1.2,
+                opacity,
+                "data-wordmark-point": "anchor",
               }),
             );
           previous = anchor;
@@ -117,14 +152,14 @@
           cy: cursor.y,
           r: 6,
           fill: "none",
-          stroke: "#fa9d00",
+          stroke: "#00E935",
           "stroke-width": 1,
         }),
       );
       controls.append(
         make("path", {
           d: `M${cursor.x - 10} ${cursor.y}h20 M${cursor.x} ${cursor.y - 10}v20`,
-          stroke: "#fa9d00",
+          stroke: "#00E935",
           "stroke-width": 1,
         }),
       );
@@ -168,7 +203,7 @@
     function reset() {
       selected = null;
       cursor = null;
-      commands = structuredClone(original.paths);
+      commands = structuredClone(originalPaths);
       readout.hidden = true;
       schedule();
     }
