@@ -1,5 +1,12 @@
 # Booking popup and link arrows QA
 
+## Arrow size follow-up
+
+References: `.context/attachments/EKeoHr/CleanShot 2026-10-31 at 10.42.23 PM@2x.png` and `.context/attachments/3TLdTa/CleanShot 2026-10-31 at 10.43.07 PM@2x.png`. Booking and engagement masks previously filled 16px and 18px boxes, whereas social image artwork renders at its native 10.0672 × 10.0669px. Both masks now use those exact artwork dimensions, with 16px alignment boxes. Green hover is retained.
+
+Build passes. Chrome compares mask dimensions against the social image bounds at 1440px, 390px and 320px, and verifies green hover and no page overflow. Evidence: `.context/consistent-footer-1440.png`, `.context/consistent-engagements-1440.png`, and matching 390px captures.
+
+
 ## References and scope
 
 User references: PTq2v8 (1640 × 874) shows the booking arrow missing its green hover; wgv0RK (4100 × 2346) shows an on-site Cal.com popup; XXFI6h (2436 × 1352) and EzxwKz (1080 × 712) show the engagement list and desired right-hand external arrows. Originals are under `.context/attachments/`.
