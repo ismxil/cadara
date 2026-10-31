@@ -14,19 +14,6 @@ if (toggle) {
     syncToggle();
   });
 }
-const clock = document.querySelector('#local-time');
-if (clock) {
-  const dateFormatter = new Intl.DateTimeFormat('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'});
-  const timeFormatter = new Intl.DateTimeFormat('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
-  const updateClock = () => {
-    const now = new Date();
-    clock.dateTime = now.toISOString();
-    clock.textContent = `${dateFormatter.format(now)} ${timeFormatter.format(now)}`;
-  };
-  updateClock();
-  clock.parentElement.hidden = false;
-  setInterval(updateClock, 60_000);
-}
 
 const viewToggle = document.querySelector('.view-toggle');
 const engagements = document.querySelector('#home-engagements');
