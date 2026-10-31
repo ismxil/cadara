@@ -9,7 +9,7 @@ const projectCards = projects => projects.map((project, index) => {
       ${project.services?.length ? `<ul class="home-project-services" aria-label="Services">${project.services.map(service => `<li>${escape(service)}</li>`).join('')}</ul>` : ''}
       <span class="home-project-action">${project.comingSoon ? 'Coming soon' : 'View project<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span>'}</span>
     </div>
-    <figure class="case-image">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 540px) 85vw, 320px'})}</figure>
+    <figure class="case-image">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 540px) calc(100vw - 42px), (max-width: 720px) calc(50vw - 21px), 331px'})}</figure>
   </${tag}>`
 }).join('')
 
