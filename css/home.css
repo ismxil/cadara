@@ -423,7 +423,7 @@ button {
   overflow: hidden;
   color: #878b89;
 }
-.home-wordmark span {
+.home-wordmark > span {
   position: absolute;
   width: 103.88%;
   left: 50.833%;
@@ -637,4 +637,44 @@ button {
 }
 .home.is-grid .home-headline {
   margin-bottom: 0;
+}
+
+.wordmark-baseline {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: baseline;
+}
+.home-wordmark > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: inherit;
+}
+.home-wordmark.is-interactive > span {
+  visibility: hidden;
+}
+@media (hover: hover) and (pointer: fine) {
+  .home-wordmark.is-interactive {
+    cursor: none;
+  }
+}
+.wordmark-readout {
+  position: absolute;
+  z-index: 1;
+  padding: 4px 6px;
+  border-radius: 3px;
+  background: var(--home-bg);
+  color: var(--home-heading);
+  font:
+    400 10px/1.3 "Suisse Intl",
+    Arial,
+    sans-serif;
+  white-space: pre;
+  pointer-events: none;
+}
+.home-wordmark > svg {
+  transform: translateZ(0);
 }

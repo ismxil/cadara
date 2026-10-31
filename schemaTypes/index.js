@@ -51,8 +51,7 @@ const studioPage = defineType({name: 'studioPage', title: 'Studio', type: 'docum
   defineField({name: 'home', title: 'Homepage', type: 'object', description: 'Optional overrides for the new homepage. Empty fields use the Figma design copy.', fields: [
     text('headline', 'Headline'), paragraphs('intro', 'Introduction paragraphs'),
     defineField({name: 'contactEmail', title: 'Homepage contact email', type: 'string', validation: Rule => Rule.email()}),
-    text('teamCopy', 'Team description'), text('hiringCopy', 'Hiring invitation (before email)'),
-    defineField({name: 'hiringEmail', title: 'Hiring email', type: 'string', validation: Rule => Rule.email()}),
+    text('teamCopy', 'Team description'),
     defineField({name: 'engagements', title: 'Past engagements', type: 'array', of: [{type: 'object', name: 'engagement', fields: [
       string('name', 'Client name', true), string('year', 'Year / label'),
       defineField({name: 'services', title: 'Service tags', type: 'array', of: [{type: 'string'}]}),
