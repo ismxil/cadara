@@ -188,6 +188,11 @@ button {
 }
 .home-intro-copy {
   max-width: 499.057px;
+  text-wrap: pretty;
+}
+.home-founder {
+  color: var(--home-heading);
+  white-space: nowrap;
 }
 .home-contact {
   font-size: 20px;
@@ -448,6 +453,10 @@ button {
   filter: none;
 }
 @media (max-width: 720px) {
+  .home-intro-copy,
+  .home-contact {
+    font-size: 16px;
+  }
   .home {
     padding-top: 24px;
   }

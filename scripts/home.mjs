@@ -13,6 +13,11 @@ export function renderHome(template, studio, projects) {
   const email = home.contactEmail || 'work@cadarastudio.com'
   if (home.headline) $('.home-headline').text(home.headline)
   if (home.intro) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
+  // Apply the founder link to CMS copy as well as the default introduction.
+  $('.home-intro-copy p').each((_, paragraph) => {
+    if ($(paragraph).find('.home-founder').length) return
+    $(paragraph).html(escape($(paragraph).text()).replace(/Ismail Ahmad/g, '<a class="home-founder" href="https://linkedin.com/in/ismxil" target="_blank" rel="noopener">Ismail Ahmad</a>'))
+  })
   $('.home-contact a').attr('href', `mailto:${email}`).text(email)
   $('.home-socials a[href^="mailto:"]').attr('href', `mailto:${email}`)
   if (home.teamCopy) $('.home-team-copy p').first().text(home.teamCopy)
