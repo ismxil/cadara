@@ -1,6 +1,6 @@
 const rail = document.querySelector(".project-rail");
 const stories = [...document.querySelectorAll(".project-story")];
-const menuLinks = [...document.querySelectorAll("[data-project-link]")];
+const projectLinks = [...document.querySelectorAll("[data-project-link]")];
 const desktop = matchMedia("(min-width: 721px)");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const behavior = () => (reducedMotion.matches ? "instant" : "smooth");
@@ -9,14 +9,12 @@ if (rail && stories.length) {
   function select(story, updateUrl = true) {
     if (activeStory === story) return;
     activeStory = story;
-    menuLinks.forEach((link) =>
+    projectLinks.forEach((link) =>
       link.setAttribute(
         "aria-current",
         String(link.dataset.projectLink === story.dataset.project),
       ),
     );
-    document.querySelector(".project-position").textContent =
-      `${story.querySelector("h1").textContent.replace("↗", "").trim()} / ${stories.indexOf(story) + 1} of ${stories.length}`;
     if (updateUrl) {
       const url = new URL(location.href);
       url.searchParams.set("project", story.dataset.project);
@@ -42,7 +40,7 @@ if (rail && stories.length) {
   goTo(
     stories.find((story) => story.dataset.project === initial) || stories[0],
   );
-  menuLinks.forEach((link) =>
+  projectLinks.forEach((link) =>
     link.addEventListener("click", (event) => {
       const story = stories.find(
         (story) => story.dataset.project === link.dataset.projectLink,
@@ -90,14 +88,6 @@ if (rail && stories.length) {
         behavior: behavior(),
       });
   }
-  document.querySelector(".project-navigation").hidden = false;
-  document
-    .querySelectorAll("[data-direction]")
-    .forEach((button) =>
-      button.addEventListener("click", () =>
-        step(Number(button.dataset.direction)),
-      ),
-    );
   rail.addEventListener("keydown", (event) => {
     if (event.target !== rail) return;
     if (["ArrowRight", "ArrowLeft"].includes(event.key)) {
@@ -140,4 +130,54 @@ if (rail && stories.length) {
       ) || stories[0],
     ),
   );
+}
+
+const dock = document.querySelector(".project-dock");
+if (dock) {
+  const icons = [...dock.querySelectorAll(".project-dock-link")];
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  function resetMagnifier() {
+    icons.forEach((icon) => icon.style.removeProperty("--dock-scale"));
+  }
+  function magnify(clientX) {
+    if (reducedMotion.matches) return resetMagnifier();
+    const rect = dock.getBoundingClientRect();
+    const style = getComputedStyle(dock);
+    const size = parseFloat(style.getPropertyValue("--dock-icon-size"));
+    const gap = parseFloat(style.columnGap);
+    icons.forEach((icon, index) => {
+      const center =
+        rect.left +
+        rect.width / 2 +
+        (index - (icons.length - 1) / 2) * (size + gap);
+      const influence = Math.max(0, 1 - Math.abs(clientX - center) / 120);
+      icon.style.setProperty(
+        "--dock-scale",
+        String(1 + 0.65 * influence * influence),
+      );
+    });
+  }
+  dock.addEventListener("pointermove", (event) => {
+    if (finePointer.matches && event.pointerType !== "touch")
+      magnify(event.clientX);
+  });
+  dock.addEventListener("pointerleave", () => {
+    const focused = icons.find((icon) => icon === document.activeElement);
+    if (focused) {
+      const rect = focused.getBoundingClientRect();
+      magnify(rect.left + rect.width / 2);
+    } else resetMagnifier();
+  });
+  icons.forEach((icon) =>
+    icon.addEventListener("focus", () => {
+      if (!finePointer.matches) return;
+      const rect = icon.getBoundingClientRect();
+      magnify(rect.left + rect.width / 2);
+    }),
+  );
+  dock.addEventListener("focusout", (event) => {
+    if (!dock.contains(event.relatedTarget)) resetMagnifier();
+  });
+  reducedMotion.addEventListener("change", resetMagnifier);
+  finePointer.addEventListener("change", resetMagnifier);
 }

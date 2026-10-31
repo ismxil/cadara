@@ -15,7 +15,7 @@ export function renderProjects(template, studio, projects) {
     const slug = escape(project.slug.current)
     const website = safeUrl(project.website)
     return `<section class="project-story" id="project-${slug}" data-project="${slug}" aria-labelledby="title-${slug}">
-      <div class="project-copy project-intro"><h1 id="title-${slug}">${website ? `<a href="${escape(website)}" target="_blank" rel="noopener">${escape(project.title)} <span aria-hidden="true">↗</span></a>` : escape(project.title)}</h1>
+      <div class="project-copy project-intro"><h1 id="title-${slug}">${website ? `<a href="${escape(website)}" target="_blank" rel="noopener">${escape(project.title)} <span class="project-external-icon" aria-hidden="true"></span></a>` : escape(project.title)}</h1>
         <p class="project-headline">${escape(project.headline || project.summary)}</p>
         ${paragraphs((project.intro || []).slice(0, 1))}
         ${project.intro?.length > 1 ? `<details class="project-background"><summary>Project background</summary>${paragraphs(project.intro.slice(1))}</details>` : ''}
@@ -27,8 +27,15 @@ export function renderProjects(template, studio, projects) {
     </section>`
   }).join(''))
   if (!published.length) $('.project-rail').html('<p class="projects-empty">New work is on its way. <a href="/">Back to the studio</a></p>')
-  $('.project-menu').html(published.map(project => `<a href="#project-${escape(project.slug.current)}" data-project-link="${escape(project.slug.current)}">${escape(project.title)}</a>`).join(''))
-  $('.project-contact').attr('href', `mailto:${studio.home?.contactEmail || studio.contactEmail}`)
+  $('.project-dock').html(published.map(project => {
+    const slug = escape(project.slug.current)
+    const icon = ['lemfi', 'cadana', 'gomoney'].includes(project.slug.current)
+      ? `<img src="/asset/app-icon/${slug}.svg" alt="" width="48" height="48">`
+      : project.cardImage?.asset ? image({...project.cardImage, alt: ''}, {width: 160, ratio: 1, eager: true, sizes: '80px'})
+      : `<span class="dock-monogram" aria-hidden="true">${escape(project.title.charAt(0))}</span>`
+    return `<a class="project-dock-link" href="#project-${slug}" data-project-link="${slug}" aria-label="${escape(project.title)}">${icon}<span class="project-dock-label" aria-hidden="true">${escape(project.title)}</span></a>`
+  }).join(''))
+  if (!published.length) $('.project-dock').remove()
   metadata($, 'Projects — Cadara Studio', 'Explore selected brand and digital product design projects from Cadara Studio.')
   return $.html()
 }

@@ -101,6 +101,8 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
     } catch {
       status.textContent = 'Could not copy. Select the address to copy it.';
     }
+    status.classList.remove('is-above');
+    status.classList.toggle('is-above', status.getBoundingClientRect().bottom > innerHeight - 8);
     feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2500);
   });
 }
