@@ -49,7 +49,7 @@
   --home-panel: rgba(255, 255, 255, 0.1);
   --home-border: rgba(255, 255, 255, 0.1);
   --home-control: rgba(255, 255, 255, 0.7);
-  --home-accent: #ecff00;
+  --home-accent: #00e935;
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -447,15 +447,6 @@ button {
 [data-theme="light"] .home-clock img {
   filter: none;
 }
-[data-theme="light"] .statement-mark img {
-  content: url("../asset/home/statement-mark-light.svg");
-}
-[data-theme="light"] .footer-mark img {
-  content: url("../asset/home/footer-mark-light.svg");
-}
-[data-theme="light"] .home-clock img {
-  content: url("../asset/home/clock-light.svg");
-}
 @media (max-width: 720px) {
   .home {
     padding-top: 24px;
@@ -781,4 +772,29 @@ button {
 }
 :root[data-theme="light"] ::selection {
   color: #000;
+}
+
+.home-brand {
+  min-height: 48px;
+  min-width: 48px;
+  padding-inline: 10px;
+  border-radius: 14px;
+  background: #00e935;
+  color: #000;
+  font-size: 36px;
+  line-height: 48px;
+}
+.home-copy-status:not(:empty) {
+  top: calc(100% + 8px);
+  width: max-content;
+  max-width: 100%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #00e935;
+  color: #000;
+}
+
+.home-copy-status.is-above:not(:empty) {
+  top: auto;
+  bottom: calc(100% + 8px);
 }

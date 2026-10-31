@@ -4,8 +4,7 @@
   font-family: "Suisse Intl", Arial, sans-serif;
   --project-height: min(60vh, 740px);
 }
-.projects-header,
-.projects-footer {
+.projects-header {
   position: fixed;
   left: 0;
   right: 0;
@@ -22,23 +21,7 @@
 .projects-header {
   top: 0;
 }
-.project-back,
-.project-contact {
-  flex-shrink: 0;
-}
-.project-menu {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 6px;
-}
-.project-menu a {
-  color: var(--home-muted);
-}
-.project-menu a[aria-current="true"] {
-  color: var(--home-heading);
-}
+
 .projects-page a:hover,
 .projects-page a:focus-visible {
   text-decoration: none;
@@ -139,29 +122,7 @@
   padding-left: 24px;
   padding-right: 36px;
 }
-.projects-footer {
-  bottom: 0;
-  font-size: 12px;
-}
-.project-position {
-  min-width: 130px;
-  color: var(--home-muted);
-}
-.project-navigation {
-  display: flex;
-  gap: 8px;
-}
-.project-navigation button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--home-border);
-  border-radius: 50%;
-  background: var(--home-panel);
-  color: var(--home-heading);
-}
-.project-navigation button:hover {
-  opacity: 0.5;
-}
+
 .projects-empty {
   max-width: 40ch;
 }
@@ -174,10 +135,7 @@
     padding: 12px 16px;
     gap: 16px;
   }
-  .project-menu {
-    gap: 16px;
-    font-size: 12px;
-  }
+
   .project-rail {
     display: block;
     height: auto;
@@ -217,15 +175,6 @@
     height: auto;
     max-width: 100%;
   }
-  .projects-footer {
-    padding: 12px 16px;
-  }
-  .project-position {
-    min-width: 0;
-  }
-  .project-navigation {
-    display: none;
-  }
 }
 
 .project-background {
@@ -239,4 +188,124 @@
 }
 .project-background[open] summary {
   margin-bottom: 20px;
+}
+
+.project-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #00e935;
+  color: #000;
+  font-size: 14px;
+}
+.project-back-icon,
+.project-external-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  background: currentColor;
+  mask: url("../asset/home/external.svg") center / contain no-repeat;
+}
+.project-back-icon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../asset/arrow.svg");
+  transform: rotate(180deg);
+}
+.project-external-icon {
+  width: 18px;
+  height: 18px;
+}
+.project-copy h1 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-dock {
+  --dock-icon-size: 48px;
+  position: fixed;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--home-border);
+  border-radius: 22px;
+  background: var(--home-panel);
+  backdrop-filter: blur(24px);
+}
+.project-dock-link {
+  position: relative;
+  flex: 0 0 var(--dock-icon-size);
+  width: var(--dock-icon-size);
+  height: var(--dock-icon-size);
+  margin-inline: calc((var(--dock-scale, 1) - 1) * var(--dock-icon-size) / 2);
+  border-radius: 12px;
+  transform: scale(var(--dock-scale, 1));
+  transform-origin: center bottom;
+  transition:
+    transform 140ms ease,
+    margin 140ms ease;
+}
+.project-dock-link img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.project-dock-link[aria-current="true"] {
+  box-shadow: 0 0 0 3px #00e935;
+}
+.projects-page .project-dock-link:hover,
+.projects-page .project-dock-link:focus-visible {
+  opacity: 1;
+}
+.project-dock-label {
+  pointer-events: none;
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) scale(calc(1 / var(--dock-scale, 1)));
+  transform-origin: center bottom;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: var(--home-heading);
+  color: var(--home-bg);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  opacity: 0;
+}
+.project-dock-link:hover .project-dock-label,
+.project-dock-link:focus-visible .project-dock-label {
+  opacity: 1;
+}
+.dock-monogram {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: #00e935;
+  color: #000;
+  border-radius: inherit;
+  font-size: 24px;
+}
+@media (max-width: 720px) {
+  .project-dock {
+    --dock-icon-size: 40px;
+    gap: 8px;
+    padding: 10px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-dock-link {
+    transition: none;
+  }
 }
