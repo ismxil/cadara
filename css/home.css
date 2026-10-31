@@ -383,14 +383,32 @@ button {
 .home-footer-note .home-footer-invitation {
   margin-bottom: 17.59px;
 }
-.home-clock {
+.home-booking {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--home-heading);
+  white-space: nowrap;
+}
+.home-booking:hover,
+.home-booking:focus-visible {
+  color: var(--home-accent);
+  text-decoration: none;
+}
+.home-booking img {
+  display: block;
+}
+[data-theme="light"] .home-booking img {
+  filter: invert(1);
+}
+.home-location {
   display: flex;
   align-items: center;
   gap: 4px;
   white-space: nowrap;
   font-size: 14px;
 }
-.home-clock img {
+.home-location img {
   display: block;
 }
 .home-socials {
@@ -431,7 +449,10 @@ button {
   position: relative;
   height: 24.8192vw;
   overflow: hidden;
-  color: #878b89;
+  color: #1a1a1a;
+}
+[data-theme="light"] .home-wordmark {
+  color: #e6e6e6;
 }
 .home-wordmark > span {
   position: absolute;
@@ -454,7 +475,7 @@ button {
   filter: invert(1);
 }
 [data-theme="light"] .home-mark img,
-[data-theme="light"] .home-clock img {
+[data-theme="light"] .home-location img {
   filter: none;
 }
 @media (max-width: 720px) {
@@ -529,7 +550,7 @@ button {
   .home-section-title {
     font-size: 28px;
   }
-  .home-clock {
+  .home-location {
     white-space: normal;
     font-size: 14px;
   }

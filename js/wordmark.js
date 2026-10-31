@@ -71,19 +71,20 @@
             (165 - Math.hypot(point.x - cursor.x, point.y - cursor.y)) / 65,
           ),
         );
-      for (const glyph of commands) {
+      for (const [glyphIndex, glyph] of commands.entries()) {
         let previous;
-        for (const command of glyph) {
+        for (const [index, command] of glyph.entries()) {
           if (command.x === undefined) {
             previous = undefined;
             continue;
           }
           const anchor = screen(command.x, command.y);
+          const isSelected = (xKey) => selected?.glyph === glyphIndex && selected.index === index && selected.xKey === xKey;
           const handles = [];
           if (command.x1 !== undefined)
-            handles.push([screen(command.x1, command.y1), previous || anchor]);
+            handles.push([screen(command.x1, command.y1), previous || anchor, "x1"]);
           if (command.x2 !== undefined)
-            handles.push([screen(command.x2, command.y2), anchor]);
+            handles.push([screen(command.x2, command.y2), anchor, "x2"]);
           const opacity = influence(anchor);
           if (command.type === "C" && previous) {
             const from = previous;
@@ -102,7 +103,7 @@
                 }),
               );
           }
-          for (const [point, from] of handles) {
+          for (const [point, from, xKey] of handles) {
             const handleOpacity = Math.max(influence(point), influence(from));
             if (!handleOpacity) continue;
             controls.append(
@@ -121,7 +122,7 @@
                 cx: point.x,
                 cy: point.y,
                 r: 4.5,
-                fill: "#2d9ede",
+                fill: isSelected(xKey) ? "#00E935" : "#2d9ede",
                 stroke: "#fff",
                 "stroke-width": 1.3,
                 opacity: handleOpacity,
@@ -136,7 +137,7 @@
                 y: anchor.y - 3.25,
                 width: 6.5,
                 height: 6.5,
-                fill: "#fff",
+                fill: isSelected("x") ? "#00E935" : "#fff",
                 stroke: "#161616",
                 "stroke-width": 1.2,
                 opacity,
@@ -243,6 +244,7 @@
     });
     host.addEventListener("pointerup", (event) => {
       selected = null;
+      schedule();
       if (host.hasPointerCapture(event.pointerId))
         host.releasePointerCapture(event.pointerId);
       const rect = host.getBoundingClientRect();
