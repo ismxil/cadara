@@ -236,7 +236,7 @@ button {
   height: 16px;
   margin-left: auto;
   margin-right: 2px;
-  opacity: 0.7;
+  opacity: 0.35;
   background: currentColor;
   mask: url("../asset/home/external-mask.svg") center / 10.0672px 10.0669px no-repeat;
 }
@@ -568,14 +568,23 @@ button {
   }
 }
 
-/* Engagements fade as a unit instead of underlining each text fragment. */
-.engagement {
+/* Keep the text fade while reversing the arrow's resting and hover contrast. */
+.engagement > *,
+.engagement[href]::after {
   transition: opacity 180ms ease;
 }
 .engagement:hover,
 .engagement:focus-visible {
   text-decoration: none;
+}
+.engagement[href]:is(:hover, :focus-visible) > * {
   opacity: 0.5;
+}
+.engagement[href]:is(:hover, :focus-visible) > .engagement-year {
+  opacity: 0.35;
+}
+.engagement[href]:is(:hover, :focus-visible)::after {
+  opacity: 0.7;
 }
 .home-wordmark {
   margin-top: 72px;

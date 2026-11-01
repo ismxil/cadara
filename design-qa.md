@@ -1,5 +1,11 @@
 # Booking popup and link arrows QA
 
+## Engagement arrow contrast follow-up
+
+Reference: `.context/attachments/W3K7Lu/CleanShot 2026-10-31 at 10.47.49 PM@2x.png`. Only engagement arrows reverse their states: resting opacity is now 0.35, and hover/keyboard focus is 0.7. The existing content fade remains visually identical: names/tags fade to 0.5 and years from 0.7 to 0.35. This requires fading the content children separately from the arrow. Disabled rows, footer icons and arrow dimensions are unchanged.
+
+Build passes. Chrome verifies both arrow states and the preserved content opacities in both themes, keyboard focus, disabled rows and no mobile overflow. Evidence: `.context/engagement-arrow-rest-dark.png`, `.context/engagement-arrow-hover-dark.png`, and matching light captures.
+
 ## Arrow size follow-up
 
 References: `.context/attachments/EKeoHr/CleanShot 2026-10-31 at 10.42.23 PM@2x.png` and `.context/attachments/3TLdTa/CleanShot 2026-10-31 at 10.43.07 PM@2x.png`. Booking and engagement masks previously filled 16px and 18px boxes, whereas social image artwork renders at its native 10.0672 × 10.0669px. Both masks now use those exact artwork dimensions, with 16px alignment boxes. Green hover is retained.
