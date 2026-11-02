@@ -88,6 +88,6 @@ This rebuilds and deploys the Studio to https://cadara-content.sanity.studio/. S
 
 ### Interactive team portraits
 
-The homepage team cards use self-hosted GLB versions of Emmanuel's, Ahmad's, and Wale's supplied Blender heads. The heads follow a mouse pointer, load when the team section approaches the viewport, and stay still with reduced motion. Static WebP portraits remain available if JavaScript, WebGL, or a model fails to load.
+The homepage team cards use self-hosted GLB versions of Emmanuel's, Ahmad's, and Wale's supplied Blender heads. Only the head in the hovered card follows the mouse within that card; other heads face forward. Heads load when the team section approaches the viewport and stay still with reduced motion. Static WebP portraits remain available if JavaScript, WebGL, or a model fails to load.
 
 The editable renderer lives in `scripts/team-heads.js`. After editing it, run `npm run build:team` to regenerate the checked-in `js/team-heads.js` browser bundle (Three.js and its loaders are included; no CDN is required). The website build copies the bundle and `asset/team/` unchanged.
