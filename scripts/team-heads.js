@@ -15,11 +15,15 @@ function animate() {
   let moving = false;
   for (const view of views) {
     if (!view.visible || !view.head || document.hidden) continue;
-    const rect = view.host.getBoundingClientRect();
-    const x = pointer && !motion.matches ? THREE.MathUtils.clamp((pointer.x - rect.left - rect.width / 2) / (innerWidth / 2), -1, 1) * 0.55 : 0;
-    const y = pointer && !motion.matches ? THREE.MathUtils.clamp((pointer.y - rect.top - rect.height / 2) / (innerHeight / 2), -1, 1) * 0.32 : 0;
-    view.head.rotation.y = motion.matches ? 0 : THREE.MathUtils.lerp(view.head.rotation.y, x, 0.14);
-    view.head.rotation.x = motion.matches ? 0 : THREE.MathUtils.lerp(view.head.rotation.x, y, 0.14);
+    const rect = view.card.getBoundingClientRect();
+    const active = pointer?.card === view.card && finePointer.matches && !motion.matches
+      && pointer.x >= rect.left && pointer.x <= rect.right
+      && pointer.y >= rect.top && pointer.y <= rect.bottom;
+    const x = active ? THREE.MathUtils.clamp((pointer.x - rect.left - rect.width / 2) / (rect.width / 2), -1, 1) * 0.55 : 0;
+    const y = active ? THREE.MathUtils.clamp((pointer.y - rect.top - rect.height / 2) / (rect.height / 2), -1, 1) * 0.32 : 0;
+    // Reset inactive heads immediately so only the hovered head animates.
+    view.head.rotation.y = active ? THREE.MathUtils.lerp(view.head.rotation.y, x, 0.14) : 0;
+    view.head.rotation.x = active ? THREE.MathUtils.lerp(view.head.rotation.x, y, 0.14) : 0;
     moving ||= Math.abs(view.head.rotation.y - x) + Math.abs(view.head.rotation.x - y) > 0.001;
     view.renderer.render(view.scene, view.camera);
   }
@@ -66,7 +70,7 @@ async function createHead(card) {
     head.add(model);
     scene.add(head);
     camera.position.set(0, 0, 4.7);
-    const view = { host, renderer, scene, camera, head, visible: true };
+    const view = { card, host, renderer, scene, camera, head, visible: true };
     const resize = new ResizeObserver(() => {
       const { width, height } = host.getBoundingClientRect();
       if (!width || !height) return;
@@ -116,13 +120,21 @@ if (cards.length) {
     }
   }, { rootMargin: '200px' });
   cards.forEach(card => loader.observe(card));
-  window.addEventListener('pointermove', event => {
-    if (!finePointer.matches || event.pointerType === 'touch') return;
-    pointer = { x: event.clientX, y: event.clientY };
-    requestRender();
-  }, { passive: true });
-  document.documentElement.addEventListener('pointerleave', () => { pointer = null; requestRender(); });
-  window.addEventListener('blur', () => { pointer = null; requestRender(); });
-  document.addEventListener('visibilitychange', requestRender);
+  const resetPointer = () => { pointer = null; requestRender(); };
+  cards.forEach(card => {
+    card.addEventListener('pointermove', event => {
+      if (!finePointer.matches || event.pointerType === 'touch') return;
+      pointer = { card, x: event.clientX, y: event.clientY };
+      requestRender();
+    }, { passive: true });
+    card.addEventListener('pointerleave', () => {
+      if (pointer?.card === card) resetPointer();
+    });
+    card.addEventListener('pointercancel', resetPointer);
+  });
+  window.addEventListener('blur', resetPointer);
+  window.addEventListener('scroll', resetPointer, { passive: true, capture: true });
+  document.addEventListener('visibilitychange', resetPointer);
+  finePointer.addEventListener('change', resetPointer);
   motion.addEventListener('change', requestRender);
 }
