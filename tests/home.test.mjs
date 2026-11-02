@@ -28,7 +28,7 @@ test('homepage project cards expose real copy and services with safe navigation 
 test('existing Studio content uses design defaults and only external company engagement links', () => {
   const $ = load(renderHome(template, {contactEmail: 'legacy@example.com', headline: 'Legacy headline'}, projects))
   assert.equal($('.home-headline').text(), 'Bold by instinct. Deliberate by design. Driven by curiosity.')
-  assert.equal($('.home-contact a').attr('href'), 'mailto:work@cadarastudio.com')
+  assert.equal($('.home-contact a').attr('href'), 'mailto:info@cadarastudio.com')
   assert.equal($('.home-team-copy p').length, 1)
   assert.doesNotMatch($('.home-team-copy').text(), /hiring|jobs@/)
   assert.deepEqual($('.engagement[href]').map((_, el) => $(el).attr('href')).get(), ['https://cadanapay.com/', 'https://trybrass.com/', 'https://foma.money/', 'https://lemfi.com/en-gb/cards'])
