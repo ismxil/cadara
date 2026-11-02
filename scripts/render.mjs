@@ -40,8 +40,14 @@ export function cards(projects) {
       ${project.comingSoon ? '<span class="case-card-soon">Coming soon</span>' : ''}</${tag}>`
   }).join('\n')
 }
+function socialImage($, url = `${siteUrl}/asset/og.png`, branded = true) {
+  $('meta[property^="og:image"], meta[name^="twitter:image"], meta[name="twitter:card"]').remove()
+  $('head').append(`<meta property="og:image" content="${escape(url)}"><meta name="twitter:image" content="${escape(url)}"><meta name="twitter:card" content="summary_large_image">`)
+  if (branded) $('head').append('<meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="668"><meta property="og:image:alt" content="Cadara wordmark on a bright green background"><meta name="twitter:image:alt" content="Cadara wordmark on a bright green background">')
+}
 export function shell(template, studio) {
   const $ = load(template)
+  socialImage($)
   $('body').removeClass('is-loading')
   // Root-relative paths work for both original and newly generated nested pages.
   $('a[href], img[src], script[src], link[href]').each((_, el) => {
@@ -155,7 +161,7 @@ export function renderInsight(template, studio, insight, insights = []) {
   const description = insight.seoDescription || insight.excerpt
   metadata($, `${insight.title} — Cadara Insights`, description, true)
   $('head').append(`<link rel="canonical" href="${escape(url)}">`)
-  if (insight.coverImage?.asset) $('head').append(`<meta property="og:image" content="${escape(imageUrl(insight.coverImage, 1200))}">`)
+  if (insight.coverImage?.asset) socialImage($, imageUrl(insight.coverImage, 1200), false)
   $('head').append(`<script type="application/ld+json">${JSON.stringify({'@context': 'https://schema.org', '@type': 'BlogPosting', headline: insight.title, description, datePublished: insight.publishedAt, url,
     ...(insight.author ? {author: {'@type': 'Person', name: insight.author}} : {}), ...(insight.coverImage?.asset ? {image: imageUrl(insight.coverImage, 1200)} : {}),
     publisher: {'@type': 'Organization', name: 'Cadara Studio'}}).replace(/</g, '\\u003c')}</script>`)

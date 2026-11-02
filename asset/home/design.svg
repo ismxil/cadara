@@ -1,6 +1,6 @@
 <svg class="home-glyph home-glyph--design" aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path pathLength="1" d="M32.001 42.9648L32.001 21.037" stroke-width="3" stroke="#00E935"/>
 <path pathLength="1" d="M12 32.002L52 32.002" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M17.8574 16.002L16.864 17.1258L45.1483 49.1247L46.1417 48.0008L47.1351 46.8769L18.8508 14.8781L17.8574 16.002Z" fill="#00E935"/>
-<path pathLength="1" d="M46.1416 16L45.1482 14.8761L16.8639 46.875L17.8573 47.9989L18.8508 49.1227L47.135 17.1239L46.1416 16Z" fill="#00E935"/>
+<path pathLength="1" d="M17.8574 16.002L46.1417 48.0008" stroke-width="3" stroke="#00E935"/>
+<path pathLength="1" d="M46.1416 16L17.8573 47.9989" stroke-width="3" stroke="#00E935"/>
 </svg>
