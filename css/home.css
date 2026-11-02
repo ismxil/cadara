@@ -384,6 +384,9 @@ button {
 @media (hover: hover) {
   .home-team-panels > div:hover { background: #00dd28; color: #000; }
 }
+@media (max-width: 720px), (hover: none) {
+  .home-team-panels > div { background: #00dd28; color: #000; }
+}
 .team-avatar {
   position: relative;
   width: 100%;
@@ -1107,22 +1110,27 @@ button {
   .team-linkedin { right: 16px; bottom: 16px; width: 20px; height: 20px; }
 }
 
-/* Service paths draw in place; the glyphs retain their size and position. */
+/* Three 4.8-second slots: Strategy, Design, then Build. Path staggering
+   stays inside each slot, so different cards never animate together. */
+.home-service { --service-delay: 0s; }
+.home-service:nth-child(2) { --service-delay: 4.8s; }
+.home-service:nth-child(3) { --service-delay: 9.6s; }
 .home-service-icon .home-glyph path,
 .home-service-icon .home-glyph ellipse {
   stroke-dasharray: 1;
-  animation: service-path-draw 4.8s cubic-bezier(.65, 0, .35, 1) infinite;
+  animation: service-path-draw 14.4s cubic-bezier(.65, 0, .35, 1) infinite;
+  animation-delay: calc(var(--service-delay) + var(--path-delay, 0s));
 }
-.home-service-icon .home-glyph :nth-child(2) { animation-delay: .12s; }
-.home-service-icon .home-glyph :nth-child(3) { animation-delay: .24s; }
-.home-service-icon .home-glyph :nth-child(4) { animation-delay: .36s; }
-.home-service-icon .home-glyph :nth-child(5) { animation-delay: .48s; }
-.home-service-icon .home-glyph :nth-child(6) { animation-delay: .6s; }
-.home-service-icon .home-glyph :nth-child(7) { animation-delay: .72s; }
+.home-service-icon .home-glyph :nth-child(2) { --path-delay: .12s; }
+.home-service-icon .home-glyph :nth-child(3) { --path-delay: .24s; }
+.home-service-icon .home-glyph :nth-child(4) { --path-delay: .36s; }
+.home-service-icon .home-glyph :nth-child(5) { --path-delay: .48s; }
+.home-service-icon .home-glyph :nth-child(6) { --path-delay: .6s; }
+.home-service-icon .home-glyph :nth-child(7) { --path-delay: .72s; }
 @keyframes service-path-draw {
-  0%, 12%, 100% { stroke-dashoffset: 0; }
-  35% { stroke-dashoffset: 1; }
-  68%, 90% { stroke-dashoffset: 0; }
+  0%, 4% { stroke-dashoffset: 0; }
+  11.667% { stroke-dashoffset: 1; }
+  22.667%, 100% { stroke-dashoffset: 0; }
 }
 .home-glyph--globe-extend path:last-of-type { vector-effect: non-scaling-stroke; transform-origin: 46px 46px; animation: service-longitude 6s linear infinite; }
 @keyframes service-longitude { from { transform: scaleX(3) rotateY(70deg); } to { transform: scaleX(3) rotateY(430deg); } }
