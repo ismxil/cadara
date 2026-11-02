@@ -23,7 +23,7 @@ const companyUrl = value => {
 export function renderHome(template, studio, projects) {
   const $ = shell(template, studio)
   const home = studio.home || {}
-  const email = home.contactEmail || 'work@cadarastudio.com'
+  const email = home.contactEmail || 'info@cadarastudio.com'
   if (home.headline) $('.home-headline').text(home.headline)
   if (home.intro) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
   // Apply the founder link to CMS copy as well as the default introduction.

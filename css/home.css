@@ -1,5 +1,11 @@
 @font-face {
   font-family: "Beirut Display";
+  src: url("../fonts/BeirutDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beirut Display";
   src: url("../fonts/BeirutDisplay-SemiBold.ttf") format("truetype");
   font-weight: 700;
   font-display: swap;
@@ -171,10 +177,11 @@ button {
 .home-headline {
   color: var(--home-heading);
   font:
-    700 64px/1.2 "Beirut Display",
+    400 64px/1.05 "Beirut Display",
     Georgia,
     serif;
   margin: 0 0 72px;
+  letter-spacing: -0.03125em;
 }
 .home-prose {
   font-size: 20px;
