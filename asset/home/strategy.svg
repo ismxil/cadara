@@ -1,20 +1,9 @@
 <svg class="home-glyph home-glyph--strategy" aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g data-step="1">
+<defs><clipPath id="strategy-filter-opening"><rect width="64" height="23.7852"/><rect y="31.2204" width="64" height="32.7796"/></clipPath></defs>
+<g clip-path="url(#strategy-filter-opening)">
+<path class="strategy-flow" pathLength="1" d="M18.0781 46.5254C24.1172 43.2889 24.1172 39.5003 24.1172 31.2204L24.1172 17.2916" stroke="#00E935" stroke-width="3"/>
+<path class="strategy-flow" pathLength="1" d="M32.001 52L32.001 12.0018" stroke="#00E935" stroke-width="3"/>
+<path class="strategy-flow" pathLength="1" d="M45.9229 46.5254C39.8838 43.2889 39.8838 39.5003 39.8838 31.2204L39.8838 17.2916" stroke="#00E935" stroke-width="3"/>
+</g>
 <ellipse pathLength="1" cx="32.0013" cy="31.0508" rx="21.4997" ry="8" stroke="#00E935" stroke-width="3"/>
-</g>
-<g data-step="2">
-<path pathLength="1" d="M32.001 39.0508L32.001 52" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M40.23502 39.05080C40.79032 42.35312 42.22358 44.54284 45.92290 46.52540" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M23.76598 39.05080C23.21068 42.35312 21.77742 44.54284 18.07810 46.52540" stroke-width="3" stroke="#00E935"/>
-</g>
-<g data-step="3">
-<path pathLength="1" d="M32.001 39.0508L32.001 31.2198" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M40.23502 39.05080C39.88380 36.96212 39.88380 34.42835 39.88380 31.22040" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M23.76598 39.05080C24.11720 36.96212 24.11720 34.42835 24.11720 31.22040" stroke-width="3" stroke="#00E935"/>
-</g>
-<g data-step="4">
-<path pathLength="1" d="M39.8838 23.7852L39.8838 17.2916" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M32.001 23.7852L32.001 12.0018" stroke-width="3" stroke="#00E935"/>
-<path pathLength="1" d="M24.1172 23.7852L24.1172 17.2916" stroke-width="3" stroke="#00E935"/>
-</g>
 </svg>
