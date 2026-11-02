@@ -1,6 +1,14 @@
 <svg class="home-glyph home-glyph--design" aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g data-step="1">
 <path pathLength="1" d="M32.001 42.9648L32.001 21.037" stroke-width="3" stroke="#00E935"/>
+</g>
+<g data-step="2">
 <path pathLength="1" d="M12 32.002L52 32.002" stroke-width="3" stroke="#00E935"/>
+</g>
+<g data-step="3">
 <path pathLength="1" d="M17.8574 16.002L46.1417 48.0008" stroke-width="3" stroke="#00E935"/>
+</g>
+<g data-step="4">
 <path pathLength="1" d="M46.1416 16L17.8573 47.9989" stroke-width="3" stroke="#00E935"/>
+</g>
 </svg>
