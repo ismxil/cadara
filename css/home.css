@@ -320,11 +320,18 @@ button {
   gap: 40px;
 }
 .home-service-icon {
-  width: 32px;
-  height: 32px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.home-service-icon img,
+.statement-mark img,
+.home-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .home-service h3 {
   margin: 0 0 16px;
@@ -1098,4 +1105,28 @@ button {
   .team-card-link { min-height: 230px; padding: 12px 16px 16px; font-size: 16px; }
   .team-avatar { height: 170px; }
   .team-linkedin { right: 16px; bottom: 16px; width: 20px; height: 20px; }
+}
+
+/* Decorative service glyphs keep their original shapes between kinetic cycles. */
+.home-glyph--strategy ellipse, .home-glyph--strategy path { transform-box: view-box; transform-origin: 32px 31px; }
+.home-glyph--strategy ellipse { stroke-dasharray: 1; animation: service-sweep 4.8s ease-in-out infinite; }
+.home-glyph--strategy path { stroke-dasharray: 1; animation: service-signal 4.8s cubic-bezier(.22,1,.36,1) infinite; }
+.home-glyph--strategy path:nth-of-type(2), .home-glyph--strategy path:nth-of-type(3) { animation-delay: .12s; }
+.home-glyph--strategy path:nth-of-type(4), .home-glyph--strategy path:nth-of-type(6) { animation-delay: .24s; }
+@keyframes service-sweep { 0%, 12%, 100% { stroke-dashoffset: 0; transform: scaleX(1); } 35% { stroke-dashoffset: 1; transform: scaleX(.85); } 65%, 90% { stroke-dashoffset: 0; transform: scaleX(1); } }
+@keyframes service-signal { 0%, 12%, 100% { stroke-dashoffset: 0; transform: translateY(0); } 30% { stroke-dashoffset: 1; transform: translateY(-3px); } 62%, 90% { stroke-dashoffset: 0; transform: translateY(0); } }
+.home-glyph--design path { transform-origin: 32px 32px; animation: service-spark 4.8s cubic-bezier(.22,1,.36,1) infinite; }
+.home-glyph--design path:nth-of-type(1), .home-glyph--design path:nth-of-type(2) { stroke-dasharray: 1; animation-name: service-draw; }
+.home-glyph--design path:nth-of-type(2) { animation-delay: .12s; }
+.home-glyph--design path:nth-of-type(3) { animation-delay: .24s; }
+.home-glyph--design path:nth-of-type(4) { animation-delay: .36s; }
+@keyframes service-draw { 0%, 12%, 100% { stroke-dashoffset: 0; transform: rotate(0); } 32% { stroke-dashoffset: 1; transform: rotate(-45deg); } 68%, 90% { stroke-dashoffset: 0; transform: rotate(0); } }
+@keyframes service-spark { 0%, 12%, 100% { transform: rotate(0) scale(1); } 32% { transform: rotate(-45deg) scale(.15); } 68%, 90% { transform: rotate(0) scale(1); } }
+.home-glyph--build path { stroke-dasharray: 1; transform-origin: 32px 32px; animation: service-orbit 4.8s cubic-bezier(.65,0,.35,1) infinite; }
+.home-glyph--build path:nth-of-type(2) { animation-delay: -.24s; animation-direction: reverse; }
+@keyframes service-orbit { 0%, 12%, 100% { stroke-dashoffset: 0; transform: rotate(0); } 38% { stroke-dashoffset: 1; transform: rotate(-22deg); } 72%, 90% { stroke-dashoffset: 0; transform: rotate(0); } }
+.home-glyph--globe-extend path:last-of-type { vector-effect: non-scaling-stroke; transform-origin: 46px 46px; animation: service-longitude 6s linear infinite; }
+@keyframes service-longitude { from { transform: scaleX(3) rotateY(70deg); } to { transform: scaleX(3) rotateY(430deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .home-glyph path, .home-glyph ellipse { animation: none !important; }
 }

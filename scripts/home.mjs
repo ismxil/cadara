@@ -1,4 +1,7 @@
+import {readFileSync} from 'node:fs'
 import {shell, escape, safeUrl, metadata, image} from './render.mjs'
+
+const serviceGlyphs = Object.fromEntries(['strategy', 'design', 'build'].map(name => [name, readFileSync(new URL(`../asset/home/${name}.svg`, import.meta.url), 'utf8')]))
 
 const projectCards = projects => projects.map((project, index) => {
   const slug = project.slug.current
@@ -18,6 +21,13 @@ const companyUrl = value => {
   return url && !['cadarastudio.com', 'www.cadarastudio.com'].includes(new URL(url).hostname) ? url : ''
 }
 
+// Refresh the original service copy while preserving descriptions edited in the CMS.
+const serviceCopy = new Map([
+  ["Finding clarity, defining direction, and aligning your team around shared goals, opportunities, and a clear vision for the project.", "Insight-led positioning, product direction, and leading clarity workshop for financial teams."],
+  ["Turning ideas into thoughtful digital experiences, visual identities, and intuitive interfaces that balance user needs with business goals.", "Digital design, identity design, system design, interface craft, and launch-ready brand assets."],
+  ["Bringing designs to life through development, turning concepts into functional, scalable, and reliable digital products ready for the real world.", "Customer journeys, onboarding flows, service touchpoints, and product moments built around trust."],
+])
+
 // New fields are optional so existing published Studio documents render the design
 // immediately, without replacing legacy content or requiring a content migration.
 export function renderHome(template, studio, projects) {
@@ -36,8 +46,8 @@ export function renderHome(template, studio, projects) {
   if (home.teamCopy) $('.home-team-copy p').first().text(home.teamCopy)
   if (studio.statement) $('.home-statement').text(studio.statement)
   if (studio.services) $('.home-services-grid').html(studio.services.map(service => `<article class="home-service">
-    ${['strategy', 'design', 'build'].includes(service.icon) ? `<div class="home-service-icon"><img src="/asset/home/${service.icon}.svg" alt="" aria-hidden="true"></div>` : ''}
-    <div><h3>${escape(service.title)}</h3><p>${escape(service.description)}</p></div></article>`).join(''))
+    ${['strategy', 'design', 'build'].includes(service.icon) ? `<div class="home-service-icon">${serviceGlyphs[service.icon]}</div>` : ''}
+    <div><h3>${escape(service.title)}</h3><p>${escape(serviceCopy.get(service.description) || service.description)}</p></div></article>`).join(''))
   if (home.engagements) $('.engagement-list').html(home.engagements.map(item => {
     const project = projects.find(p => p._id === item.project?._ref)
     const website = item.disabled ? '' : companyUrl(item.website) || companyUrl(project?.website)
