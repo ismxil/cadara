@@ -118,7 +118,7 @@
 
 @media (hover: hover) and (min-width: 901px) {
   .brand--animated {
-    cursor: pointer;
+    cursor: var(--click-cursor, pointer);
     display: inline-flex;
     align-items: center;
     min-width: 0;

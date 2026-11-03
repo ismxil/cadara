@@ -88,7 +88,7 @@ a:hover {
 }
 button {
   font: inherit;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
 }
 :focus-visible {
   outline: 2px solid var(--home-accent);
@@ -153,7 +153,7 @@ button {
   height: 48px;
   padding: 0;
 }
-.home-control:hover { opacity: .7; }
+.home-control:is(:hover, :focus-visible) { color: var(--home-accent); }
 .home-view-label { display: none; }
 .home-control .home-view-icon,
 .home-control .home-theme-icon,
@@ -569,7 +569,7 @@ button {
   text-align: center;
   white-space: nowrap;
 }
-[data-theme="light"] .home-control {
+[data-theme="light"] .home-control:not(:hover):not(:focus-visible) {
   color: var(--home-heading);
 }
 [data-theme="light"] .home-socials img {
@@ -906,7 +906,7 @@ button {
   opacity: .3;
   transform: translate3d(calc(-50% + var(--wheel-x)), 0, 0);
   transition: width 400ms ease, height 400ms ease, transform 400ms ease, opacity 250ms ease;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
 }
 .home-projects .is-wheel-ready .case-card:not(.is-active) {
   width: var(--wheel-side-base-width);
@@ -1012,13 +1012,16 @@ button {
 }
 
 /* Home link interactions have their own treatments instead of the generic underline. */
-.home-socials a {
-  transition: opacity 180ms ease;
+.home-socials a { transition: color 180ms ease; }
+.home-socials .home-external-icon {
+  background: currentColor;
+  mask: url("../asset/home/external-mask.svg") center / 10.0672px 10.0669px no-repeat;
 }
+.home-socials .home-external-icon img { visibility: hidden; }
 .home-socials a:hover,
 .home-socials a:focus-visible {
   text-decoration: none;
-  opacity: 0.5;
+  color: var(--home-accent);
 }
 .home-brand {
   display: inline-flex;
@@ -1030,6 +1033,7 @@ button {
 }
 .home-brand:hover,
 .home-brand:focus-visible {
+  color: var(--home-accent);
   text-decoration: none;
 }
 .home-brand.is-typing .home-brand-suffix::after {
@@ -1212,3 +1216,21 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .home-glyph path, .home-glyph ellipse, .heart-turn { animation: none !important; }
 }
+
+@media (hover: hover) and (pointer: fine) {
+  :root { --click-cursor: url("../asset/home/click-cursor.svg") 32 32, pointer; }
+  :where(a[href], button:enabled, summary, [role="button"]):not([aria-disabled="true"]) {
+    cursor: var(--click-cursor, pointer);
+  }
+}
+
+/* Mask the supplied navigation glyphs so their hover color follows the text. */
+.home-view-icon { --control-glyph: url("../asset/home/folder.svg"); }
+.view-toggle[aria-pressed="true"] .home-view-icon { --control-glyph: url("../asset/home/doc.svg"); }
+.home-theme-icon { --control-glyph: url("../asset/home/dark.svg"); }
+.theme-toggle[aria-pressed="true"] .home-theme-icon { --control-glyph: url("../asset/home/light.svg"); }
+.home-control:is(:hover, :focus-visible) :is(.home-view-icon, .home-theme-icon) {
+  background: currentColor;
+  mask: var(--control-glyph) center / contain no-repeat;
+}
+.home-control:is(:hover, :focus-visible) img { visibility: hidden; }

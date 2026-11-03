@@ -135,8 +135,8 @@ img {
   transition: color 200ms ease;
 }
 
-.nav-links a:hover {
-  color: var(--muted);
+.nav-links a:is(:hover, :focus-visible) {
+  color: var(--lime);
 }
 
 .nav-toggle {
@@ -153,7 +153,7 @@ img {
   font-size: 20px;
   font-weight: 600;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
 }
 
 /* ── Intro ─────────────────────────────────── */
@@ -294,7 +294,7 @@ img {
 
 .case-card:hover .case-meta h3,
 .case-card:hover .case-meta p {
-  color: var(--white);
+  color: var(--lime);
 }
 
 .case-card--soon {
@@ -668,7 +668,7 @@ body.menu-open {
   font-size: 20px;
   font-weight: 600;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
 }
 
 .mobile-menu-links {
@@ -872,3 +872,14 @@ body.menu-open {
     animation: none !important;
   }
 }
+
+@media (hover: hover) and (pointer: fine) {
+  :root { --click-cursor: url("../asset/home/click-cursor.svg") 32 32, pointer; }
+  :where(a[href], button:enabled, summary, [role="button"]):not([aria-disabled="true"]) {
+    cursor: var(--click-cursor, pointer);
+  }
+}
+
+.footer-socials a:is(:hover, :focus-visible),
+.mobile-menu-links a:is(:hover, :focus-visible) { color: var(--lime); }
+.pill:is(:hover, :focus-visible) { background: var(--lime); opacity: 1; }

@@ -25,7 +25,8 @@
 .projects-page a:hover,
 .projects-page a:focus-visible {
   text-decoration: none;
-  opacity: 0.55;
+  color: var(--home-accent);
+  opacity: 1;
 }
 .project-rail {
   display: flex;
@@ -187,7 +188,7 @@
   justify-content: space-between;
   gap: 12px;
   list-style: none;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
   font-size: 13px;
   color: var(--home-heading);
 }
@@ -336,3 +337,12 @@
     transition: none;
   }
 }
+
+.project-background summary:is(:hover, :focus-visible) { color: var(--home-accent); }
+.projects-page .project-back:is(:hover, :focus-visible) {
+  background: #000;
+  color: var(--home-accent);
+  outline: 1px solid var(--home-accent);
+}
+.project-dock-link:is(:hover, :focus-visible) { outline: 2px solid var(--home-accent); outline-offset: 3px; }
+.project-dock-label { background: var(--home-accent); color: #000; }

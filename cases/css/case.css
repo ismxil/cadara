@@ -384,7 +384,7 @@
 
 @media (pointer: coarse), (max-width: 900px) {
   .case-next {
-    cursor: pointer;
+    cursor: var(--click-cursor, pointer);
   }
 
   .case-next--soon {

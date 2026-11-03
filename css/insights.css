@@ -133,8 +133,8 @@
   transition: color 200ms ease;
 }
 
-.insight-back:hover {
-  color: var(--white);
+.insight-back:is(:hover, :focus-visible) {
+  color: var(--lime);
 }
 
 .insight-hero-grid,
@@ -242,14 +242,14 @@
   background: none;
   color: var(--muted);
   font: inherit;
-  cursor: pointer;
+  cursor: var(--click-cursor, pointer);
   transition: color 200ms ease;
 }
 
 .insight-toc a:hover,
 .insight-share a:hover,
 .insight-share button:hover {
-  color: var(--white);
+  color: var(--lime);
 }
 
 .insight-main {
