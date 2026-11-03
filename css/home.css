@@ -130,7 +130,7 @@ button {
   width: 48px;
   color: var(--home-heading);
   font:
-    900 48px/48px "Beirut Display",
+    700 48px/48px "Beirut Display",
     Georgia,
     serif;
   letter-spacing: -0.96px;
@@ -901,11 +901,18 @@ button {
   left: 50%;
   width: var(--wheel-card-width);
   height: var(--wheel-height);
+  transform-origin: 50% 0;
   aspect-ratio: auto;
   opacity: .3;
   transform: translate3d(calc(-50% + var(--wheel-x)), 0, 0);
-  transition: width 400ms ease, transform 400ms ease, opacity 250ms ease;
+  transition: width 400ms ease, height 400ms ease, transform 400ms ease, opacity 250ms ease;
   cursor: pointer;
+}
+.home-projects .is-wheel-ready .case-card:not(.is-active) {
+  width: var(--wheel-side-base-width);
+  height: var(--wheel-base-height);
+  transform-origin: 50% 0;
+  transform: translate3d(calc(-50% + var(--wheel-x)), 0, 0) scale(var(--wheel-scale, 1));
 }
 .home-projects .is-wheel-ready .case-card.is-active { opacity: 1; z-index: 2; }
 .home-projects .is-wheel-ready .case-card.is-offscreen { pointer-events: none; }
@@ -1037,38 +1044,20 @@ button {
   max-width: 100%;
   vertical-align: baseline;
 }
-.home-contact a,
-.home-copy-email {
-  transition: color 180ms ease;
-}
-.home-contact a:hover,
-.home-contact a:focus-visible,
-.home-copy-email:hover,
-.home-copy-email:focus-visible {
-  color: #fff;
-  text-decoration: none;
-}
-[data-theme="light"] .home-contact a:hover,
-[data-theme="light"] .home-contact a:focus-visible,
-[data-theme="light"] .home-copy-email:hover,
-[data-theme="light"] .home-copy-email:focus-visible {
-  color: #000;
-}
-.home-copy-email {
+.home-email-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  padding: 4px;
-  border: 0;
-  background: transparent;
+  gap: 8px;
   color: inherit;
+  transition: color 180ms ease;
 }
+.home-email-link:is(:hover, :focus-visible) { color: var(--home-accent); text-decoration: none; }
+.home-email-address { overflow-wrap: anywhere; }
 .home-copy-icon {
-  width: 20px;
-  height: 20px;
+  display: inline-block;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   background: currentColor;
   mask: url("../asset/home/copy.svg") center / contain no-repeat;
 }
@@ -1084,8 +1073,7 @@ button {
 }
 @media (prefers-reduced-motion: reduce) {
   .home-socials a,
-  .home-contact a,
-  .home-copy-email {
+  .home-email-link {
     transition: none;
   }
 }

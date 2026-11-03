@@ -68,7 +68,8 @@ export function renderHome(template, studio, projects) {
     if ($(paragraph).find('.home-founder').length) return
     $(paragraph).html(escape($(paragraph).text()).replace(/Ismail Ahmad/g, '<a class="home-founder" href="https://linkedin.com/in/ismxil" target="_blank" rel="noopener">Ismail Ahmad</a>'))
   })
-  $('.home-contact a').attr('href', `mailto:${email}`).text(email)
+  $('.home-contact a').attr('href', `mailto:${email}`)
+  $('.home-email-address').text(email)
   $('.home-socials a[href^="mailto:"]').attr('href', `mailto:${email}`)
   if (home.teamCopy && home.teamCopy !== legacyTeamCopy) $('.home-team-copy').html(home.teamCopy.split(/\n\s*\n/).map(p => `<p>${escape(p)}</p>`).join(''))
   if (studio.statement && studio.statement !== legacyStatement) $('.home-statement').text(studio.statement)

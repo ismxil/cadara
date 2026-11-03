@@ -73,15 +73,20 @@ if (brandSuffix) {
   wideHeader.addEventListener('change', resetBrand);
   reduceMotion.addEventListener('change', resetBrand);
 }
-const copyEmail = document.querySelector('.home-copy-email');
-const contactLink = document.querySelector('.home-contact a');
-if (copyEmail && contactLink && navigator.clipboard?.writeText) {
+const contactLink = document.querySelector('.home-email-link');
+if (contactLink && navigator.clipboard?.writeText) {
   const status = document.querySelector('.home-copy-status');
+  const icon = contactLink.querySelector('.home-copy-icon');
+  const email = contactLink.querySelector('.home-email-address').textContent.trim();
   let feedbackTimer;
-  const email = contactLink.textContent.trim();
-  copyEmail.hidden = false;
-  copyEmail.setAttribute('aria-label', `Copy ${email}`);
-  const copyContactEmail = async () => {
+  icon.hidden = false;
+  contactLink.setAttribute('aria-label', `Copy ${email}`);
+  contactLink.setAttribute('role', 'button');
+  contactLink.addEventListener('keydown', event => {
+    if (event.key === ' ') { event.preventDefault(); contactLink.click(); }
+  });
+  contactLink.addEventListener('click', async event => {
+    event.preventDefault();
     clearTimeout(feedbackTimer);
     try {
       await navigator.clipboard.writeText(email);
@@ -92,11 +97,6 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
     status.classList.remove('is-above');
     status.classList.toggle('is-above', status.getBoundingClientRect().bottom > innerHeight - 8);
     feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2500);
-  };
-  copyEmail.addEventListener('click', copyContactEmail);
-  contactLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    copyContactEmail();
   });
 }
 

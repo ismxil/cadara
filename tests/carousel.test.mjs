@@ -5,7 +5,7 @@ import {runInNewContext} from 'node:vm'
 
 const source = await readFile(new URL('../js/home-carousel.js', import.meta.url), 'utf8')
 // Run the actual carousel event handlers with deterministic pointer events and time.
-function harness() {
+function harness({resizable = false} = {}) {
   const document = {activeElement: null, pointerTarget: null}
   class Element {
     constructor(slug) {
@@ -51,12 +51,12 @@ function harness() {
     releasePointerCapture() { this.captured = false }
   }
   const originals = ['lemfi', 'foma', 'cadana', 'gomoney', 'mezovest', 'sterling'].map(slug => new Element(slug))
-  const body = new Element(), rail = new Element(), section = new Element()
+  const body = new Element(), rail = new Element(), section = new Element(), resize = new Element()
   rail.clientWidth = rail.offsetWidth = 1440
   rail.querySelectorAll = () => originals
   rail.replaceChildren = track => { rail.track = track; rail.cards = track.children }
   rail.contains = card => rail.cards.includes(card)
-  section.querySelector = () => null
+  section.querySelector = () => resizable ? resize : null
   section.appendChild = () => {}
   body.children = []
   body.appendChild = child => body.children.push(child)
@@ -75,7 +75,7 @@ function harness() {
   }
   class Observer {observe() {} unobserve() {}}
   runInNewContext(source, {document, window: {addEventListener() {}}, matchMedia: query => ({matches: !query.includes('reduced-motion'), addEventListener() {}}), ResizeObserver: Observer, IntersectionObserver: Observer, setTimeout, clearTimeout: id => timers.delete(id), requestAnimationFrame: fn => setTimeout(fn, 16), cancelAnimationFrame: id => timers.delete(id)})
-  return {rail, tick, document, cursor: body.children[0], active: () => rail.cards.find(card => card.classList.contains('is-active')), side: offset => rail.cards[rail.cards.findIndex(card => card.classList.contains('is-active')) + offset]}
+  return {rail, resize, tick, document, cursor: body.children[0], active: () => rail.cards.find(card => card.classList.contains('is-active')), side: offset => rail.cards[rail.cards.findIndex(card => card.classList.contains('is-active')) + offset]}
 }
 
 test('eye cursor is restricted to the settled center card', () => {
@@ -169,4 +169,18 @@ test('high-frequency drag input is painted only on animation frames', () => {
   assert.match(h.rail.track.style.transform, /-100px/)
   h.tick(16)
   assert.match(h.rail.track.style.transform, /-200px/)
+})
+
+
+test('expanding the center scales neighboring cards proportionally instead of narrowing them', () => {
+  const h = harness({resizable: true})
+  const neighbor = h.side(1)
+  const beforeWidth = Number.parseFloat(neighbor.styles.get('--wheel-card-width'))
+  const beforeHeight = Number.parseFloat(h.rail.styles.get('--wheel-height'))
+  h.resize.emit('keydown', {key: 'ArrowDown', shiftKey: true})
+  const afterWidth = Number.parseFloat(neighbor.styles.get('--wheel-card-width'))
+  const afterHeight = Number.parseFloat(h.rail.styles.get('--wheel-height'))
+  assert.ok(Math.abs(afterWidth / beforeWidth - 1.1) < 0.001)
+  assert.ok(Math.abs(afterWidth / afterHeight - beforeWidth / beforeHeight) < 0.001)
+  assert.equal(h.rail.styles.get('--wheel-scale'), '1.1')
 })

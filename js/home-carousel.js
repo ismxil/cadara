@@ -114,8 +114,9 @@
     const gap = 20;
     const base = width <= 720 ? width - 42 : Math.min(660, Math.max(300, width * .32));
     const center = base * scale;
-    const side = width <= 720 ? center : Math.max(80, (width - center - (width >= 1000 ? 6 : 4) * gap) / (width >= 1000 ? 4 : 2));
-    return {width, gap, base, center, side, height: center * 2 / 3};
+    const sideBase = width <= 720 ? base : Math.max(80, (width - base - (width >= 1000 ? 6 : 4) * gap) / (width >= 1000 ? 4 : 2));
+    const side = sideBase * scale;
+    return {width, gap, base, center, side, sideBase, height: center * 2 / 3};
   };
   const cardOffset = (index, origin = position) => {
     const distance = index - origin;
@@ -125,6 +126,9 @@
     if (!rail.clientWidth) return;
     layout = geometry();
     rail.style.setProperty('--wheel-height', `${layout.height}px`);
+    rail.style.setProperty('--wheel-base-height', `${layout.base * 2 / 3}px`);
+    rail.style.setProperty('--wheel-side-base-width', `${layout.sideBase}px`);
+    rail.style.setProperty('--wheel-scale', String(scale));
     rail.style.setProperty('--card-row-gap', `${layout.gap}px`);
     cards.forEach((card, index) => {
       const distance = index - position;
