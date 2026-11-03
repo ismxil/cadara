@@ -3,6 +3,7 @@ if (toggle) {
   const syncToggle = () => {
     const light = document.documentElement.dataset.theme === 'light';
     toggle.setAttribute('aria-pressed', String(light));
+    toggle.querySelector('img').src = light ? '/asset/home/light.svg' : '/asset/home/dark.svg';
     toggle.setAttribute('aria-label', `Switch to ${light ? 'dark' : 'light'} theme`);
   };
   syncToggle();
@@ -24,12 +25,12 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
   function setWorkView(showGrid) {
     document.querySelector('.home').classList.toggle('is-grid', showGrid);
     projectGrid.hidden = !showGrid;
-    if (showGrid) projectGrid.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
+    if (showGrid) projectGrid.querySelectorAll('img[src]').forEach(image => { image.loading = 'eager'; });
     engagements.hidden = showGrid;
     viewToggle.setAttribute('aria-pressed', String(showGrid));
     viewToggle.setAttribute('aria-label', showGrid ? 'Show index' : 'Show work');
     viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'Index' : 'Work';
-    viewToggle.querySelector('img').src = showGrid ? '/asset/home/list.svg' : '/asset/home/grid.svg';
+    viewToggle.querySelector('img').src = showGrid ? '/asset/home/doc.svg' : '/asset/home/folder.svg';
   }
   setWorkView(new URL(location.href).searchParams.get('view') === 'work');
   viewToggle.addEventListener('click', () => {
@@ -47,13 +48,65 @@ if (projectCardRail) {
   const projectCards = [...projectCardRail.querySelectorAll('.home-project-card')];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let activeIndex = 0, drag, frame, settleTimer, suppressClick = false;
+  const hoverPreview = matchMedia('(hover: hover) and (pointer: fine)');
+  let stopPreview = () => {};
+  projectCards.forEach(card => {
+    const slides = [...card.querySelectorAll('.case-image img')];
+    let timer, generation = 0;
+    const reset = () => {
+      generation++;
+      clearTimeout(timer);
+      card.classList.remove('is-previewing');
+      slides.forEach((slide, index) => slide.classList.toggle('is-visible', index === 0));
+      projectCardRail.classList.toggle('has-preview', Boolean(projectCardRail.querySelector('.is-previewing')));
+    };
+    const start = () => {
+      if (drag || reducedMotion.matches || !hoverPreview.matches || !card.matches('a')) return;
+      stopPreview();
+      stopPreview = reset;
+      const token = ++generation;
+      card.classList.add('is-previewing');
+      projectCardRail.classList.add('has-preview');
+      slides.forEach(slide => {
+        if (!slide.dataset.src) return;
+        slide.loading = 'eager';
+        if (slide.dataset.srcset) slide.srcset = slide.dataset.srcset;
+        slide.src = slide.dataset.src;
+        delete slide.dataset.src;
+        delete slide.dataset.srcset;
+      });
+      let current = 0;
+      const advance = async () => {
+        if (token !== generation || slides.length < 2) return;
+        const next = (current + 1) % slides.length;
+        try {
+          await slides[next].decode();
+          if (token !== generation) return;
+          slides.forEach((slide, index) => slide.classList.toggle('is-visible', index === next));
+        } catch { /* Keep the last loaded image when a preview is unavailable. */ }
+        current = next;
+        if (token === generation) timer = setTimeout(advance, 1200);
+      };
+      timer = setTimeout(advance, 1200);
+    };
+    card.addEventListener('pointerenter', start);
+    card.addEventListener('pointerleave', () => { if (document.activeElement !== card) reset(); });
+    card.addEventListener('focus', start);
+    card.addEventListener('blur', reset);
+  });
+  reducedMotion.addEventListener('change', () => stopPreview());
+  hoverPreview.addEventListener('change', () => stopPreview());
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopPreview(); });
+  viewToggle?.addEventListener('click', () => stopPreview());
   const targetLeft = (index) => projectCards[index].offsetLeft - (projectCardRail.clientWidth - projectCards[index].offsetWidth) / 2;
   const nearestIndex = () => projectCards.reduce((nearest, _, index) =>
     Math.abs(targetLeft(index) - projectCardRail.scrollLeft) < Math.abs(targetLeft(nearest) - projectCardRail.scrollLeft) ? index : nearest, 0);
   const updateActive = () => {
     frame = null;
     if (!projectCardRail.clientWidth || !projectCards.length) return;
-    activeIndex = nearestIndex();
+    const nextIndex = nearestIndex();
+    if (nextIndex !== activeIndex) stopPreview();
+    activeIndex = nextIndex;
     projectCards.forEach((card, index) => card.classList.toggle('is-active', index === activeIndex));
   };
   const centerCard = (index, smooth = true) => {
@@ -89,6 +142,7 @@ if (projectCardRail) {
   });
   projectCardRail.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
+    stopPreview();
     clearTimeout(settleTimer);
     releasePull();
     suppressClick = false;
@@ -183,7 +237,7 @@ if (projectCardRail) {
         const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
         if (!Number.isFinite(ratio) || ratio <= 0) return;
         const rect = cover.getBoundingClientRect();
-        image.sizes = `${Math.ceil(Math.max(rect.width, rect.height * ratio))}px`;
+        cover.querySelectorAll('img').forEach(slide => { slide.sizes = `${Math.ceil(Math.max(rect.width, rect.height * ratio))}px`; });
       });
     };
     const endResize = (cancel = false) => {
@@ -206,7 +260,7 @@ if (projectCardRail) {
     resizeHandle.addEventListener('pointermove', (event) => {
       if (resizeDrag?.id !== event.pointerId) return;
       event.preventDefault();
-      setScale(resizeDrag.scale + (event.clientY - resizeDrag.y) / 340);
+      setScale(resizeDrag.scale + (event.clientY - resizeDrag.y) / 440);
     });
     resizeHandle.addEventListener('pointerup', (event) => {
       if (resizeDrag?.id === event.pointerId) endResize();

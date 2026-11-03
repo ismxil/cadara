@@ -6,22 +6,33 @@ import {renderHome} from '../scripts/home.mjs'
 const template = await readFile(new URL('../index.html', import.meta.url), 'utf8')
 const projects = [{_id: 'cadana', slug: {current: 'cadana'}, website: 'https://cadana.example/'}, {_id: 'foma', slug: {current: 'foma'}, comingSoon: true}]
 
-test('homepage project cards expose real copy and services with safe navigation and coming-soon states', () => {
+test('image-only project previews keep accessible navigation and defer distinct gallery frames', () => {
+  const photo = (id, width = 900, height = 600) => ({asset: {_ref: `image-${id}-${width}x${height}-jpg`}, alt: 'Project image'})
+  const cover = photo('cover')
   const $ = load(renderHome(template, {}, [
-    {title: '<Client>', summary: '<script>unsafe()</script>', services: ['Product Design', 'Visual Design'], slug: {current: 'client'}, featured: true},
-    {title: 'Upcoming', summary: 'A new project', slug: {current: 'upcoming'}, featured: true, comingSoon: true},
+    {title: '<Client>', slug: {current: 'client'}, featured: true, cardImage: cover, coverImage: cover, gallery: [
+      {_type: 'galleryImage', image: photo('portrait', 600, 1200)},
+      {_type: 'galleryText', heading: 'Context'},
+      ...['one', 'two', 'three'].map(id => ({_type: 'galleryImage', image: photo(id)})),
+    ]},
+    {title: 'Upcoming', slug: {current: 'upcoming'}, featured: true, comingSoon: true, cardImage: photo('upcoming')},
     {title: 'Hidden', slug: {current: 'hidden'}, featured: false},
   ]))
+  const card = $('.home-project-card').first()
   assert.equal($('.home-project-card').length, 2)
-  assert.equal($('.home-project-card').first().attr('href'), '/projects?project=client')
-  assert.equal($('.home-project-card h3').first().text(), '<Client>')
-  assert.equal($('.home-project-summary').first().text(), '<script>unsafe()</script>')
-  assert.equal($('.home-project-card script, .home-project-card Client').length, 0)
-  assert.deepEqual($('.home-project-services li').map((_, el) => $(el).text()).get(), ['Product Design', 'Visual Design'])
-  assert.equal($('.home-project-action').first().text(), 'View project')
+  assert.equal(card.attr('href'), '/projects?project=client')
+  assert.equal(card.attr('aria-label'), '<Client> — view project')
+  assert.equal(card.find('h3, p, ul, script, Client').length, 0)
+  assert.equal(card.find('img').length, 4)
+  assert.equal(card.find('img[src]').length, 1)
+  assert.equal(card.find('img[data-src][data-srcset]').length, 3)
+  assert.equal(card.find('img.is-visible').length, 1)
+  assert.equal(card.find('img[data-src*="portrait"]').length, 0)
+  assert.equal(card.find('img[src*="cover"]').length, 1)
+  assert.equal($('.home-project-eye').length, 1)
   assert.equal($('.home-project-card').last().is('article'), true)
   assert.equal($('.home-project-card').last().attr('href'), undefined)
-  assert.equal($('.home-project-action').last().text(), 'Coming soon')
+  assert.equal($('.home-project-card').last().attr('aria-label'), 'Upcoming — coming soon')
   assert.equal($('.home-projects-grid').attr('tabindex'), '0')
 })
 

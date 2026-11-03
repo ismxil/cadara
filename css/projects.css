@@ -196,16 +196,14 @@
 }
 .project-background summary::after {
   content: "";
-  width: 7px;
-  height: 7px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  margin-right: 3px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
+  background: currentColor;
+  mask: url("../asset/home/plus.svg") center / contain no-repeat;
 }
 .project-background[open] summary::after {
-  transform: rotate(225deg);
+  mask-image: url("../asset/home/close.svg");
 }
 .project-background[open] summary {
   margin-bottom: 20px;
