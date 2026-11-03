@@ -23,10 +23,17 @@ const companyUrl = value => {
 
 // Refresh the original service copy while preserving descriptions edited in the CMS.
 const serviceCopy = new Map([
-  ["Finding clarity, defining direction, and aligning your team around shared goals, opportunities, and a clear vision for the project.", "Insight-led positioning, product direction, and leading clarity workshop for financial teams."],
-  ["Turning ideas into thoughtful digital experiences, visual identities, and intuitive interfaces that balance user needs with business goals.", "Digital design, identity design, system design, interface craft, and launch-ready brand assets."],
-  ["Bringing designs to life through development, turning concepts into functional, scalable, and reliable digital products ready for the real world.", "Customer journeys, onboarding flows, service touchpoints, and product moments built around trust."],
+  ["Customer journeys, onboarding flows, service touchpoints, and product moments built around trust.", "Bringing ideas to life through reliable technology, with care for every detail."],
+  ["Digital design, identity design, system design, interface craft, and launch-ready brand assets.", "Turning ideas into thoughtful, intuitive experiences that work for people and businesses."],
+  ["Insight-led positioning, product direction, and leading clarity workshop for financial teams.", "Finding clarity, defining direction, and aligning people around ideas worth pursuing."],
+  ["Finding clarity, defining direction, and aligning your team around shared goals, opportunities, and a clear vision for the project.", "Finding clarity, defining direction, and aligning people around ideas worth pursuing."],
+  ["Turning ideas into thoughtful digital experiences, visual identities, and intuitive interfaces that balance user needs with business goals.", "Turning ideas into thoughtful, intuitive experiences that work for people and businesses."],
+  ["Bringing designs to life through development, turning concepts into functional, scalable, and reliable digital products ready for the real world.", "Bringing ideas to life through reliable technology, with care for every detail."],
 ])
+
+const legacyIntro = ["Cadara Studio is an independent design studio. We combine thoughtful design with business thinking to challenge conventions, explore unconventional ideas, and create experiences that make a difference.", "We're selectively impulsive, but intentional in our approach, turning bold ideas into meaningful solutions that work for people and the businesses behind them.", "Led by Ismail Ahmad, our team embeds within your team to create inspiration, find clarity in ambiguity, and walk alongside you as you build your bold vision."]
+const legacyTeamCopy = "We exist to create a sanctuary for creativity. We want to inspire ourselves and everyone who collaborates with us. Aside from that, we also exist to have fun. Everyone internally and externally should enjoy the process of design."
+const legacyStatement = "We help financial brands become easier to understand, easier to trust, and harder to ignore."
 
 // New fields are optional so existing published Studio documents render the design
 // immediately, without replacing legacy content or requiring a content migration.
@@ -35,7 +42,7 @@ export function renderHome(template, studio, projects) {
   const home = studio.home || {}
   const email = home.contactEmail || 'info@cadarastudio.com'
   if (home.headline) $('.home-headline').text(home.headline)
-  if (home.intro) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
+  if (home.intro && JSON.stringify(home.intro) !== JSON.stringify(legacyIntro)) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
   // Apply the founder link to CMS copy as well as the default introduction.
   $('.home-intro-copy p').each((_, paragraph) => {
     if ($(paragraph).find('.home-founder').length) return
@@ -43,8 +50,8 @@ export function renderHome(template, studio, projects) {
   })
   $('.home-contact a').attr('href', `mailto:${email}`).text(email)
   $('.home-socials a[href^="mailto:"]').attr('href', `mailto:${email}`)
-  if (home.teamCopy) $('.home-team-copy p').first().text(home.teamCopy)
-  if (studio.statement) $('.home-statement').text(studio.statement)
+  if (home.teamCopy && home.teamCopy !== legacyTeamCopy) $('.home-team-copy').html(home.teamCopy.split(/\n\s*\n/).map(p => `<p>${escape(p)}</p>`).join(''))
+  if (studio.statement && studio.statement !== legacyStatement) $('.home-statement').text(studio.statement)
   if (studio.services) $('.home-services-grid').html(studio.services.map(service => `<article class="home-service">
     ${['strategy', 'design', 'build'].includes(service.icon) ? `<div class="home-service-icon">${serviceGlyphs[service.icon]}</div>` : ''}
     <div><h3>${escape(service.title)}</h3><p>${escape(serviceCopy.get(service.description) || service.description)}</p></div></article>`).join(''))

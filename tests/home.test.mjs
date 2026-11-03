@@ -29,7 +29,7 @@ test('existing Studio content uses design defaults and only external company eng
   const $ = load(renderHome(template, {contactEmail: 'legacy@example.com', headline: 'Legacy headline'}, projects))
   assert.equal($('.home-headline').text(), 'Bold by instinct. Deliberate by design. Driven by curiosity.')
   assert.equal($('.home-contact a').attr('href'), 'mailto:info@cadarastudio.com')
-  assert.equal($('.home-team-copy p').length, 1)
+  assert.equal($('.home-team-copy p').length, 2)
   assert.doesNotMatch($('.home-team-copy').text(), /hiring|jobs@/)
   assert.deepEqual($('.engagement[href]').map((_, el) => $(el).attr('href')).get(), ['https://cadanapay.com/', 'https://trybrass.com/', 'https://foma.money/', 'https://lemfi.com/en-gb/cards'])
   assert.equal($('.engagement').length, 6)
@@ -68,4 +68,15 @@ test('homepage CMS overrides escape content, reject unsafe social URLs, and resp
   const unpublished = load(renderHome(template, studio, []))
   assert.equal(unpublished('.engagement[href]').length, 0)
   assert.equal(unpublished('.engagement').length, 2)
+})
+
+
+test('previously published homepage copy adopts the new defaults during a CMS build', () => {
+  const defaults = load(renderHome(template, {}, []))
+  const published = load(renderHome(template, {"home": {"intro": ["Cadara Studio is an independent design studio. We combine thoughtful design with business thinking to challenge conventions, explore unconventional ideas, and create experiences that make a difference.", "We're selectively impulsive, but intentional in our approach, turning bold ideas into meaningful solutions that work for people and the businesses behind them.", "Led by Ismail Ahmad, our team embeds within your team to create inspiration, find clarity in ambiguity, and walk alongside you as you build your bold vision."], "teamCopy": "We exist to create a sanctuary for creativity. We want to inspire ourselves and everyone who collaborates with us. Aside from that, we also exist to have fun. Everyone internally and externally should enjoy the process of design."}, "statement": "We help financial brands become easier to understand, easier to trust, and harder to ignore.", "services": [{"title": "Strategy", "description": "Insight-led positioning, product direction, and leading clarity workshop for financial teams.", "icon": "strategy"}, {"title": "Design", "description": "Digital design, identity design, system design, interface craft, and launch-ready brand assets.", "icon": "design"}, {"title": "Build", "description": "Customer journeys, onboarding flows, service touchpoints, and product moments built around trust.", "icon": "build"}]}, []))
+  for (const selector of ['.home-intro-copy', '.home-team-copy', '.home-statement']) {
+    assert.equal(published(selector).text(), defaults(selector).text())
+  }
+  assert.deepEqual(published('.home-service p').map((_, p) => published(p).text()).get(), defaults('.home-service p').map((_, p) => defaults(p).text()).get())
+  assert.equal(published('.home-founder').length, 1)
 })

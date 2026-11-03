@@ -1113,64 +1113,69 @@ button {
   .team-linkedin { right: 16px; bottom: 16px; width: 20px; height: 20px; }
 }
 
-/* Each card has a 4.8-second turn. Four cumulative drawing stages finish
-   before the next card starts; completed paths stay visible. */
-.home-service { --service-delay: 0s; }
-.home-service:nth-child(2) { --service-delay: 4.8s; }
-.home-service:nth-child(3) { --service-delay: 9.6s; }
+/* Match the reference: all three icons draw together, then hold before looping. */
 .home-service-icon .home-glyph path,
-.home-service-icon .home-glyph ellipse,
+.home-service-icon .home-glyph ellipse {
+  stroke-dasharray: 1;
+  animation-duration: 3.233s;
+  animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.home-services.is-animating .home-service-icon .home-glyph path,
+.home-services.is-animating .home-service-icon .home-glyph ellipse {
+  animation-play-state: running;
+}
 .footer-mark .home-glyph path {
   stroke-dasharray: 1;
   animation-duration: 14.4s;
   animation-timing-function: cubic-bezier(.65, 0, .35, 1);
   animation-iteration-count: infinite;
-  animation-delay: var(--service-delay, 0s);
 }
 .home-glyph [data-step="1"] > * { animation-name: service-step-1; }
 .home-glyph [data-step="2"] > * { animation-name: service-step-2; }
 .home-glyph [data-step="3"] > * { animation-name: service-step-3; }
 .home-glyph [data-step="4"] > * { animation-name: service-step-4; }
+.footer-mark .home-glyph [data-step="1"] > * { animation-name: footer-step-1; }
+.footer-mark .home-glyph [data-step="2"] > * { animation-name: footer-step-2; }
+.footer-mark .home-glyph [data-step="3"] > * { animation-name: footer-step-3; }
+.footer-mark .home-glyph [data-step="4"] > * { animation-name: footer-step-4; }
+@keyframes footer-step-1 { 0% { stroke-dashoffset: 1; } 5.2%, 100% { stroke-dashoffset: 0; } }
+@keyframes footer-step-2 { 0%, 5.2% { stroke-dashoffset: 1; } 10.4%, 100% { stroke-dashoffset: 0; } }
+@keyframes footer-step-3 { 0%, 10.4% { stroke-dashoffset: 1; } 15.6%, 100% { stroke-dashoffset: 0; } }
+@keyframes footer-step-4 { 0%, 15.6% { stroke-dashoffset: 1; } 20.8%, 100% { stroke-dashoffset: 0; } }
 @keyframes service-step-1 {
   0% { stroke-dashoffset: 1; }
-  5.2%, 100% { stroke-dashoffset: 0; }
+  18%, 100% { stroke-dashoffset: 0; }
 }
 @keyframes service-step-2 {
-  0%, 5.2% { stroke-dashoffset: 1; }
-  10.4%, 100% { stroke-dashoffset: 0; }
+  0%, 8% { stroke-dashoffset: 1; }
+  30%, 100% { stroke-dashoffset: 0; }
 }
 @keyframes service-step-3 {
-  0%, 10.4% { stroke-dashoffset: 1; }
-  15.6%, 100% { stroke-dashoffset: 0; }
+  0%, 25% { stroke-dashoffset: 1; }
+  48%, 100% { stroke-dashoffset: 0; }
 }
 @keyframes service-step-4 {
-  0%, 15.6% { stroke-dashoffset: 1; }
-  20.8%, 100% { stroke-dashoffset: 0; }
+  0%, 40% { stroke-dashoffset: 1; }
+  65%, 100% { stroke-dashoffset: 0; }
 }
-/* Three continuous streams travel upward through the filter opening.
-   The ellipse stays still; curves enter below and straight strands exit above. */
-.home-service-icon .home-glyph--strategy .strategy-flow {
-  animation-name: strategy-airflow;
-  animation-timing-function: linear;
-}
-@keyframes strategy-airflow {
-  0% { stroke-dasharray: .35 .65; stroke-dashoffset: 1; }
-  27.777% { stroke-dasharray: .35 .65; stroke-dashoffset: -2; }
-  27.778%, 100% { stroke-dasharray: 1 0; stroke-dashoffset: 0; }
-}
-/* Trace each original orbit in one pass, with an ease-out-back finish. */
-.home-service-icon .home-glyph--build path {
-  animation-timing-function: cubic-bezier(.34, 1.56, .64, 1);
+/* The ring draws first; strands then grow upward through its opening. */
+.home-glyph--strategy ellipse { animation-name: service-step-1; }
+.home-service-icon .home-glyph--strategy .strategy-flow { animation-name: strategy-draw; }
+@keyframes strategy-draw {
+  0%, 12% { stroke-dashoffset: 1; }
+  68%, 100% { stroke-dashoffset: 0; }
 }
 .home-glyph--build path:nth-of-type(1) { animation-name: build-orbit-first; }
 .home-glyph--build path:nth-of-type(2) { animation-name: build-orbit-second; }
 @keyframes build-orbit-first {
   0% { stroke-dashoffset: 1; }
-  10.4%, 100% { stroke-dashoffset: 0; }
+  38%, 100% { stroke-dashoffset: 0; }
 }
 @keyframes build-orbit-second {
-  0%, 10.4% { stroke-dashoffset: 1; }
-  20.8%, 100% { stroke-dashoffset: 0; }
+  0%, 32% { stroke-dashoffset: 1; }
+  72%, 100% { stroke-dashoffset: 0; }
 }
 .home-glyph--globe-extend path:last-of-type { vector-effect: non-scaling-stroke; transform-origin: 46px 46px; animation: service-longitude 6s linear infinite; }
 @keyframes service-longitude { from { transform: scaleX(3) rotateY(70deg); } to { transform: scaleX(3) rotateY(430deg); } }

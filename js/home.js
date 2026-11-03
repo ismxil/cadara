@@ -293,3 +293,12 @@ if (copyEmail && contactLink && navigator.clipboard?.writeText) {
     copyContactEmail();
   });
 }
+
+// Start the approach drawing when its icons enter the viewport.
+const approachIcons = document.querySelector('.home-services-grid');
+if (approachIcons) {
+  const observer = new IntersectionObserver(([entry]) => {
+    approachIcons.closest('.home-services').classList.toggle('is-animating', entry.isIntersecting);
+  });
+  observer.observe(approachIcons);
+}
