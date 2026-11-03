@@ -1218,7 +1218,8 @@ button {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :root { --click-cursor: url("../asset/home/click-cursor.svg") 32 32, pointer; }
+  :root { --click-cursor: url("../asset/home/click-cursor.svg") 16 16, pointer; }
+  .team-card { --click-cursor: url("../asset/home/click-cursor-dark.svg") 16 16, pointer; }
   :where(a[href], button:enabled, summary, [role="button"]):not([aria-disabled="true"]) {
     cursor: var(--click-cursor, pointer);
   }
