@@ -22,7 +22,7 @@ const projectGrid = document.querySelector('#home-projects');
 if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case-card')) {
   document.querySelector('.gallery-link').hidden = true;
   viewToggle.hidden = false;
-  function setWorkView(showGrid) {
+  function setWorkView(showGrid, animate = false) {
     document.querySelector('.home').classList.toggle('is-grid', showGrid);
     projectGrid.hidden = !showGrid;
     if (showGrid) projectGrid.querySelectorAll('img[src]').forEach(image => { image.loading = 'eager'; });
@@ -31,11 +31,27 @@ if (viewToggle && engagements && projectGrid && projectGrid.querySelector('.case
     viewToggle.setAttribute('aria-label', showGrid ? 'Show index' : 'Show work');
     viewToggle.querySelector('.home-view-label').textContent = showGrid ? 'Index' : 'Work';
     viewToggle.querySelector('img').src = showGrid ? '/asset/home/doc.svg' : '/asset/home/folder.svg';
+    const targets = [document.querySelector('.home-headline'),
+      ...(showGrid ? [projectGrid] : document.querySelectorAll('.home-intro-copy p, .home-contact, .home-engagements > h2, .engagement-list > li'))];
+    document.querySelectorAll('.home [data-view-reveal]').forEach(element => {
+      element.getAnimations().filter(animation => animation.id === 'home-view-reveal').forEach(animation => animation.cancel());
+      delete element.dataset.viewReveal;
+    });
+    if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      targets.forEach((element, index) => {
+        element.dataset.viewReveal = '';
+        element.animate([
+          {opacity: 0, transform: 'translateY(8px)'},
+          {opacity: 1, transform: 'translateY(0)'}
+        ], {id: 'home-view-reveal', duration: 520, delay: Math.min(index * 35, 210),
+          easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'backwards'});
+      });
+    }
   }
   setWorkView(new URL(location.href).searchParams.get('view') === 'work');
   viewToggle.addEventListener('click', () => {
     const showGrid = projectGrid.hidden;
-    setWorkView(showGrid);
+    setWorkView(showGrid, true);
     const url = new URL(location.href);
     if (showGrid) url.searchParams.set('view', 'work');
     else url.searchParams.delete('view');

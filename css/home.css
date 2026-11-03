@@ -385,9 +385,6 @@ button {
 @media (hover: hover) {
   .home-team-panels > div:hover { background: #00dd28; color: #000; }
 }
-@media (max-width: 720px), (hover: none) {
-  .home-team-panels > div { background: #00dd28; color: #000; }
-}
 /* Two real faces keep the values readable and keyboard-operable. */
 .team-card { perspective: 1000px; }
 .team-card-inner { display: grid; min-height: 100%; transform-style: preserve-3d; transition: transform 550ms cubic-bezier(.2, .7, .2, 1); }
@@ -410,7 +407,8 @@ button {
 .team-card-return:focus-visible { outline: 2px solid #000; outline-offset: -6px; }
 .team-card.is-flipped { background: var(--home-accent); color: #000; }
 .team-card .team-linkedin { z-index: 2; width: 32px; height: 32px; right: 6px; bottom: 10px; mask-size: 20px 20px; }
-.team-card-front { padding-right: 38px; }
+/* Reserve icon space on the labels, keeping the portrait area symmetric. */
+.team-card-front > span:not(.team-avatar) { padding-right: 26px; }
 @media (max-width: 480px) and (min-width: 381px) {
   .team-card-back { padding: 12px 9px 16px; }
   .team-card-back h3 { font-size: 17px; margin-top: 24px; }
@@ -1106,12 +1104,6 @@ button {
   bottom: calc(100% + 8px);
 }
 
-@media (max-width: 380px) {
-  .home-team-panels { grid-template-columns: 1fr; gap: 12px; }
-  .team-card-link { min-height: 230px; padding: 12px 16px 16px; font-size: 16px; }
-  .team-avatar { height: 170px; }
-  .team-linkedin { right: 16px; bottom: 16px; width: 20px; height: 20px; }
-}
 
 @media (max-width: 360px) {
   .home-statement { font-size: 26px; }
@@ -1301,3 +1293,38 @@ html.home-entrance-complete :is(
   .home-team-copy, .home-team > h2, .home-team-panels > .team-card,
   .home-footer-row, .home-wordmark, .projects-header, .project-rail, .project-dock
 ) { animation: none; }
+
+/* Room to read each portrait, with neighboring cards inviting a swipe. */
+@media (max-width: 720px) {
+  .home-team-panels {
+    display: flex;
+    width: 100vw;
+    margin-left: calc((100% - 100vw) / 2);
+    gap: 12px;
+    padding: 0 calc((100vw - min(72vw, 300px)) / 2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .home-team-panels::-webkit-scrollbar { display: none; }
+  .home-team-panels > .team-card {
+    flex: 0 0 min(72vw, 300px);
+    border-radius: 24px;
+    scroll-snap-align: center;
+  }
+  .home-team-panels .team-card-link {
+    min-height: 310px;
+    padding: 16px 16px 20px;
+    font-size: 20px;
+    line-height: 26px;
+  }
+  .home-team-panels .team-avatar { height: 230px; }
+  .home-team-panels .team-card-front > span:not(.team-avatar) { padding-right: 32px; }
+  .home-team-panels .home-team-role { font-size: 14px; }
+  .home-team-panels .team-linkedin { right: 12px; bottom: 18px; }
+  .home-team-panels .team-card-back { min-height: 310px; padding: 24px; }
+  .home-team-panels .team-card-back h3 { font-size: 22px; margin-top: 36px; }
+  .home-team-panels .team-card-back p { font-size: 15px; }
+  .home-projects .is-wheel-ready .case-card { border-radius: 20px; }
+}

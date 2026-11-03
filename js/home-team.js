@@ -24,3 +24,16 @@ document.querySelectorAll('.team-card').forEach(card => {
     }
   });
 });
+
+// Start with Ahmad centered on mobile, and retain native swipe/scroll behavior.
+const teamRail = document.querySelector('.home-team-panels');
+if (teamRail) {
+  const mobileTeam = matchMedia('(max-width: 720px)');
+  const centerTeam = () => {
+    if (!mobileTeam.matches) { teamRail.scrollLeft = 0; return; }
+    const card = teamRail.children[1];
+    if (card) teamRail.scrollLeft = card.offsetLeft - teamRail.offsetLeft - (teamRail.clientWidth - card.offsetWidth) / 2;
+  };
+  centerTeam();
+  mobileTeam.addEventListener('change', centerTeam);
+}

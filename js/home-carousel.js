@@ -111,8 +111,8 @@
   };
   const geometry = () => {
     const width = rail.clientWidth;
-    const gap = 20;
-    const base = width <= 720 ? width - 42 : Math.min(660, Math.max(300, width * .32));
+    const gap = width <= 720 ? 12 : 20;
+    const base = width <= 720 ? width - 80 : Math.min(660, Math.max(300, width * .32));
     const center = base * scale;
     const sideBase = width <= 720 ? base : Math.max(80, (width - base - (width >= 1000 ? 6 : 4) * gap) / (width >= 1000 ? 4 : 2));
     const side = sideBase * scale;
@@ -262,6 +262,9 @@
     });
   });
   const endDrag = event => {
+    // Touch starts with implicit capture on the image/link. Transferring it to
+    // the rail emits a bubbling lost-capture event from that original child.
+    if (event.type === 'lostpointercapture' && event.target !== rail) return;
     if (drag?.id !== event.pointerId) return;
     const {moved, x, baseOffset = 0} = drag;
     if (dragFrame) { cancelAnimationFrame(dragFrame); dragFrame = 0; }
@@ -273,8 +276,14 @@
       const rect = card.getBoundingClientRect();
       return rect.left + rect.width / 2 - railCenter - paintedDragOffset;
     });
-    const target = moved && event.type === 'pointerup' ? cards.reduce((nearest, _, index) =>
+    let target = moved && event.type === 'pointerup' ? cards.reduce((nearest, _, index) =>
       Math.abs(offsets[index] + dx) < Math.abs(offsets[nearest] + dx) ? index : nearest, position) : position;
+    // Touch gestures should not require dragging more than half a card.
+    // Keep nearest-card snapping for long drags and desktop precision.
+    if (moved && event.type === 'pointerup' && event.pointerType === 'touch'
+      && target === position && Math.abs(event.clientX - x) >= 48) {
+      target = Math.max(0, Math.min(cards.length - 1, position - Math.sign(event.clientX - x)));
+    }
     drag = null;
     rail.classList.remove('is-dragging');
     dragOffset = paintedDragOffset = 0;
