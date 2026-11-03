@@ -18,8 +18,12 @@
       cards.push(card);
     });
   }
-  rail.replaceChildren(...cards);
+  const track = document.createElement('div');
+  track.className = 'home-wheel-track';
+  track.replaceChildren(...cards);
+  rail.replaceChildren(track);
   let position = (count > 1 ? count : 0) + Math.min(2, count - 1);
+  let dragFrame = 0, dragOffset = 0, paintedDragOffset = 0;
   let scale = 1, layout, drag, settling = false, settleTimer, suppressClick = false;
   let cursorCard, previewCard, previewTimer, previewGeneration = 0, lastPointer;
   const cursor = document.createElement('span');
@@ -225,7 +229,7 @@
     }
   }, {passive: false});
   rail.addEventListener('pointerdown', event => {
-    if (event.button !== 0 || count < 2 || settling) return;
+    if (event.button !== 0 || count < 2) return;
     suppressClick = false;
     drag = {id: event.pointerId, x: event.clientX, y: event.clientY, moved: false};
   });
@@ -236,24 +240,41 @@
       if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) { drag = null; return; }
       if (Math.abs(dx) < 6) return;
       drag.moved = true;
+      drag.baseOffset = track.getBoundingClientRect().left - rail.getBoundingClientRect().left;
+      paintedDragOffset = drag.baseOffset;
+      track.style.transform = `translate3d(${drag.baseOffset}px, 0, 0)`;
+      clearTimeout(settleTimer);
+      settling = false;
       stopPreview(); hideCursor();
       rail.classList.add('is-dragging');
       rail.setPointerCapture(event.pointerId);
     }
     event.preventDefault();
-    rail.style.setProperty('--wheel-drag', `${Math.max(-layout.width / 2, Math.min(layout.width / 2, dx))}px`);
+    dragOffset = Math.max(-layout.width / 2, Math.min(layout.width / 2, (drag.baseOffset || 0) + dx));
+    if (!dragFrame) dragFrame = requestAnimationFrame(() => {
+      dragFrame = 0;
+      paintedDragOffset = dragOffset;
+      track.style.transform = `translate3d(${dragOffset}px, 0, 0)`;
+    });
   });
   const endDrag = event => {
     if (drag?.id !== event.pointerId) return;
-    const {moved, x} = drag;
-    const dx = Math.max(-layout.width / 2, Math.min(layout.width / 2, event.clientX - x));
+    const {moved, x, baseOffset = 0} = drag;
+    if (dragFrame) { cancelAnimationFrame(dragFrame); dragFrame = 0; }
+    const dx = Math.max(-layout.width / 2, Math.min(layout.width / 2, baseOffset + event.clientX - x));
     // Select the card actually nearest the center, not the next card merely
     // because a drag passed a fixed threshold. Cancellation keeps the selection.
+    const railCenter = rail.getBoundingClientRect().left + rail.clientWidth / 2;
+    const offsets = cards.map(card => {
+      const rect = card.getBoundingClientRect();
+      return rect.left + rect.width / 2 - railCenter - paintedDragOffset;
+    });
     const target = moved && event.type === 'pointerup' ? cards.reduce((nearest, _, index) =>
-      Math.abs(cardOffset(index) + dx) < Math.abs(cardOffset(nearest) + dx) ? index : nearest, position) : position;
+      Math.abs(offsets[index] + dx) < Math.abs(offsets[nearest] + dx) ? index : nearest, position) : position;
     drag = null;
     rail.classList.remove('is-dragging');
-    rail.style.setProperty('--wheel-drag', '0px');
+    dragOffset = paintedDragOffset = 0;
+    track.style.transform = 'translate3d(0px, 0, 0)';
     if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
     if (moved) {
       // Keep this guard until the synthetic click is consumed or another
@@ -263,7 +284,11 @@
       clearTimeout(wheelTimer);
       wheelTimer = setTimeout(() => { wheelDelta = 0; wheelLocked = false; }, 180);
       if (target !== position) select(target);
-      else syncPointer();
+      else {
+        settling = !reducedMotion.matches;
+        if (settling) settleTimer = setTimeout(finish, 420);
+        else finish();
+      }
     }
 
   };

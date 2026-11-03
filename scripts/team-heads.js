@@ -14,7 +14,7 @@ function animate() {
   frame = 0;
   let moving = false;
   for (const view of views) {
-    if (!view.visible || !view.head || document.hidden) continue;
+    if (!view.visible || !view.head || document.hidden || view.card.classList.contains('is-flipped')) continue;
     const rect = view.card.getBoundingClientRect();
     const active = pointer?.card === view.card && finePointer.matches && !motion.matches
       && pointer.x >= rect.left && pointer.x <= rect.right
@@ -123,7 +123,7 @@ if (cards.length) {
   const resetPointer = () => { pointer = null; requestRender(); };
   cards.forEach(card => {
     card.addEventListener('pointermove', event => {
-      if (!finePointer.matches || event.pointerType === 'touch') return;
+      if (!finePointer.matches || event.pointerType === 'touch' || card.classList.contains('is-flipped')) return;
       pointer = { card, x: event.clientX, y: event.clientY };
       requestRender();
     }, { passive: true });
@@ -131,6 +131,7 @@ if (cards.length) {
       if (pointer?.card === card) resetPointer();
     });
     card.addEventListener('pointercancel', resetPointer);
+    card.addEventListener('teamflip', resetPointer);
   });
   window.addEventListener('blur', resetPointer);
   window.addEventListener('scroll', resetPointer, { passive: true, capture: true });

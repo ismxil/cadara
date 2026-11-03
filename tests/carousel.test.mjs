@@ -35,6 +35,14 @@ function harness() {
     removeAttribute(name) { this.attrs.delete(name) }
     matches(selector) { return selector === 'a' && this.slug && this.slug !== 'sterling' }
     querySelectorAll() { return [] }
+    replaceChildren(...children) { this.children = children }
+    getBoundingClientRect() {
+      if (!this.slug) return {left: 0, width: 1440};
+      const offset = Number.parseFloat(this.styles.get('--wheel-x') || 0)
+      const width = Number.parseFloat(this.styles.get('--wheel-card-width') || 0)
+      const trackOffset = Number.parseFloat(rail.track?.style.transform?.match(/translate3d\(([-\d.]+)/)?.[1] || 0)
+      return {left: 720 + offset - width / 2 + trackOffset, width}
+    }
     cloneNode() { return new Element(this.slug) }
     closest() { return this.slug ? this : section }
     focus() { document.activeElement = this; this.emit('focus') }
@@ -46,7 +54,7 @@ function harness() {
   const body = new Element(), rail = new Element(), section = new Element()
   rail.clientWidth = rail.offsetWidth = 1440
   rail.querySelectorAll = () => originals
-  rail.replaceChildren = (...cards) => { rail.cards = cards }
+  rail.replaceChildren = track => { rail.track = track; rail.cards = track.children }
   rail.contains = card => rail.cards.includes(card)
   section.querySelector = () => null
   section.appendChild = () => {}
@@ -66,7 +74,7 @@ function harness() {
     now = target
   }
   class Observer {observe() {} unobserve() {}}
-  runInNewContext(source, {document, window: {addEventListener() {}}, matchMedia: query => ({matches: !query.includes('reduced-motion'), addEventListener() {}}), ResizeObserver: Observer, IntersectionObserver: Observer, setTimeout, clearTimeout: id => timers.delete(id)})
+  runInNewContext(source, {document, window: {addEventListener() {}}, matchMedia: query => ({matches: !query.includes('reduced-motion'), addEventListener() {}}), ResizeObserver: Observer, IntersectionObserver: Observer, setTimeout, clearTimeout: id => timers.delete(id), requestAnimationFrame: fn => setTimeout(fn, 16), cancelAnimationFrame: id => timers.delete(id)})
   return {rail, tick, document, cursor: body.children[0], active: () => rail.cards.find(card => card.classList.contains('is-active')), side: offset => rail.cards[rail.cards.findIndex(card => card.classList.contains('is-active')) + offset]}
 }
 
@@ -135,4 +143,30 @@ test('a project dragged in from the second side slot becomes the centered projec
   h.tick(1500)
   assert.equal(h.active(), draggedProject)
   assert.equal(h.active().slug, 'mezovest')
+})
+
+test('a new drag responds while the previous selection is still centering', () => {
+  const h = harness()
+  h.rail.emit('click', {target: h.side(1)})
+  h.tick(80)
+  h.rail.emit('pointerdown', {clientX: 720})
+  h.rail.emit('pointermove', {clientX: 1060})
+  h.tick(16)
+  assert.match(h.rail.track.style.transform, /340px/)
+  h.rail.emit('pointerup', {clientX: 1060})
+  h.tick(500)
+  assert.equal(h.active().slug, 'cadana')
+})
+
+test('high-frequency drag input is painted only on animation frames', () => {
+  const h = harness()
+  h.rail.emit('pointerdown', {clientX: 720})
+  for (let x = 710; x >= 620; x -= 10) h.rail.emit('pointermove', {clientX: x})
+  assert.match(h.rail.track.style.transform, /translate3d\(0px/)
+  h.tick(16)
+  assert.match(h.rail.track.style.transform, /-100px/)
+  for (let x = 610; x >= 520; x -= 10) h.rail.emit('pointermove', {clientX: x})
+  assert.match(h.rail.track.style.transform, /-100px/)
+  h.tick(16)
+  assert.match(h.rail.track.style.transform, /-200px/)
 })
