@@ -103,3 +103,13 @@ test('the project wheel includes every featured project, including Mezovest afte
   assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/projects?project=mezovest')
   assert.equal($('.home-project-card[data-project-slug="sterling"]').is('article'), true)
 })
+
+test('headline entrance preserves CMS text and natural word boundaries without interpreting markup', () => {
+  const headline = 'Thoughtful <ideas> & careful design.'
+  const $ = load(renderHome(template, {home: {headline}}, []))
+  assert.equal($('.home-headline').text(), headline)
+  assert.equal($('.home-headline ideas').length, 0)
+  assert.deepEqual($('.home-headline-word').map((_, el) => $(el).text()).get(), ['Thoughtful', '<ideas>', '&', 'careful', 'design.'])
+  assert.equal($('.home-headline-word').first().attr('style'), '--word-order: 0')
+  assert.equal($('.home-headline-word').last().attr('style'), '--word-order: 4')
+})

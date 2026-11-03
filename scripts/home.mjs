@@ -62,6 +62,11 @@ export function renderHome(template, studio, projects) {
   const home = studio.home || {}
   const email = home.contactEmail || 'info@cadarastudio.com'
   if (home.headline) $('.home-headline').text(home.headline)
+  // Keep the actual words and natural wrapping, including CMS-edited headlines.
+  let wordOrder = 0
+  $('.home-headline').html($('.home-headline').text().split(/(\s+)/).map(word =>
+    word.trim() ? `<span class="home-headline-word" style="--word-order: ${Math.min(wordOrder++, 12)}">${escape(word)}</span>` : word
+  ).join(''))
   if (home.intro && JSON.stringify(home.intro) !== JSON.stringify(legacyIntro)) $('.home-intro-copy').html(home.intro.map(p => `<p>${escape(p)}</p>`).join(''))
   // Apply the founder link to CMS copy as well as the default introduction.
   $('.home-intro-copy p').each((_, paragraph) => {

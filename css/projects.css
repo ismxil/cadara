@@ -346,3 +346,10 @@
 }
 .project-dock-link:is(:hover, :focus-visible) { outline: 2px solid var(--home-accent); outline-offset: 3px; }
 .project-dock-label { background: var(--home-accent); color: #000; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .projects-header { animation: home-enter 480ms cubic-bezier(.22, 1, .36, 1) backwards; }
+  .project-rail { animation: home-fade-in 620ms ease 140ms backwards; }
+  .project-dock { animation: home-fade-in 520ms ease 260ms backwards; }
+  .projects-header:focus-within, .project-rail:focus-within, .project-dock:focus-within { animation: none; }
+}
