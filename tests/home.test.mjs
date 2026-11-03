@@ -91,3 +91,12 @@ test('previously published homepage copy adopts the new defaults during a CMS bu
   assert.deepEqual(published('.home-service p').map((_, p) => published(p).text()).get(), defaults('.home-service p').map((_, p) => defaults(p).text()).get())
   assert.equal(published('.home-founder').length, 1)
 })
+
+
+test('the project wheel includes every featured project, including Mezovest after the fourth slot', () => {
+  const titles = ['Lemfi', 'FoMA', 'Cadana', 'Gomoney', 'Mezovest', 'Sterling']
+  const $ = load(renderHome(template, {}, titles.map(title => ({title, slug: {current: title.toLowerCase()}, featured: true, comingSoon: title === 'Sterling'}))))
+  assert.equal($('.home-project-card').length, 6)
+  assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/projects?project=mezovest')
+  assert.equal($('.home-project-card[data-project-slug="sterling"]').is('article'), true)
+})

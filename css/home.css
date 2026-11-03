@@ -686,9 +686,6 @@ button {
   transition: opacity 180ms ease;
   cursor: grabbing;
 }
-.home-projects-grid.is-carousel-ready .home-project-card:not(.is-active) {
-  opacity: 0.3;
-}
 .home-project-resize {
   position: absolute;
   z-index: 2;
@@ -812,7 +809,7 @@ button {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 240ms ease;
+  transition: opacity 90ms ease;
 }
 .home-projects .case-image img.is-visible { opacity: 1; }
 .home-project-eye {
@@ -829,7 +826,6 @@ button {
   place-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms ease;
 }
 .home-project-eye::after {
   content: "";
@@ -838,15 +834,16 @@ button {
   background: #000;
   mask: url("../asset/home/eye.svg") center / contain no-repeat;
 }
-.home-projects .case-card.is-previewing {
-  opacity: 1;
-  transform: translateX(var(--card-pull, 0px)) scale(1.025);
-}
-.home-projects-grid.has-preview .case-card:not(.is-previewing) { opacity: .3; }
-.home-projects-grid.is-carousel-ready .home-project-card.is-previewing { opacity: 1; }
 .home-projects a:hover,
 .home-projects a:focus-visible { text-decoration: none; }
-.home-project-card:is(:hover, :focus-visible) .home-project-eye { opacity: 1; }
+.home-project-card:focus-visible:not(.has-eye-cursor) .home-project-eye { opacity: 1; }
+.home-project-cursor {
+  position: fixed;
+  z-index: 1000;
+  opacity: 1;
+}
+.has-eye-cursor,
+.has-eye-cursor * { cursor: none; }
 .home-main > :not(.home-projects) { transition: filter 250ms ease; }
 .home:has(.is-previewing) .home-main > :not(.home-projects) { filter: blur(4px); }
 @media (max-width: 720px) {
@@ -865,9 +862,50 @@ button {
   .home-projects .case-image img,
   .home-project-eye,
   .home-main > :not(.home-projects) { transition: none; }
-  .home-projects .case-card.is-previewing { transform: none; }
   .home:has(.is-previewing) .home-main > :not(.home-projects) { filter: none; }
 }
+/* The enhanced wheel keeps five cards in view, with one expanded center.
+   Without JavaScript the original horizontal image list remains usable. */
+.home-projects-grid.is-wheel-ready {
+  display: block;
+  height: calc(var(--wheel-height, 440px) + 2 * var(--card-row-gap));
+  padding: 0;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+}
+.home-projects .is-wheel-ready .case-card {
+  position: absolute;
+  top: var(--card-row-gap);
+  left: 50%;
+  width: var(--wheel-card-width);
+  height: var(--wheel-height);
+  aspect-ratio: auto;
+  opacity: .3;
+  transform: translate3d(calc(-50% + var(--wheel-x) + var(--wheel-drag, 0px)), 0, 0);
+  transition: width 400ms ease, transform 400ms ease, opacity 250ms ease;
+  cursor: pointer;
+}
+.home-projects .is-wheel-ready .case-card.is-active { opacity: 1; z-index: 2; }
+.home-projects .is-wheel-ready .case-card.is-offscreen { pointer-events: none; }
+.home-projects .is-wheel-ready .home-project-card-content { width: 100%; height: 100%; transform: none; }
+.home-projects .is-wheel-ready.is-rebasing .case-card,
+.home-projects .is-wheel-ready.is-dragging .case-card { transition: none; }
+.home-projects .is-wheel-ready.is-dragging .case-card { cursor: grabbing; }
+.home-projects .is-wheel-ready .has-eye-cursor,
+.home-projects .is-wheel-ready .has-eye-cursor * { cursor: none; }
+.home-wheel-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-projects .is-wheel-ready .case-card { transition: none; }
+}
+
 .footer-mark .home-glyph {
   width: 101.654px;
   height: 101.654px;

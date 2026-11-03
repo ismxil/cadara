@@ -30,7 +30,7 @@ const projectCards = projects => projects.map((project, index) => {
     // Only the cover loads initially; preview frames load on deliberate interaction.
     return slide === 0 ? markup : markup.replace(/ src=/, ' data-src=').replace(/ srcset=/, ' data-srcset=')
   }).join('')
-  return `<${tag} class="case-card home-project-card" aria-label="${escape(label)}" ${project.comingSoon ? '' : `href="/projects?project=${escape(slug)}"`}>
+  return `<${tag} class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(label)}" ${project.comingSoon ? '' : `href="/projects?project=${escape(slug)}"`}>
     <div class="home-project-card-content"><figure class="case-image" aria-hidden="true">${slides}</figure></div>
     ${project.comingSoon ? '' : '<span class="home-project-eye" aria-hidden="true"></span>'}
   </${tag}>`
@@ -91,7 +91,7 @@ export function renderHome(template, studio, projects) {
   const rows = $('.engagement-list > li').toArray()
   rows.sort((a, b) => Number(!$(a).find('.engagement[href]').length) - Number(!$(b).find('.engagement[href]').length))
   $('.engagement-list').append(rows)
-  $('.home-projects-grid').html(projectCards(projects.filter(project => project.featured).slice(0, 4)))
+  $('.home-projects-grid').html(projectCards(projects.filter(project => project.featured)))
   $('.home-projects-grid').attr({'role': 'region', 'aria-label': 'Selected projects', 'tabindex': '0'})
   if (home.socials) {
     $('.home-socials').html(`<a href="mailto:${escape(email)}">Email<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>` + home.socials.filter(social => safeUrl(social.url)).map(social => `<a href="${escape(safeUrl(social.url))}" target="_blank" rel="noopener">${escape(social.title)}<span class="home-external-icon"><img src="/asset/home/external.svg" alt="" aria-hidden="true"></span></a>`).join(''))
