@@ -4,7 +4,7 @@ document.querySelectorAll('.team-card').forEach(card => {
   const returnButton = card.querySelector('.team-card-return');
   const linkedin = card.querySelector('.team-linkedin');
   if (!front || !back || !returnButton) return;
-  const flip = showValue => {
+  const flip = (showValue, moveFocus = true) => {
     card.classList.toggle('is-flipped', showValue);
     front.setAttribute('aria-expanded', String(showValue));
     front.setAttribute('aria-hidden', String(showValue));
@@ -12,11 +12,11 @@ document.querySelectorAll('.team-card').forEach(card => {
     front.inert = showValue;
     back.inert = !showValue;
     if (linkedin) linkedin.hidden = showValue;
-    (showValue ? returnButton : front).focus({preventScroll: true});
+    if (moveFocus) (showValue ? returnButton : front).focus({preventScroll: true});
     card.dispatchEvent(new Event('teamflip'));
   };
-  front.addEventListener('click', () => flip(true));
-  returnButton.addEventListener('click', () => flip(false));
+  front.addEventListener('click', event => flip(true, event.detail === 0));
+  returnButton.addEventListener('click', event => flip(false, event.detail === 0));
   card.addEventListener('keydown', event => {
     if (event.key === 'Escape' && card.classList.contains('is-flipped')) {
       event.preventDefault();

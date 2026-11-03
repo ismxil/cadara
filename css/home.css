@@ -387,9 +387,9 @@ button {
 }
 /* Two real faces keep the values readable and keyboard-operable. */
 .team-card { perspective: 1000px; }
-.team-card-inner { display: grid; min-height: 100%; transform-style: preserve-3d; transition: transform 550ms cubic-bezier(.2, .7, .2, 1); }
+.team-card-inner { border-radius: inherit; display: grid; min-height: 100%; transform-style: preserve-3d; transition: transform 550ms cubic-bezier(.2, .7, .2, 1); }
 .team-card.is-flipped .team-card-inner { transform: rotateY(180deg); }
-.team-card-face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.team-card-face { border-radius: inherit; grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .team-card-back {
   position: relative;
   display: flex;
@@ -401,7 +401,7 @@ button {
   transform: rotateY(180deg);
 }
 .team-card-back > img { display: block; width: 48px; height: 48px; margin-bottom: auto; }
-.team-card-back h3 { margin: 48px 0 16px; font: 400 20px/1.2 "Beirut Text", Georgia, serif; text-wrap: balance; }
+.team-card-back h3 { margin: 48px 0 16px; font: 400 20px/1.2 "Beirut Text", Georgia, serif; text-wrap: initial; }
 .team-card-back p { margin: 0; font: 400 15px/1.4 "Suisse Intl", Arial, sans-serif; }
 .team-card-return { position: absolute; inset: 0; width: 100%; border: 0; border-radius: inherit; background: transparent; }
 .team-card-return:focus-visible { outline: 2px solid #000; outline-offset: -6px; }
