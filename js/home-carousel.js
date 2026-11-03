@@ -42,7 +42,10 @@
   };
   const moveCursor = (event, card) => {
     lastPointer = {clientX: event.clientX, clientY: event.clientY, pointerType: event.pointerType};
-    if (!finePointer.matches || event.pointerType === 'touch' || drag?.moved || !card.matches('a')) return;
+    if (!finePointer.matches || event.pointerType === 'touch' || drag?.moved || settling || card !== currentCard() || !card.matches('a')) {
+      hideCursor();
+      return;
+    }
     if (cursorCard !== card) {
       hideCursor();
       cursorCard = card;
@@ -110,6 +113,10 @@
     const side = width <= 720 ? center : Math.max(80, (width - center - (width >= 1000 ? 6 : 4) * gap) / (width >= 1000 ? 4 : 2));
     return {width, gap, base, center, side, height: center * 2 / 3};
   };
+  const cardOffset = (index, origin = position) => {
+    const distance = index - origin;
+    return distance === 0 ? 0 : Math.sign(distance) * (layout.center / 2 + layout.gap + layout.side / 2 + (Math.abs(distance) - 1) * (layout.side + layout.gap));
+  };
   const render = () => {
     if (!rail.clientWidth) return;
     layout = geometry();
@@ -118,7 +125,7 @@
     cards.forEach((card, index) => {
       const distance = index - position;
       const centered = distance === 0;
-      const x = centered ? 0 : Math.sign(distance) * (layout.center / 2 + layout.gap + layout.side / 2 + (Math.abs(distance) - 1) * (layout.side + layout.gap));
+      const x = cardOffset(index);
       const visible = Math.abs(x) - (centered ? layout.center : layout.side) / 2 < layout.width / 2;
       card.style.setProperty('--wheel-x', `${x}px`);
       card.style.setProperty('--wheel-card-width', `${centered ? layout.center : layout.side}px`);
@@ -182,13 +189,19 @@
   rail.addEventListener('click', event => {
     const card = event.target.closest('.home-project-card');
     if (!card || !rail.contains(card)) return;
-    if (suppressClick || settling) { event.preventDefault(); event.stopPropagation(); return; }
+    if (suppressClick || settling) {
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClick = false;
+      return;
+    }
     if (card !== currentCard()) {
       event.preventDefault();
       select(cards.indexOf(card), true);
     }
   }, true);
   rail.addEventListener('keydown', event => {
+    if (event.key === 'Enter') suppressClick = false;
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
     if (settling) return;
@@ -196,15 +209,20 @@
     else if (event.key === 'End') select((count > 1 ? count : 0) + count - 1, true);
     else step(event.key === 'ArrowRight' ? 1 : -1, true);
   });
-  let wheelDelta = 0, wheelTimer;
+  let wheelDelta = 0, wheelTimer, wheelLocked = false;
   rail.addEventListener('wheel', event => {
     if (event.ctrlKey || count < 2 || (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY))) return;
     event.preventDefault();
-    if (settling) return;
-    wheelDelta += (event.shiftKey ? event.deltaY || event.deltaX : event.deltaX) * (event.deltaMode === 1 ? 20 : 1);
+    // Treat the full trackpad gesture, including its momentum tail, as one move.
     clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { wheelDelta = 0; }, 160);
-    if (Math.abs(wheelDelta) >= 40) { step(Math.sign(wheelDelta)); wheelDelta = 0; }
+    wheelTimer = setTimeout(() => { wheelDelta = 0; wheelLocked = false; }, 180);
+    if (settling || drag || wheelLocked) { wheelLocked = true; return; }
+    wheelDelta += (event.shiftKey ? event.deltaY || event.deltaX : event.deltaX) * (event.deltaMode === 1 ? 20 : 1);
+    if (Math.abs(wheelDelta) >= 40) {
+      step(Math.sign(wheelDelta));
+      wheelDelta = 0;
+      wheelLocked = true;
+    }
   }, {passive: false});
   rail.addEventListener('pointerdown', event => {
     if (event.button !== 0 || count < 2 || settling) return;
@@ -228,16 +246,26 @@
   const endDrag = event => {
     if (drag?.id !== event.pointerId) return;
     const {moved, x} = drag;
-    const dx = event.clientX - x;
+    const dx = Math.max(-layout.width / 2, Math.min(layout.width / 2, event.clientX - x));
+    // Select the card actually nearest the center, not the next card merely
+    // because a drag passed a fixed threshold. Cancellation keeps the selection.
+    const target = moved && event.type === 'pointerup' ? cards.reduce((nearest, _, index) =>
+      Math.abs(cardOffset(index) + dx) < Math.abs(cardOffset(nearest) + dx) ? index : nearest, position) : position;
     drag = null;
     rail.classList.remove('is-dragging');
     rail.style.setProperty('--wheel-drag', '0px');
     if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
     if (moved) {
+      // Keep this guard until the synthetic click is consumed or another
+      // intentional pointerdown occurs; touch clicks can arrive after a delay.
       suppressClick = true;
-      setTimeout(() => { suppressClick = false; }, 0);
-      if (event.type !== 'pointercancel' && Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
+      wheelLocked = true;
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => { wheelDelta = 0; wheelLocked = false; }, 180);
+      if (target !== position) select(target);
+      else syncPointer();
     }
+
   };
   rail.addEventListener('pointerup', endDrag);
   rail.addEventListener('pointercancel', endDrag);

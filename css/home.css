@@ -836,7 +836,7 @@ button {
 }
 .home-projects a:hover,
 .home-projects a:focus-visible { text-decoration: none; }
-.home-project-card:focus-visible:not(.has-eye-cursor) .home-project-eye { opacity: 1; }
+.home-project-card.is-active:focus-visible:not(.has-eye-cursor) .home-project-eye { opacity: 1; }
 .home-project-cursor {
   position: fixed;
   z-index: 1000;
