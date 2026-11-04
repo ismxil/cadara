@@ -47,7 +47,7 @@
 .case-details dt { color: var(--home-heading); margin-bottom: 4px; }
 .case-details dd { margin: 0; }
 .case-visit { display: inline-block; font-size: 14px; }
-.case-visit:is(:hover, :focus-visible) { color: var(--home-accent); }
+.case-visit:is(:hover, :focus-visible) { color: var(--home-accent); text-decoration: none; }
 .case-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 24px; margin: 120px auto 0; }
 .case-gallery-item { grid-column: 1 / -1; margin: 0; overflow: hidden; border-radius: 32px; }
 .case-gallery-item--half { grid-column: span 1; align-self: center; border-radius: 16px; }
@@ -55,9 +55,9 @@
 .case-gallery-item--contain img { object-fit: contain; }
 .case-gallery .case-narrative { grid-column: 1 / -1; width: min(100%, 534px); padding-block: 68px; }
 .case-outcome { margin-top: 92px; }
-.case-more { margin-top: 332px; padding-bottom: 200px; overflow: hidden; }
+.case-more { margin-top: 332px; padding-bottom: 0; overflow: hidden; }
 .case-more .home-projects { background: transparent; }
-.case-more .home-projects-grid { border: 0; }
+.case-more .home-projects-grid { border: 0; height: calc(var(--wheel-height, 440px) + var(--card-row-gap)); }
 .case-study-page :focus-visible { outline-color: var(--home-accent); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-width: 720px) {
@@ -72,7 +72,7 @@
   .case-gallery-item--half { border-radius: 10px; }
   .case-gallery .case-narrative { padding-block: 24px; }
   .case-outcome { margin-top: 48px; }
-  .case-more { margin-top: 96px; padding-bottom: 80px; }
+  .case-more { margin-top: 96px; padding-bottom: 0; }
 }
 @media (max-width: 600px) { .case-gallery-item--half { grid-column: 1 / -1; } }
 @media (prefers-reduced-motion: no-preference) {
@@ -83,13 +83,18 @@
 @keyframes case-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
 .case-background { margin-top: 32px; }
-.case-background > summary { display: flex; align-items: center; gap: 8px; width: fit-content; list-style: none; font: 400 20px/1.4 "Beirut Text", Georgia, serif; cursor: var(--click-cursor, pointer); }
+.case-background > summary { display: flex; align-items: center; gap: 8px; width: fit-content; list-style: none; font: 400 20px/24px "Beirut Text", Georgia, serif; cursor: var(--click-cursor, pointer); }
 .case-background > summary::-webkit-details-marker { display: none; }
-.case-background > summary span { width: 24px; height: 24px; background: currentColor; mask: url('../asset/home/plus.svg') center / 24px no-repeat; }
-.case-background[open] > summary span { transform: rotate(45deg); }
+.case-background > summary .case-disclosure-icon { flex: 0 0 20px; width: 20px; height: 20px; transform: translateY(2px); background: currentColor; mask: url('../asset/home/plus.svg') center / 24px no-repeat; }
+.case-background[open] > summary .case-disclosure-icon { transform: translateY(2px) rotate(45deg); }
+.case-background:not([open]) .case-see-less,
+.case-background[open] .case-see-more { display: none; }
 .case-background > summary:is(:hover, :focus-visible) { color: var(--home-accent); }
-.case-resize { position: absolute; top: 192px; left: -10px; width: 20px; height: 64px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; color: var(--home-border); }
+.case-resize { position: fixed; z-index: 6; top: 50%; transform: translateY(-50%); left: calc((100vw - min(100vw - 40px, var(--case-width))) / 2 - 10px); width: 20px; height: 64px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; color: var(--home-border); }
 .case-resize span { width: 8px; height: 48px; border: 1px solid currentColor; background: var(--home-bg); border-radius: 8px; }
 .case-resize:is(:hover, :focus-visible), .case-study-page.is-case-resizing .case-resize { color: var(--home-accent); }
 .case-study-page.is-case-resizing { user-select: none; cursor: ew-resize; }
 @media (max-width: 780px), (pointer: coarse) { .case-resize { display: none; } }
+
+.case-study:has(.case-resize:is(:hover, :focus-visible)),
+.case-study-page.is-case-resizing .case-study { border-color: var(--home-accent); }

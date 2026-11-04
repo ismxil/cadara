@@ -21,7 +21,7 @@ const caseStudy = defineType({name: 'caseStudy', title: 'Case study', type: 'doc
   defineField({name: 'featured', title: 'Show on homepage', type: 'boolean', initialValue: true}),
   defineField({name: 'comingSoon', title: 'Coming soon (card only)', type: 'boolean', initialValue: false}),
   text('headline', 'Case study headline'),
-  text('lead', 'Case study introduction (above Learn more)'),
+  text('lead', 'Case study introduction (above See more)'),
   defineField({name: 'services', type: 'array', of: [{type: 'string'}]}),
   defineField({name: 'date', title: 'Project date', type: 'date'}),
   string('duration', 'Project duration (instead of date)'),

@@ -130,7 +130,7 @@ export function renderCase(template, studio, project, projects) {
   const background = (project.intro || []).filter((text, index) => index !== 0 || text !== lead)
   $('.case-introduction').html(`<h1>${escape(project.title)}</h1>
     <p class="case-summary">${escape(lead)}</p>
-    <details class="case-background"><summary>Learn more<span aria-hidden="true"></span></summary>
+    <details class="case-background"><summary><span class="case-see-more">See more</span><span class="case-see-less">See less</span><span class="case-disclosure-icon" aria-hidden="true"></span></summary>
       <div class="case-overview case-narrative">
         ${project.headline && project.headline !== lead ? `<p class="case-headline">${escape(project.headline)}</p>` : ''}
         ${paragraphs(background)}
@@ -146,10 +146,10 @@ export function renderCase(template, studio, project, projects) {
   }
   const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {eager: options.eager, ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
   $('.case-gallery').html(media(project.coverImage, {eager: true}) + (project.gallery || []).map(block => {
-    if (block._type === 'galleryText') return `<section class="case-narrative"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</section>`
+    if (block._type === 'galleryText') return project.slug.current === 'cadana' ? '' : `<section class="case-narrative"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</section>`
     return media(block.image, {half: block.width === 'half', contain: block.fit === 'contain', ratio: Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : undefined})
   }).join(''))
-  if (project.outcome?.length) $('.case-outcome').html(`${project.outcomeHeading ? `<h2>${escape(project.outcomeHeading)}</h2>` : ''}${paragraphs(project.outcome)}`)
+  if (project.slug.current !== 'cadana' && project.outcome?.length) $('.case-outcome').html(`${project.outcomeHeading ? `<h2>${escape(project.outcomeHeading)}</h2>` : ''}${paragraphs(project.outcome)}`)
   else $('.case-outcome').remove()
   const published = projects.filter(item => !item.comingSoon)
   $('.home-projects-grid').attr('data-initial-project', project.slug.current).html(projectCards(published))

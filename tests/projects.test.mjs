@@ -47,8 +47,9 @@ test('vertical case studies preserve content, metadata and safe navigation betwe
   assert.equal($('.case-overview > p:not(.case-headline)').length, 2)
   assert.equal($('.case-overview script').length, 0)
   assert.equal($('.case-background[open]').length, 0)
-  assert.equal($('.case-background > summary').text(), 'Learn more')
+  assert.equal($('.case-background > summary .case-see-more').text(), 'See more')
   assert.equal($('.case-headline').text(), project.headline)
+  assert.equal($('.case-background > summary .case-see-less').text(), 'See less')
   assert.equal($('.case-duration').text(), '6 months')
   assert.equal($('.case-visit').length, 0)
   assert.equal($('.case-hero-cover, .meta-date').length, 0)
@@ -62,4 +63,15 @@ test('vertical case studies preserve content, metadata and safe navigation betwe
   assert.equal($('.home-projects-grid').attr('data-initial-project'), 'client')
   assert.deepEqual($('.home-project-card').map((_, el) => $(el).attr('href')).get(), ['/cases/client', '/cases/next'])
   assert.equal($('.case-close').attr('href'), '/?view=work')
+})
+
+
+test('Cadana displays artwork without the removed Challenges and Outcome sections', async () => {
+  const {renderCase} = await import('../scripts/render.mjs')
+  const caseTemplate = await readFile(new URL('../scripts/templates/case-study.html', import.meta.url), 'utf8')
+  const project = {title: 'Cadana', slug: {current: 'cadana'}, coverImage: image, gallery: [{_type: 'galleryText', heading: 'Challenges', paragraphs: ['Removed challenge copy']}, {_type: 'galleryImage', image}], outcomeHeading: 'Outcome', outcome: ['Removed outcome copy']}
+  const $ = load(renderCase(caseTemplate, {}, project, [project]))
+  assert.equal($('.case-gallery-item').length, 2)
+  assert.equal($('.case-gallery .case-narrative, .case-outcome').length, 0)
+  assert.doesNotMatch($('body').text(), /Removed challenge copy|Removed outcome copy/)
 })
