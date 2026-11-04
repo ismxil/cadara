@@ -4,7 +4,9 @@ document.querySelectorAll('.team-card').forEach(card => {
   const returnButton = card.querySelector('.team-card-return');
   const linkedin = card.querySelector('.team-linkedin');
   if (!front || !back || !returnButton) return;
+  let focusTimer;
   const flip = (showValue, moveFocus = true) => {
+    clearTimeout(focusTimer);
     card.classList.toggle('is-flipped', showValue);
     front.setAttribute('aria-expanded', String(showValue));
     front.setAttribute('aria-hidden', String(showValue));
@@ -12,7 +14,11 @@ document.querySelectorAll('.team-card').forEach(card => {
     front.inert = showValue;
     back.inert = !showValue;
     if (linkedin) linkedin.hidden = showValue;
-    if (moveFocus) (showValue ? returnButton : front).focus({preventScroll: true});
+    if (moveFocus) {
+      if (showValue || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        (showValue ? returnButton : front).focus({preventScroll: true});
+      } else focusTimer = setTimeout(() => front.focus({preventScroll: true}), 280);
+    }
     card.dispatchEvent(new Event('teamflip'));
   };
   front.addEventListener('click', event => flip(true, event.detail === 0));

@@ -1338,3 +1338,49 @@ html.home-entrance-complete :is(
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Native, compositor-driven scrolling on touch devices. */
+.home-projects-grid.is-native-wheel {
+  overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x pan-y pinch-zoom;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--native-inset);
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.is-native-wheel .home-wheel-track {
+  position: relative;
+  inset: auto;
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  height: 100%;
+  padding: 12px var(--native-inset) 0;
+  transform: none;
+  transition: none;
+}
+.home-projects .is-native-wheel .case-card,
+.home-projects .is-native-wheel .case-card:not(.is-active) {
+  position: relative;
+  top: auto;
+  left: auto;
+  touch-action: auto;
+  flex: 0 0 var(--native-card-width);
+  width: var(--native-card-width);
+  height: var(--wheel-height);
+  transform: none;
+  transition: opacity 160ms ease;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+/* Explicit face visibility also hides Safari's composited WebGL canvas. */
+.team-card-inner { transition-timing-function: cubic-bezier(.45, 0, .55, 1); }
+.team-card-front { visibility: visible; transition: visibility 0s 275ms; }
+.team-card.is-flipped .team-card-front { visibility: hidden; }
+.team-card-front .team-avatar canvas { visibility: inherit; opacity: 1; transition: opacity 0s 275ms; }
+.team-card.is-flipped .team-avatar canvas { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .team-card-front, .team-card-front .team-avatar canvas { transition: none; }
+  .home-projects .is-native-wheel .case-card { transition: none; }
+}

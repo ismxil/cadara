@@ -5,7 +5,7 @@ import {runInNewContext} from 'node:vm'
 
 const source = await readFile(new URL('../js/home-carousel.js', import.meta.url), 'utf8')
 // Run the actual carousel event handlers with deterministic pointer events and time.
-function harness({resizable = false} = {}) {
+function harness({resizable = false, nativeTouch = false} = {}) {
   const document = {activeElement: null, pointerTarget: null}
   class Element {
     constructor(slug) {
@@ -14,7 +14,7 @@ function harness({resizable = false} = {}) {
       this.attrs = new Map()
       this.events = new Map()
       this.styles = new Map()
-      this.style = {setProperty: (name, value) => this.styles.set(name, value)}
+      this.style = {setProperty: (name, value) => this.styles.set(name, value), removeProperty: name => this.styles.delete(name)}
       const classes = new Set()
       this.classList = {
         add: (...names) => names.forEach(name => classes.add(name)),
@@ -30,6 +30,7 @@ function harness({resizable = false} = {}) {
       for (const fn of this.events.get(type) || []) fn(event)
       return event
     }
+    scrollTo({left}) { this.scrollLeft = left; this.emit('scroll') }
     setAttribute(name, value) { this.attrs.set(name, value) }
     getAttribute(name) { return name === 'aria-label' ? this.slug : this.attrs.get(name) }
     removeAttribute(name) { this.attrs.delete(name) }
@@ -53,6 +54,7 @@ function harness({resizable = false} = {}) {
   const originals = ['lemfi', 'foma', 'cadana', 'gomoney', 'mezovest', 'sterling'].map(slug => new Element(slug))
   const body = new Element(), rail = new Element(), section = new Element(), resize = new Element()
   rail.clientWidth = rail.offsetWidth = 1440
+  rail.scrollLeft = 0
   rail.querySelectorAll = () => originals
   rail.replaceChildren = track => { rail.track = track; rail.cards = track.children }
   rail.contains = card => rail.cards.includes(card)
@@ -74,7 +76,7 @@ function harness({resizable = false} = {}) {
     now = target
   }
   class Observer {observe() {} unobserve() {}}
-  runInNewContext(source, {document, window: {addEventListener() {}}, matchMedia: query => ({matches: !query.includes('reduced-motion'), addEventListener() {}}), ResizeObserver: Observer, IntersectionObserver: Observer, setTimeout, clearTimeout: id => timers.delete(id), requestAnimationFrame: fn => setTimeout(fn, 16), cancelAnimationFrame: id => timers.delete(id)})
+  runInNewContext(source, {document, window: {addEventListener() {}}, matchMedia: query => ({matches: query === '(pointer: coarse)' ? nativeTouch : !query.includes('reduced-motion'), addEventListener() {}}), ResizeObserver: Observer, IntersectionObserver: Observer, setTimeout, clearTimeout: id => timers.delete(id), requestAnimationFrame: fn => setTimeout(fn, 16), cancelAnimationFrame: id => timers.delete(id)})
   return {rail, resize, tick, document, cursor: body.children[0], active: () => rail.cards.find(card => card.classList.contains('is-active')), side: offset => rail.cards[rail.cards.findIndex(card => card.classList.contains('is-active')) + offset]}
 }
 
@@ -245,4 +247,48 @@ test('vertical touch scrolling relinquishes capture without selecting a project'
   assert.equal(h.rail.classList.contains('is-dragging'), false)
   h.rail.emit('pointerup', {pointerType: 'touch', clientX: 695, clientY: 180})
   assert.equal(h.active(), initial)
+})
+
+
+test('touch devices use native scrolling without pointer capture or preventing browser movement', () => {
+  const h = harness({nativeTouch: true})
+  h.tick(20)
+  assert.equal(h.rail.classList.contains('is-native-wheel'), true)
+  h.rail.emit('pointerdown', {pointerType: 'touch', clientX: 700})
+  const move = h.rail.emit('pointermove', {pointerType: 'touch', clientX: 620})
+  assert.equal(move.defaultPrevented, false)
+  assert.equal(h.rail.hasPointerCapture(), false)
+  const stride = Number.parseFloat(h.rail.styles.get('--native-card-width')) + 12
+  h.rail.scrollLeft += stride
+  h.rail.emit('scroll')
+  assert.equal(h.active().slug, 'gomoney')
+})
+
+test('a light native swipe advances once after release and loops without empty edges', () => {
+  const h = harness({nativeTouch: true})
+  h.tick(20)
+  const stride = Number.parseFloat(h.rail.styles.get('--native-card-width')) + 12
+  h.rail.emit('pointerdown', {pointerType: 'touch', clientX: 700})
+  h.rail.emit('touchstart', {touches: [{clientX: 700, clientY: 100}]})
+  h.rail.scrollLeft += 25
+  h.rail.emit('scroll')
+  h.rail.emit('touchend', {touches: [], changedTouches: [{clientX: 665, clientY: 105}]})
+  h.tick(400)
+  assert.equal(h.active().slug, 'gomoney')
+  assert.equal(h.rail.scrollLeft, 9 * stride)
+  h.rail.scrollLeft = 12 * stride
+  h.rail.emit('scroll')
+  h.rail.emit('scrollend')
+  h.tick(20)
+  assert.equal(h.active().slug, 'lemfi')
+  assert.equal(h.rail.scrollLeft, 6 * stride)
+})
+
+test('native vertical gestures preserve the selected project', () => {
+  const h = harness({nativeTouch: true})
+  h.tick(20)
+  h.rail.emit('touchstart', {touches: [{clientX: 700, clientY: 100}]})
+  h.rail.emit('touchend', {touches: [], changedTouches: [{clientX: 695, clientY: 260}]})
+  h.tick(400)
+  assert.equal(h.active().slug, 'cadana')
 })

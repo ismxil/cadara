@@ -2,6 +2,10 @@
   const rail = document.querySelector('.home-projects-grid');
   const originals = [...(rail?.querySelectorAll('.home-project-card') || [])];
   if (!originals.length) return;
+  if (matchMedia('(pointer: coarse)').matches) {
+    initTouchWheel(rail, originals);
+    return;
+  }
   const section = rail.closest('.home-projects');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
@@ -394,4 +398,163 @@
   cards.forEach(card => warmup.observe(card));
   rail.classList.add('is-wheel-ready');
   render(); syncResize();
+
+  // Phones use browser scrolling: no pointer capture, drag thresholds or JS
+  // transforms between the finger and the cards.
+  function initTouchWheel(rail, originals) {
+    const count = originals.length;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const section = rail.closest('.home-projects');
+    const resize = section.querySelector('.home-project-resize');
+    if (resize) resize.hidden = true;
+    const cards = [];
+    for (let copy = 0; copy < (count > 1 ? 3 : 1); copy++) {
+      originals.forEach((original, index) => {
+        const card = copy === 1 || count === 1 ? original : original.cloneNode(true);
+        card.dataset.wheelIndex = String(index);
+        cards.push(card);
+      });
+    }
+    const track = document.createElement('div');
+    track.className = 'home-wheel-track';
+    track.replaceChildren(...cards);
+    rail.replaceChildren(track);
+    rail.classList.add('is-wheel-ready', 'is-native-wheel');
+    rail.setAttribute('aria-roledescription', 'carousel');
+    rail.setAttribute('aria-label', 'Projects. Swipe to explore. Select a side card to center it, then select again to open.');
+    const status = document.createElement('span');
+    status.className = 'home-wheel-status';
+    status.setAttribute('role', 'status');
+    section.appendChild(status);
+    const modulo = value => ((value % count) + count) % count;
+    const initial = rail.dataset.initialProject ? originals.findIndex(card => card.dataset.projectSlug === rail.dataset.initialProject) : -1;
+    let selected = (count > 1 ? count : 0) + (initial >= 0 ? initial : Math.min(2, count - 1));
+    let measuredWidth = 0, cardWidth = 0, stride = 0, contact = false;
+    let timer, measureFrame, rebasing = false, suppressClick = false, startX = 0, gesture, pendingStep;
+    const mark = index => {
+      selected = Math.max(0, Math.min(cards.length - 1, index));
+      cards.forEach((card, i) => {
+        const active = i === selected;
+        card.classList.toggle('is-active', active);
+        card.tabIndex = active ? 0 : -1;
+        card.setAttribute('aria-hidden', String(Math.abs(i - selected) > 1));
+        if (active) card.setAttribute('aria-current', 'true');
+        else card.removeAttribute('aria-current');
+        if (Math.abs(i - selected) <= 1) card.querySelectorAll('img[src]').forEach(image => { image.loading = 'eager'; });
+      });
+    };
+    const jump = index => {
+      rebasing = true;
+      rail.style.scrollSnapType = 'none';
+      rail.scrollTo({left: index * stride, behavior: 'instant'});
+      mark(index);
+      requestAnimationFrame(() => {
+        rail.style.removeProperty('scroll-snap-type');
+        rebasing = false;
+      });
+    };
+    const finish = () => {
+      clearTimeout(timer);
+      if (contact || rebasing || !stride) return;
+      const nearest = Math.max(0, Math.min(cards.length - 1, Math.round(rail.scrollLeft / stride)));
+      if (pendingStep) {
+        const {origin, direction} = pendingStep;
+        pendingStep = null;
+        // A light horizontal swipe still advances when native snapping would
+        // otherwise return to its starting card. Never interrupt finger tracking.
+        if ((nearest - origin) * direction <= 0) {
+          goTo(origin + direction);
+          return;
+        }
+      }
+      if (Math.abs(rail.scrollLeft - nearest * stride) > 1) {
+        rail.scrollTo({left: nearest * stride, behavior: reduced.matches ? 'instant' : 'smooth'});
+        timer = setTimeout(finish, 180);
+        return;
+      }
+      mark(nearest);
+      const canonical = count > 1 ? count + modulo(nearest) : 0;
+      if (canonical !== nearest) jump(canonical);
+      status.textContent = `${originals[modulo(nearest)].getAttribute('aria-label')}. Project ${modulo(nearest) + 1} of ${count}.`;
+    };
+    const scheduleFinish = () => { clearTimeout(timer); timer = setTimeout(finish, 180); };
+    const goTo = (index, focus = false) => {
+      index = Math.max(0, Math.min(cards.length - 1, index));
+      rail.scrollTo({left: index * stride, behavior: reduced.matches ? 'instant' : 'smooth'});
+      if (focus) cards[index].focus({preventScroll: true});
+      scheduleFinish();
+    };
+    const measure = () => {
+      measureFrame = 0;
+      if (!rail.clientWidth || rail.clientWidth === measuredWidth) return;
+      measuredWidth = rail.clientWidth;
+      cardWidth = Math.max(160, Math.min(660, measuredWidth - 80));
+      stride = cardWidth + 12;
+      rail.style.setProperty('--native-card-width', `${cardWidth}px`);
+      rail.style.setProperty('--native-inset', `${(measuredWidth - cardWidth) / 2}px`);
+      rail.style.setProperty('--wheel-height', `${cardWidth * 2 / 3}px`);
+      rail.style.setProperty('--card-row-gap', '12px');
+      jump(selected);
+    };
+    new ResizeObserver(() => {
+      if (rail.clientWidth === measuredWidth || measureFrame) return;
+      measureFrame = requestAnimationFrame(measure);
+    }).observe(rail);
+    rail.addEventListener('scroll', () => {
+      if (rebasing || !stride) return;
+      suppressClick = true;
+      const nearest = Math.round(rail.scrollLeft / stride);
+      if (nearest !== selected) mark(nearest);
+      scheduleFinish();
+    }, {passive: true});
+    rail.addEventListener('scrollend', finish);
+    rail.addEventListener('touchstart', event => {
+      contact = true;
+      pendingStep = null;
+      clearTimeout(timer);
+      const touch = event.touches[0];
+      gesture = event.touches.length === 1 && stride ? {x: touch.clientX, y: touch.clientY, origin: Math.round(rail.scrollLeft / stride)} : null;
+    }, {passive: true});
+    const endTouch = event => {
+      if (event.touches.length) return;
+      contact = false;
+      const touch = event.changedTouches?.[0];
+      if (gesture && touch && event.type === 'touchend') {
+        const dx = touch.clientX - gesture.x, dy = touch.clientY - gesture.y;
+        if (Math.abs(dx) >= 24 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+          pendingStep = {origin: gesture.origin, direction: -Math.sign(dx)};
+        }
+      }
+      gesture = null;
+      scheduleFinish();
+    };
+    rail.addEventListener('touchend', endTouch, {passive: true});
+    rail.addEventListener('touchcancel', endTouch, {passive: true});
+    rail.addEventListener('pointerdown', event => {
+      startX = event.clientX;
+      suppressClick = false;
+    }, {passive: true});
+    rail.addEventListener('pointermove', event => {
+      if (Math.abs(event.clientX - startX) > 6) suppressClick = true;
+    }, {passive: true});
+    rail.addEventListener('click', event => {
+      const card = event.target.closest('.home-project-card');
+      if (!card || !rail.contains(card)) return;
+      const index = cards.indexOf(card);
+      if (suppressClick) { event.preventDefault(); return; }
+      if (index !== selected || Math.abs(rail.scrollLeft - index * stride) > 1) {
+        event.preventDefault();
+        goTo(index);
+      }
+    }, true);
+    rail.addEventListener('keydown', event => {
+      if (event.key === 'Enter') suppressClick = false;
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      goTo(event.key === 'Home' ? (count > 1 ? count : 0) : event.key === 'End' ? (count > 1 ? count : 0) + count - 1 : selected + (event.key === 'ArrowRight' ? 1 : -1), true);
+    });
+    rail.addEventListener('dragstart', event => event.preventDefault());
+    measure();
+    mark(selected);
+  }
 })();
