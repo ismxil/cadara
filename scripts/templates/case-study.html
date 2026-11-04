@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,7 @@
   <link rel="icon" href="/asset/cadara-fav.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/case-study.css">
+  <script src="/js/home-theme.js"></script>
   <script src="/js/case-study.js" defer></script>
   <script src="/js/home-carousel.js" defer></script>
   <script src="/js/analytics.js" defer></script>
@@ -17,9 +18,8 @@
   <header class="case-study-header"><a class="case-close" href="/?view=work" aria-label="Close case study and return to work"><img src="/asset/home/case-close.svg" width="48" height="48" alt=""></a></header>
   <main id="case-content">
     <article class="case-study">
-      <figure class="case-hero-cover"></figure>
+      <div class="case-resize" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Resize case study" aria-controls="case-content" aria-valuemin="720" aria-valuemax="1200" aria-valuenow="720" hidden><span aria-hidden="true"></span></div>
       <header class="case-introduction"></header>
-      <section class="case-overview case-narrative" aria-label="Project overview"></section>
       <div class="case-gallery" aria-label="Project gallery"></div>
       <section class="case-outcome case-narrative"></section>
     </article>

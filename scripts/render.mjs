@@ -124,23 +124,28 @@ export function renderCase(template, studio, project, projects) {
   metadata($, `${project.title} — Cadara Studio`, project.seoDescription || project.summary)
   $('head').append(`<link rel="canonical" href="https://cadarastudio.com/cases/${escape(project.slug.current)}">`)
   if (project.coverImage?.asset) socialImage($, imageUrl(project.coverImage, 1200), false)
-  const date = project.duration || formatDate(project.date)
   $('.case-study').attr('aria-label', `${project.title} case study`)
-  $('.case-hero-cover').html(image(project.cardImage?.asset ? project.cardImage : project.coverImage,
-    {eager: true, width: 1200, sizes: '(max-width: 720px) 80vw, 433px'}))
+  const defaultCadanaLead = "An identity design for a Global Payment Infrastructure for talent marketplaces, staffing platforms, international HR providers, Cadana's white-label infrastructure that enables businesses across the world to pay talents in over 100+ countries."
+  const lead = project.lead || (project.slug.current === 'cadana' ? defaultCadanaLead : project.intro?.[0] || project.headline || project.summary)
+  const background = (project.intro || []).filter((text, index) => index !== 0 || text !== lead)
   $('.case-introduction').html(`<h1>${escape(project.title)}</h1>
-    <p class="case-summary">${escape(project.headline || project.summary)}</p>`)
-  $('.case-overview').html(`${paragraphs(project.intro)}
-    <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
-    ${date ? `<div><dt>${project.duration ? 'Duration' : 'Date'}</dt><dd class="meta-date">${escape(date)}</dd></div>` : ''}</dl>
-    ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company <span aria-hidden="true">↗</span></a>` : ''}`)
+    <p class="case-summary">${escape(lead)}</p>
+    <details class="case-background"><summary>Learn more<span aria-hidden="true"></span></summary>
+      <div class="case-overview case-narrative">
+        ${project.headline && project.headline !== lead ? `<p class="case-headline">${escape(project.headline)}</p>` : ''}
+        ${paragraphs(background)}
+        <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
+        ${project.duration ? `<div><dt>Duration</dt><dd class="case-duration">${escape(project.duration)}</dd></div>` : ''}</dl>
+        ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company <span aria-hidden="true">↗</span></a>` : ''}
+      </div>
+    </details>`)
   const dimensions = value => {
     const size = value?.asset?._ref?.match(/-(\d+)x(\d+)-/)
     const crop = value?.crop || {}
     return size ? Number(size[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(size[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 16 / 9
   }
-  const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
-  $('.case-gallery').html(media(project.coverImage) + (project.gallery || []).map(block => {
+  const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {eager: options.eager, ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
+  $('.case-gallery').html(media(project.coverImage, {eager: true}) + (project.gallery || []).map(block => {
     if (block._type === 'galleryText') return `<section class="case-narrative"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</section>`
     return media(block.image, {half: block.width === 'half', contain: block.fit === 'contain', ratio: Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : undefined})
   }).join(''))

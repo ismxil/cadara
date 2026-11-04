@@ -362,9 +362,17 @@
       setScale(event.key === 'Home' ? 1 : event.key === 'End' ? maximumScale() : scale + (event.key === 'ArrowDown' ? 1 : -1) * (event.shiftKey ? .1 : .05));
     }
   });
+  let observedWidth = rail.clientWidth, layoutFrame = 0;
   new ResizeObserver(() => {
-    scale = desktop.matches ? Math.min(scale, maximumScale()) : 1;
-    render(); syncResize();
+    // Rendering changes the rail height. Only width changes need new geometry.
+    if (!rail.clientWidth || rail.clientWidth === observedWidth) return;
+    observedWidth = rail.clientWidth;
+    if (layoutFrame) cancelAnimationFrame(layoutFrame);
+    layoutFrame = requestAnimationFrame(() => {
+      layoutFrame = 0;
+      scale = desktop.matches ? Math.min(scale, maximumScale()) : 1;
+      render(); syncResize();
+    });
   }).observe(rail);
   desktop.addEventListener('change', () => { scale = 1; render(); syncResize(); });
   reducedMotion.addEventListener('change', () => { stopPreview(); if (settling) finish(); });
