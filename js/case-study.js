@@ -21,7 +21,7 @@ const caseResize = document.querySelector('.case-resize');
 if (caseResize) {
   const desktopResize = matchMedia('(min-width: 781px) and (pointer: fine)');
   let width = 720, resizeDrag;
-  const limits = () => ({min: 720, max: Math.min(1200, innerWidth - 40)});
+  const limits = () => ({min: 720, max: innerWidth});
   const setWidth = value => {
     const {min, max} = limits();
     width = Math.max(min, Math.min(max, value));

@@ -23,7 +23,7 @@
 .case-close:is(:hover, :focus-visible) { background: var(--home-accent); }
 .case-study {
   position: relative;
-  width: min(calc(100% - 40px), var(--case-width));
+  width: min(100%, var(--case-width));
   margin-inline: auto;
   padding: 128px 28px 0;
   border-inline: 1px solid var(--home-border);
@@ -36,7 +36,7 @@
   letter-spacing: -.00723em;
   overflow-wrap: anywhere;
 }
-.case-summary { max-width: 534px; margin: 0; font-size: 24px; line-height: 1.4; text-wrap: balance; }
+.case-summary { max-width: 534px; margin: 0; font-size: 20px; line-height: 1.4; text-wrap: balance; }
 .case-narrative { width: min(100%, 534px); margin: 0 auto; font-size: 20px; line-height: 1.4; }
 .case-narrative p { margin: 0 0 28px; }
 .case-narrative p:last-child { margin-bottom: 0; }
@@ -90,7 +90,7 @@
 .case-background:not([open]) .case-see-less,
 .case-background[open] .case-see-more { display: none; }
 .case-background > summary:is(:hover, :focus-visible) { color: var(--home-accent); }
-.case-resize { position: fixed; z-index: 6; top: 50%; transform: translateY(-50%); left: calc((100vw - min(100vw - 40px, var(--case-width))) / 2 - 10px); width: 20px; height: 64px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; color: var(--home-border); }
+.case-resize { position: fixed; z-index: 6; top: 50%; transform: translateY(-50%); left: calc((100vw - min(100vw, var(--case-width))) / 2 - 10px); width: 20px; height: 64px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; color: var(--home-border); }
 .case-resize span { width: 8px; height: 48px; border: 1px solid currentColor; background: var(--home-bg); border-radius: 8px; }
 .case-resize:is(:hover, :focus-visible), .case-study-page.is-case-resizing .case-resize { color: var(--home-accent); }
 .case-study-page.is-case-resizing { user-select: none; cursor: ew-resize; }
