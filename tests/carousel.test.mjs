@@ -211,3 +211,38 @@ test('a small touch movement snaps back without navigating', () => {
   assert.equal(h.active(), initial)
   assert.equal(h.rail.emit('click', {target: initial}).defaultPrevented, true)
 })
+
+test('touch tolerates initial vertical wobble and advances with a short swipe', () => {
+  const h = harness()
+  const next = h.side(1)
+  h.rail.emit('pointerdown', {pointerType: 'touch', clientX: 700, clientY: 100, timeStamp: 0})
+  h.rail.emit('pointermove', {pointerType: 'touch', clientX: 696, clientY: 108, timeStamp: 25})
+  h.rail.emit('pointermove', {pointerType: 'touch', clientX: 665, clientY: 111, timeStamp: 100})
+  h.tick(16)
+  assert.equal(h.rail.classList.contains('is-dragging'), true)
+  h.rail.emit('pointerup', {pointerType: 'touch', clientX: 665, clientY: 111, timeStamp: 150})
+  assert.equal(h.active(), next)
+})
+
+test('a quick flick advances while a slow movement of the same distance stays put', () => {
+  for (const duration of [40, 400]) {
+    const h = harness()
+    const initial = h.active(), next = h.side(1)
+    h.rail.emit('pointerdown', {pointerType: 'touch', clientX: 700, timeStamp: 0})
+    h.rail.emit('pointermove', {pointerType: 'touch', clientX: 680, timeStamp: duration})
+    h.tick(16)
+    h.rail.emit('pointerup', {pointerType: 'touch', clientX: 680, timeStamp: duration})
+    assert.equal(h.active(), duration === 40 ? next : initial)
+  }
+})
+
+test('vertical touch scrolling relinquishes capture without selecting a project', () => {
+  const h = harness()
+  const initial = h.active()
+  h.rail.emit('pointerdown', {pointerType: 'touch', clientX: 700, clientY: 100})
+  h.rail.emit('pointermove', {pointerType: 'touch', clientX: 695, clientY: 125})
+  assert.equal(h.rail.hasPointerCapture(), false)
+  assert.equal(h.rail.classList.contains('is-dragging'), false)
+  h.rail.emit('pointerup', {pointerType: 'touch', clientX: 695, clientY: 180})
+  assert.equal(h.active(), initial)
+})

@@ -903,7 +903,7 @@ button {
   aspect-ratio: auto;
   opacity: .3;
   transform: translate3d(calc(-50% + var(--wheel-x)), 0, 0);
-  transition: width 400ms ease, height 400ms ease, transform 400ms ease, opacity 250ms ease;
+  transition: width var(--wheel-duration, 400ms) ease, height var(--wheel-duration, 400ms) ease, transform var(--wheel-duration, 400ms) ease, opacity 250ms ease;
   cursor: var(--click-cursor, pointer);
 }
 .home-projects .is-wheel-ready .case-card:not(.is-active) {
@@ -920,7 +920,7 @@ button {
   position: absolute;
   inset: 0;
   transform: translate3d(0, 0, 0);
-  transition: transform 400ms ease;
+  transition: transform var(--wheel-duration, 400ms) ease;
 }
 .is-dragging .home-wheel-track { transition: none; will-change: transform; }
 .home:has(.is-dragging) .home-main > :not(.home-projects) { filter: none; transition: none; }
@@ -1327,4 +1327,14 @@ html.home-entrance-complete :is(
   .home-team-panels .team-card-back h3 { font-size: 22px; margin-top: 36px; }
   .home-team-panels .team-card-back p { font-size: 15px; }
   .home-projects .is-wheel-ready .case-card { border-radius: 20px; }
+}
+
+@media (max-width: 720px) {
+  .home-projects-grid { --wheel-duration: 240ms; }
+}
+.home-projects-grid .case-image img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }

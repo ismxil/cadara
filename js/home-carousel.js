@@ -39,6 +39,7 @@
   rail.setAttribute('aria-roledescription', 'carousel');
   rail.setAttribute('aria-label', 'Projects. Use left and right arrows to explore. Select a side card to center it, then select again to open.');
   const currentCard = () => cards[position];
+  const settleDelay = () => rail.clientWidth <= 720 ? 260 : 420;
   const hideCursor = () => {
     cursorCard?.classList.remove('has-eye-cursor');
     cursorCard = null;
@@ -177,7 +178,7 @@
     settling = !reducedMotion.matches;
     render();
     if (focus) currentCard().focus({preventScroll: true});
-    if (settling) settleTimer = setTimeout(finish, 420);
+    if (settling) settleTimer = setTimeout(finish, settleDelay());
     else finish();
   };
   const step = (direction, focus = false) => {
@@ -235,14 +236,20 @@
   rail.addEventListener('pointerdown', event => {
     if (event.button !== 0 || count < 2) return;
     suppressClick = false;
-    drag = {id: event.pointerId, x: event.clientX, y: event.clientY, moved: false};
+    drag = {id: event.pointerId, x: event.clientX, y: event.clientY,
+      startedAt: event.timeStamp, touch: event.pointerType === 'touch', moved: false};
   });
   rail.addEventListener('pointermove', event => {
     if (drag?.id !== event.pointerId) return;
     const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
     if (!drag.moved) {
-      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) { drag = null; return; }
-      if (Math.abs(dx) < 6) return;
+      // Allow a thumb's small vertical wobble before deciding it is page scroll.
+      if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+        drag = null;
+        if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
+        return;
+      }
+      if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy) * .85) return;
       drag.moved = true;
       drag.baseOffset = track.getBoundingClientRect().left - rail.getBoundingClientRect().left;
       paintedDragOffset = drag.baseOffset;
@@ -254,21 +261,23 @@
       rail.setPointerCapture(event.pointerId);
     }
     event.preventDefault();
-    dragOffset = Math.max(-layout.width / 2, Math.min(layout.width / 2, (drag.baseOffset || 0) + dx));
+    drag.lastMoveAt = event.timeStamp;
+    dragOffset = Math.max(-dragLimit(), Math.min(dragLimit(), (drag.baseOffset || 0) + dx));
     if (!dragFrame) dragFrame = requestAnimationFrame(() => {
       dragFrame = 0;
       paintedDragOffset = dragOffset;
       track.style.transform = `translate3d(${dragOffset}px, 0, 0)`;
     });
   });
+  const dragLimit = () => drag?.touch ? layout.center + layout.gap : layout.width / 2;
   const endDrag = event => {
     // Touch starts with implicit capture on the image/link. Transferring it to
     // the rail emits a bubbling lost-capture event from that original child.
     if (event.type === 'lostpointercapture' && event.target !== rail) return;
     if (drag?.id !== event.pointerId) return;
-    const {moved, x, baseOffset = 0} = drag;
+    const {moved, x, startedAt, lastMoveAt, touch, baseOffset = 0} = drag;
     if (dragFrame) { cancelAnimationFrame(dragFrame); dragFrame = 0; }
-    const dx = Math.max(-layout.width / 2, Math.min(layout.width / 2, baseOffset + event.clientX - x));
+    const dx = Math.max(-dragLimit(), Math.min(dragLimit(), baseOffset + event.clientX - x));
     // Select the card actually nearest the center, not the next card merely
     // because a drag passed a fixed threshold. Cancellation keeps the selection.
     const railCenter = rail.getBoundingClientRect().left + rail.clientWidth / 2;
@@ -280,8 +289,12 @@
       Math.abs(offsets[index] + dx) < Math.abs(offsets[nearest] + dx) ? index : nearest, position) : position;
     // Touch gestures should not require dragging more than half a card.
     // Keep nearest-card snapping for long drags and desktop precision.
-    if (moved && event.type === 'pointerup' && event.pointerType === 'touch'
-      && target === position && Math.abs(event.clientX - x) >= 48) {
+    const travel = Math.abs(event.clientX - x);
+    const elapsed = (lastMoveAt ?? event.timeStamp) - startedAt;
+    const flick = travel >= 14 && event.timeStamp - lastMoveAt < 100
+      && elapsed > 0 && elapsed < 240 && travel / elapsed >= .2;
+    if (moved && event.type === 'pointerup' && touch
+      && target === position && (travel >= 28 || flick)) {
       target = Math.max(0, Math.min(cards.length - 1, position - Math.sign(event.clientX - x)));
     }
     drag = null;
@@ -299,7 +312,7 @@
       if (target !== position) select(target);
       else {
         settling = !reducedMotion.matches;
-        if (settling) settleTimer = setTimeout(finish, 420);
+        if (settling) settleTimer = setTimeout(finish, settleDelay());
         else finish();
       }
     }
