@@ -24,7 +24,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   const studio = validateContent(docs)
   const projects = docs.filter(d => d._type === 'caseStudy').sort((a, b) => (a.order || 0) - (b.order || 0))
   const insights = docs.filter(d => d._type === 'insight').sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
-  const [homeTemplate, workTemplate, offerTemplate, caseTemplate, studioTemplate, articleTemplate] = await Promise.all(['index.html', 'cases/work.html', 'cases/offer.html', 'cases/lemfi.html', 'studio.html', 'scripts/templates/legacy-home.html'].map(file => readFile(path.join(root, file), 'utf8')))
+  const [homeTemplate, workTemplate, offerTemplate, caseTemplate, studioTemplate, articleTemplate] = await Promise.all(['index.html', 'cases/work.html', 'cases/offer.html', 'scripts/templates/case-study.html', 'studio.html', 'scripts/templates/legacy-home.html'].map(file => readFile(path.join(root, file), 'utf8')))
   await rm(output, {recursive: true, force: true})
   await mkdir(path.join(output, 'cases'), {recursive: true})
   await mkdir(path.join(output, 'insights'), {recursive: true})

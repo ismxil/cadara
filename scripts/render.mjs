@@ -28,11 +28,44 @@ export function image(image, {className = '', width = 2000, eager = false, ratio
   const widths = [...new Set([320, 480, 640, 960, 1400, maxWidth].filter(w => w <= maxWidth))].sort((a, b) => a - b)
   return `<img src="${escape(urlFor(maxWidth))}" srcset="${escape(widths.map(w => `${urlFor(w)} ${w}w`).join(', '))}" sizes="${escape(sizes)}" width="${maxWidth}" height="${Math.max(1, Math.round(maxWidth / aspect))}" alt="${escape(image.alt)}" class="${escape(className)}" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
 }
+// Keep the cover first, followed by up to three distinct, similarly shaped images.
+const previewImages = project => {
+  const candidates = [project.cardImage, project.coverImage, ...(project.gallery || []).filter(block => block._type === 'galleryImage').map(block => block.image)]
+  const seen = new Set()
+  const unique = candidates.filter(value => {
+    const ref = value?.asset?._ref
+    if (!ref || seen.has(ref)) return false
+    seen.add(ref)
+    return true
+  })
+  const distance = value => {
+    const dimensions = value.asset._ref.match(/-(\d+)x(\d+)-/)
+    const crop = value.crop || {}
+    const ratio = dimensions ? Number(dimensions[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(dimensions[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 1.5
+    return Math.abs(Math.log(ratio / 1.5))
+  }
+  return unique.length ? [unique[0], ...unique.slice(1).sort((a, b) => distance(a) - distance(b))].slice(0, 4) : []
+}
+export const projectCards = projects => projects.map((project, index) => {
+  const slug = project.slug.current
+  const tag = project.comingSoon ? 'article' : 'a'
+  const label = `${project.title}${project.comingSoon ? ' — coming soon' : ' — view project'}`
+  const slides = previewImages(project).map((value, slide) => {
+    const markup = image({...value, alt: ''}, {width: 1400, eager: index === 0 && slide === 0, ratio: 1.5, className: slide === 0 ? 'is-visible' : '', sizes: '(max-width: 720px) calc(100vw - 42px), 660px'})
+    // Only the cover loads initially; preview frames load on deliberate interaction.
+    return slide === 0 ? markup : markup.replace(/ src=/, ' data-src=').replace(/ srcset=/, ' data-srcset=')
+  }).join('')
+  return `<${tag} class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(label)}" ${project.comingSoon ? '' : `href="/cases/${escape(slug)}"`}>
+    <div class="home-project-card-content"><figure class="case-image" aria-hidden="true">${slides}</figure></div>
+    ${project.comingSoon ? '' : '<span class="home-project-eye" aria-hidden="true"></span>'}
+  </${tag}>`
+}).join('')
+
 const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join('')
 export function cards(projects) {
   return projects.map((project, index) => {
     const tag = project.comingSoon ? 'div' : 'a'
-    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/projects?project=${escape(project.slug.current)}"`
+    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}"`
     const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
     return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
       <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, 50vw'})}</figure>
@@ -89,30 +122,36 @@ export function metadata($, title, description, article = false) {
 export function renderCase(template, studio, project, projects) {
   const $ = shell(template, studio)
   metadata($, `${project.title} — Cadara Studio`, project.seoDescription || project.summary)
-  $('main').attr('class', 'site case-site')
-  const appearance = ['foma', 'gomoney', 'mezovest'].includes(project.appearance) ? ` case-hero-cover--${project.appearance}` : ''
-  const date = project.date?.split('-').reverse().map((v, i) => i === 2 ? v.slice(-2) : v).join('.')
-  $('.case-hero').html(`<div class="case-hero-title"><h1>${escape(project.headline || project.summary)}</h1><div class="case-hero-meta">
-    <p class="meta-client">${escape(project.title)}</p>
-    ${(project.services || []).length ? `<div class="meta-group"><p>Services</p>${project.services.map(s => `<p class="meta-label">${escape(s)}</p>`).join('')}</div>` : ''}
-    ${project.duration || date ? `<div class="meta-group"><p>${project.duration ? 'Duration' : 'Date'}</p><p class="meta-date">${escape(project.duration || date)}</p></div>` : ''}
-    </div></div><div class="case-hero-intro"><div class="case-hero-copy">${paragraphs(project.intro)}
-    ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company</a>` : ''}</div>
-    <figure class="case-hero-cover${appearance}">${image(project.coverImage, {eager: true, sizes: '(max-width: 900px) 100vw, 60vw'})}</figure></div>`)
-  $('.case-gallery').attr('class', 'case-gallery container').html((project.gallery || []).map(block => {
-    const style = `grid-column: ${block.width === 'half' ? 'span 1' : '1 / -1'}`
-    if (block._type === 'galleryText') return `<div class="case-gallery-text" style="${style}"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</div>`
-    const dimensions = block.image?.asset?._ref?.match(/-(\d+)x(\d+)-/)
-    const ratio = Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : dimensions ? Number(dimensions[1]) / Number(dimensions[2]) : 16 / 9
-    return `<figure class="case-gallery-item${block.fit === 'contain' ? ' case-gallery-item--contain' : ''}" style="${style}; --ratio: ${ratio}">${image(block.image, {ratio: block.fit === 'contain' ? undefined : ratio, sizes: block.width === 'half' ? '(max-width: 900px) 100vw, 50vw' : '100vw'})}</figure>`
+  $('head').append(`<link rel="canonical" href="https://cadarastudio.com/cases/${escape(project.slug.current)}">`)
+  if (project.coverImage?.asset) socialImage($, imageUrl(project.coverImage, 1200), false)
+  const date = project.duration || formatDate(project.date)
+  $('.case-study').attr('aria-label', `${project.title} case study`)
+  $('.case-hero-cover').html(image(project.cardImage?.asset ? project.cardImage : project.coverImage,
+    {eager: true, width: 1200, sizes: '(max-width: 720px) 80vw, 433px'}))
+  $('.case-introduction').html(`<h1>${escape(project.title)}</h1>
+    <p class="case-summary">${escape(project.headline || project.summary)}</p>`)
+  $('.case-overview').html(`${paragraphs(project.intro)}
+    <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
+    ${date ? `<div><dt>${project.duration ? 'Duration' : 'Date'}</dt><dd class="meta-date">${escape(date)}</dd></div>` : ''}</dl>
+    ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company <span aria-hidden="true">↗</span></a>` : ''}`)
+  const dimensions = value => {
+    const size = value?.asset?._ref?.match(/-(\d+)x(\d+)-/)
+    const crop = value?.crop || {}
+    return size ? Number(size[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(size[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 16 / 9
+  }
+  const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
+  $('.case-gallery').html(media(project.coverImage) + (project.gallery || []).map(block => {
+    if (block._type === 'galleryText') return `<section class="case-narrative"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</section>`
+    return media(block.image, {half: block.width === 'half', contain: block.fit === 'contain', ratio: Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : undefined})
   }).join(''))
-  $('.case-credit').remove()
-  if (project.outcome?.length) $('.case-gallery').after(`<section class="case-credit container"><h2>${escape(project.outcomeHeading)}</h2>${paragraphs(project.outcome)}</section>`)
-  $('.case-next').remove()
-  const next = projects.find(p => p._id === project.nextProject?._ref && !p.comingSoon)
-  if (next) $('footer').before(`<a class="case-next container" href="/cases/${escape(next.slug.current)}" aria-label="View next project: ${escape(next.title)}">${image(next.cardImage, {className: 'case-next-cover'})}<span class="case-next-link">View work ↗</span></a>`)
+  if (project.outcome?.length) $('.case-outcome').html(`${project.outcomeHeading ? `<h2>${escape(project.outcomeHeading)}</h2>` : ''}${paragraphs(project.outcome)}`)
+  else $('.case-outcome').remove()
+  const published = projects.filter(item => !item.comingSoon)
+  $('.home-projects-grid').attr('data-initial-project', project.slug.current).html(projectCards(published))
+  if (published.length < 2) $('.case-more').remove()
   return $.html()
 }
+
 const siteUrl = 'https://cadarastudio.com'
 const blockText = block => (block.children || []).map(child => child.text || '').join('')
 export function formatDate(value) {

@@ -1,40 +1,7 @@
 import {readFileSync} from 'node:fs'
-import {shell, escape, safeUrl, metadata, image} from './render.mjs'
+import {shell, escape, safeUrl, metadata, projectCards} from './render.mjs'
 
 const serviceGlyphs = Object.fromEntries(['strategy', 'design', 'build'].map(name => [name, readFileSync(new URL(`../asset/home/${name}.svg`, import.meta.url), 'utf8')]))
-
-// Keep the cover first, followed by up to three distinct, similarly shaped images.
-const previewImages = project => {
-  const candidates = [project.cardImage, project.coverImage, ...(project.gallery || []).filter(block => block._type === 'galleryImage').map(block => block.image)]
-  const seen = new Set()
-  const unique = candidates.filter(value => {
-    const ref = value?.asset?._ref
-    if (!ref || seen.has(ref)) return false
-    seen.add(ref)
-    return true
-  })
-  const distance = value => {
-    const dimensions = value.asset._ref.match(/-(\d+)x(\d+)-/)
-    const crop = value.crop || {}
-    const ratio = dimensions ? Number(dimensions[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(dimensions[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 1.5
-    return Math.abs(Math.log(ratio / 1.5))
-  }
-  return unique.length ? [unique[0], ...unique.slice(1).sort((a, b) => distance(a) - distance(b))].slice(0, 4) : []
-}
-const projectCards = projects => projects.map((project, index) => {
-  const slug = project.slug.current
-  const tag = project.comingSoon ? 'article' : 'a'
-  const label = `${project.title}${project.comingSoon ? ' — coming soon' : ' — view project'}`
-  const slides = previewImages(project).map((value, slide) => {
-    const markup = image({...value, alt: ''}, {width: 1400, eager: index === 0 && slide === 0, ratio: 1.5, className: slide === 0 ? 'is-visible' : '', sizes: '(max-width: 720px) calc(100vw - 42px), 660px'})
-    // Only the cover loads initially; preview frames load on deliberate interaction.
-    return slide === 0 ? markup : markup.replace(/ src=/, ' data-src=').replace(/ srcset=/, ' data-srcset=')
-  }).join('')
-  return `<${tag} class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(label)}" ${project.comingSoon ? '' : `href="/projects?project=${escape(slug)}"`}>
-    <div class="home-project-card-content"><figure class="case-image" aria-hidden="true">${slides}</figure></div>
-    ${project.comingSoon ? '' : '<span class="home-project-eye" aria-hidden="true"></span>'}
-  </${tag}>`
-}).join('')
 
 const companyUrl = value => {
   const url = safeUrl(value)

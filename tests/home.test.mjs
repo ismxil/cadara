@@ -20,7 +20,7 @@ test('image-only project previews keep accessible navigation and defer distinct 
   ]))
   const card = $('.home-project-card').first()
   assert.equal($('.home-project-card').length, 2)
-  assert.equal(card.attr('href'), '/projects?project=client')
+  assert.equal(card.attr('href'), '/cases/client')
   assert.equal(card.attr('aria-label'), '<Client> — view project')
   assert.equal(card.find('h3, p, ul, script, Client').length, 0)
   assert.equal(card.find('img').length, 4)
@@ -100,7 +100,7 @@ test('the project wheel includes every featured project, including Mezovest afte
   const titles = ['Lemfi', 'FoMA', 'Cadana', 'Gomoney', 'Mezovest', 'Sterling']
   const $ = load(renderHome(template, {}, titles.map(title => ({title, slug: {current: title.toLowerCase()}, featured: true, comingSoon: title === 'Sterling'}))))
   assert.equal($('.home-project-card').length, 6)
-  assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/projects?project=mezovest')
+  assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/cases/mezovest')
   assert.equal($('.home-project-card[data-project-slug="sterling"]').is('article'), true)
 })
 

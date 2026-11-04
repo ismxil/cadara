@@ -1,0 +1,93 @@
+/* Vertical case study structure from the supplied Figma reference. */
+.case-study-page {
+  color-scheme: light;
+  --home-bg: transparent;
+  --home-heading: rgba(0, 0, 0, .9);
+  --home-copy: rgba(0, 0, 0, .75);
+  --home-muted: rgba(0, 0, 0, .65);
+  --home-panel: rgba(0, 0, 0, .06);
+  --home-border: transparent;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, #bff3ff 0%, #ffd4cb 75%);
+  font-family: "Suisse Intl", Arial, sans-serif;
+}
+.case-study-header {
+  position: absolute;
+  z-index: 5;
+  top: 32px;
+  left: 50%;
+  width: min(calc(100% - 40px), 662px);
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+.case-close { display: grid; place-items: center; width: 48px; height: 48px; pointer-events: auto; border-radius: 50%; }
+.case-close img { display: block; }
+.case-close:is(:hover, :focus-visible) { background: var(--home-accent); }
+.case-study { padding-top: 32px; }
+.case-hero-cover {
+  display: grid;
+  place-items: center;
+  width: min(calc(100% - 80px), 433px);
+  height: 356px;
+  margin: 0 auto;
+}
+.case-hero-cover img { display: block; width: 100%; height: auto; max-height: 356px; object-fit: contain; border-radius: 24px; }
+.case-introduction { width: min(calc(100% - 40px), 670px); margin: 92px auto 0; padding-top: 120px; text-align: center; }
+.case-introduction h1 {
+  margin: 0 0 32px;
+  font: 700 clamp(64px, 8.34vw, 120px)/1.2 "Beirut Display", Georgia, serif;
+  color: var(--home-heading);
+  letter-spacing: -.00723em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.case-summary { max-width: 609px; margin: 0 auto; font-size: 24px; line-height: 1.4; text-wrap: balance; }
+.case-narrative { width: min(calc(100% - 40px), 534px); margin: 0 auto; font-size: 20px; line-height: 1.4; }
+.case-narrative p { margin: 0 0 28px; }
+.case-narrative p:last-child { margin-bottom: 0; }
+.case-narrative h2 { margin: 0 0 28px; font: 700 32px/1.2 "Beirut Display", Georgia, serif; color: var(--home-heading); }
+.case-overview { margin-top: 92px; padding-block: 64px 0; }
+.case-details { display: flex; flex-wrap: wrap; gap: 24px 48px; margin: 32px 0 24px; font-size: 13px; line-height: 1.5; }
+.case-details div { flex: 1; }
+.case-details dt { color: var(--home-heading); margin-bottom: 4px; }
+.case-details dd { margin: 0; }
+.case-visit { display: inline-block; font-size: 14px; }
+.case-visit:is(:hover, :focus-visible) { color: #008d20; }
+.case-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(calc(100% - 40px), 940px); gap: 92px 32px; margin: 120px auto 0; }
+.case-gallery-item { grid-column: 1 / -1; margin: 0; overflow: hidden; border-radius: 32px; }
+.case-gallery-item--half { grid-column: span 1; align-self: center; }
+.case-gallery-item img { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; }
+.case-gallery-item--contain img { object-fit: contain; }
+.case-gallery .case-narrative { grid-column: 1 / -1; width: min(100%, 534px); padding-block: 120px 0; }
+.case-outcome { padding-top: 120px; margin-top: 92px; }
+.case-more { margin-top: 332px; padding-bottom: 200px; overflow: hidden; }
+.case-more .home-projects { background: transparent; }
+.case-more .home-projects-grid { border: 0; }
+.case-study-page :focus-visible { outline-color: #008d20; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 720px) {
+  .case-study-header { top: 20px; }
+  .case-study { padding-top: 84px; }
+  .case-hero-cover { height: auto; min-height: 200px; }
+  .case-hero-cover img { max-height: 280px; border-radius: 20px; }
+  .case-introduction { margin-top: 48px; padding-top: 0; }
+  .case-introduction h1 { font-size: clamp(48px, 12vw, 76px); margin-bottom: 24px; }
+  .case-summary { font-size: 20px; }
+  .case-narrative { font-size: 16px; }
+  .case-narrative h2 { font-size: 28px; }
+  .case-overview { margin-top: 48px; padding-top: 0; }
+  .case-gallery { margin-top: 64px; gap: 40px 16px; }
+  .case-gallery-item { border-radius: 20px; }
+  .case-gallery .case-narrative { padding-top: 24px; }
+  .case-outcome { margin-top: 48px; padding-top: 16px; }
+  .case-more { margin-top: 96px; padding-bottom: 80px; }
+}
+@media (max-width: 600px) { .case-gallery-item--half { grid-column: 1 / -1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .case-hero-cover, .case-introduction { animation: case-arrive 700ms cubic-bezier(.22, 1, .36, 1) backwards; }
+  .case-introduction { animation-delay: 100ms; }
+  .case-reveal { animation: case-arrive 650ms cubic-bezier(.22, 1, .36, 1) backwards; }
+}
+@keyframes case-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }

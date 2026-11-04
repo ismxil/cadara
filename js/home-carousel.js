@@ -22,7 +22,8 @@
   track.className = 'home-wheel-track';
   track.replaceChildren(...cards);
   rail.replaceChildren(track);
-  let position = (count > 1 ? count : 0) + Math.min(2, count - 1);
+  const initial = rail.dataset.initialProject ? originals.findIndex(card => card.dataset.projectSlug === rail.dataset.initialProject) : -1;
+  let position = (count > 1 ? count : 0) + (initial >= 0 ? initial : Math.min(2, count - 1));
   let dragFrame = 0, dragOffset = 0, paintedDragOffset = 0;
   let scale = 1, layout, drag, settling = false, settleTimer, suppressClick = false;
   let cursorCard, previewCard, previewTimer, previewGeneration = 0, lastPointer;
