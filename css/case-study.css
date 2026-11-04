@@ -98,3 +98,5 @@
 
 .case-study:has(.case-resize:is(:hover, :focus-visible)),
 .case-study-page.is-case-resizing .case-study { border-color: var(--home-accent); }
+
+.case-resize[data-resize-side="right"] { left: auto; right: calc((100vw - min(100vw, var(--case-width))) / 2 - 10px); }

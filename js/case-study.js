@@ -17,8 +17,8 @@ document.addEventListener('keydown', event => {
 });
 
 // Resize from the side, matching the adjustable project view on the homepage.
-const caseResize = document.querySelector('.case-resize');
-if (caseResize) {
+const caseResizes = [...document.querySelectorAll('.case-resize')];
+if (caseResizes.length) {
   const desktopResize = matchMedia('(min-width: 781px) and (pointer: fine)');
   let width = 720, resizeDrag;
   const limits = () => ({min: 720, max: innerWidth});
@@ -26,41 +26,47 @@ if (caseResize) {
     const {min, max} = limits();
     width = Math.max(min, Math.min(max, value));
     document.body.style.setProperty('--case-width', `${width}px`);
-    caseResize.setAttribute('aria-valuenow', String(Math.round(width)));
-    caseResize.setAttribute('aria-valuemax', String(Math.round(max)));
-    caseResize.setAttribute('aria-valuetext', `${Math.round(width)} pixels wide. Use left and right arrow keys to resize.`);
+    caseResizes.forEach(handle => {
+      handle.setAttribute('aria-valuenow', String(Math.round(width)));
+      handle.setAttribute('aria-valuemax', String(Math.round(max)));
+      handle.setAttribute('aria-valuetext', `${Math.round(width)} pixels wide. Use left and right arrow keys to resize.`);
+    });
   };
   const syncResize = () => {
-    caseResize.hidden = !desktopResize.matches;
+    caseResizes.forEach(handle => { handle.hidden = !desktopResize.matches; });
     if (!desktopResize.matches) width = 720;
     setWidth(width);
   };
   const endResize = event => {
     if (resizeDrag?.id !== event.pointerId) return;
     if (event.type === 'pointercancel') setWidth(resizeDrag.width);
+    const handle = resizeDrag.handle;
     resizeDrag = null;
     document.body.classList.remove('is-case-resizing');
-    if (caseResize.hasPointerCapture(event.pointerId)) caseResize.releasePointerCapture(event.pointerId);
+    if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
   };
-  caseResize.addEventListener('pointerdown', event => {
-    if (!desktopResize.matches || event.button !== 0) return;
-    event.preventDefault();
-    resizeDrag = {id: event.pointerId, x: event.clientX, width};
-    caseResize.setPointerCapture(event.pointerId);
-    document.body.classList.add('is-case-resizing');
-  });
-  caseResize.addEventListener('pointermove', event => {
-    if (resizeDrag?.id === event.pointerId) setWidth(resizeDrag.width - 2 * (event.clientX - resizeDrag.x));
-  });
-  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => caseResize.addEventListener(type, endResize));
-  caseResize.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && resizeDrag) {
+  caseResizes.forEach(caseResize => {
+    const direction = caseResize.dataset.resizeSide === 'right' ? 1 : -1;
+    caseResize.addEventListener('pointerdown', event => {
+      if (!desktopResize.matches || event.button !== 0) return;
       event.preventDefault();
-      endResize({pointerId: resizeDrag.id, type: 'pointercancel'});
-    } else if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-      event.preventDefault();
-      setWidth(event.key === 'Home' ? 720 : event.key === 'End' ? limits().max : width + (event.key === 'ArrowLeft' ? 1 : -1) * (event.shiftKey ? 80 : 20));
-    }
+      resizeDrag = {id: event.pointerId, x: event.clientX, width, handle: caseResize};
+      caseResize.setPointerCapture(event.pointerId);
+      document.body.classList.add('is-case-resizing');
+    });
+    caseResize.addEventListener('pointermove', event => {
+      if (resizeDrag?.id === event.pointerId && resizeDrag.handle === caseResize) setWidth(resizeDrag.width + direction * 2 * (event.clientX - resizeDrag.x));
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => caseResize.addEventListener(type, endResize));
+    caseResize.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && resizeDrag) {
+        event.preventDefault();
+        endResize({pointerId: resizeDrag.id, type: 'pointercancel'});
+      } else if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        setWidth(event.key === 'Home' ? 720 : event.key === 'End' ? limits().max : width + direction * (event.key === 'ArrowRight' ? 1 : -1) * (event.shiftKey ? 80 : 20));
+      }
+    });
   });
   desktopResize.addEventListener('change', syncResize);
   window.addEventListener('resize', syncResize);
