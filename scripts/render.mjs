@@ -152,7 +152,9 @@ export function renderCase(template, studio, project, projects) {
   if (project.slug.current !== 'cadana' && project.outcome?.length) $('.case-outcome').html(`${project.outcomeHeading ? `<h2>${escape(project.outcomeHeading)}</h2>` : ''}${paragraphs(project.outcome)}`)
   else $('.case-outcome').remove()
   const published = projects.filter(item => !item.comingSoon)
-  $('.home-projects-grid').attr('data-initial-project', project.slug.current).html(projectCards(published))
+  const currentIndex = published.findIndex(item => item.slug?.current === project.slug.current)
+  const initialProject = published[(currentIndex + 1) % published.length] || project
+  $('.home-projects-grid').attr('data-initial-project', initialProject.slug.current).html(projectCards(published))
   if (published.length < 2) $('.case-more').remove()
   return $.html()
 }
