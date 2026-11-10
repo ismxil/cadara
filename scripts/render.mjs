@@ -143,7 +143,7 @@ export function renderCase(template, studio, project, projects) {
         ${sections.map(section => `<section class="case-overview-section">${section.heading ? `<h2>${escape(section.heading)}</h2>` : ''}${paragraphs(section.paragraphs)}</section>`).join('')}
         <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
         ${project.duration ? `<div><dt>Duration</dt><dd class="case-duration">${escape(project.duration)}</dd></div>` : ''}</dl>
-        ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company <span aria-hidden="true">↗</span></a>` : ''}
+        ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">visit company<span class="case-visit-icon" aria-hidden="true"></span></a>` : ''}
         <button class="case-collapse" type="button" hidden>See less<span class="case-disclosure-icon" aria-hidden="true"></span></button>
       </div>
     </details>`)

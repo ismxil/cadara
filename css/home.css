@@ -219,7 +219,7 @@ button {
 .engagement-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+  gap: 16px;
   padding: 0;
   margin: 32px 0 0;
   list-style: none;
@@ -227,35 +227,34 @@ button {
 .engagement {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 12px;
   min-height: 42.06px;
   width: 100%;
   color: var(--home-heading);
   font-family: "Suisse Intl", Arial, sans-serif;
 }
-.engagement[href]::after {
+.engagement::after {
   content: "";
-  flex: 0 0 16px;
-  height: 16px;
+  flex: 0 0 32px;
+  height: 32px;
   margin-left: auto;
-  margin-right: 2px;
-  opacity: 0.35;
+  opacity: 0.28;
   background: currentColor;
-  mask: url("../asset/home/external-mask.svg") center / 10.0672px 10.0669px no-repeat;
+  mask: url("../asset/home/engagement-arrow.svg") center / 32px 32px no-repeat;
 }
 .engagement-tags {
   display: flex;
-  gap: 3px;
+  gap: 8px;
 }
 .engagement-tags > span {
   border-radius: 999px;
   background: var(--home-panel);
-  padding: 7.6px 10.254px;
-  font-size: 15px;
-  line-height: 15.3px;
-  letter-spacing: 0.459px;
+  padding: 8px 12px;
+  font-size: 16px;
+  line-height: 16px;
   text-transform: uppercase;
   white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 .engagement-name {
   font-size: 42.4px;
@@ -264,13 +263,13 @@ button {
 }
 .engagement-year {
   font:
-    400 11.3px/11.28px "Suisse Intl",
-    Arial,
-    sans-serif;
+    400 11.3px/11.28px "SF Mono",
+    ui-monospace,
+    Menlo,
+    monospace;
   opacity: 0.7;
   align-self: flex-start;
-  padding-top: 2px;
-  margin-left: 6px;
+  margin-left: -4px;
 }
 .home-services {
   display: flex;
@@ -636,17 +635,25 @@ button {
   .team-avatar { height: 115px; }
   .team-linkedin { width: 16px; height: 16px; right: 7px; bottom: 12px; }
   .home-team-role { font-size: 11px; }
+  .engagement-list { gap: 16px; }
+  .engagement { gap: 8px; }
+  .engagement-tags { gap: 4px; }
   .engagement-tags > span {
     font-size: 10px;
     line-height: 12px;
-    padding: 6px 7px;
+    padding: 6px 8px;
   }
   .engagement-name {
     font-size: 32px;
     line-height: 38px;
   }
   .engagement-year {
-    margin-left: 3px;
+    margin-left: -4px;
+  }
+  .engagement::after {
+    flex-basis: 24px;
+    height: 24px;
+    mask-size: 24px 24px;
   }
   .home-section-title {
     font-size: 28px;
@@ -658,11 +665,15 @@ button {
 }
 
 /* The complete linked engagement row shares the accent on interaction. */
-.engagement > *, .engagement[href]::after { transition: color 180ms ease, opacity 180ms ease; }
+.engagement > *, .engagement::after { transition: color 180ms ease, opacity 180ms ease; }
 .engagement:is(:hover, :focus-visible) { text-decoration: none; }
 .engagement[href]:is(:hover, :focus-visible) { color: var(--home-accent); }
 .engagement[href]:is(:hover, :focus-visible) > *,
 .engagement[href]:is(:hover, :focus-visible)::after { opacity: 1; }
+.engagement[href]:is(:hover, :focus-visible) .engagement-tags > span { background: var(--home-accent); color: rgba(0, 0, 0, 0.9); }
+.engagement[href]:is(:hover, :focus-visible) .engagement-year { opacity: 0.7; }
+.engagement[aria-disabled="true"] .engagement-tags > span { background: rgba(255, 255, 255, 0.25); color: #fff; }
+[data-theme="light"] .engagement[aria-disabled="true"] .engagement-tags > span { background: rgba(0, 0, 0, 0.25); color: #000; }
 .home-wordmark {
   margin-top: 0;
 }
@@ -1083,7 +1094,7 @@ button {
 
 .engagement[aria-disabled="true"],
 .engagement[aria-disabled="true"]:hover {
-  opacity: 0.35;
+  opacity: 0.25;
   cursor: default;
 }
 :root[data-theme="light"] ::selection {

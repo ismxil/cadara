@@ -18,6 +18,7 @@
 }
 .case-close { display: grid; place-items: center; width: 48px; height: 48px; pointer-events: auto; border-radius: 50%; }
 .case-close-icon { display: block; width: 48px; height: 48px; background: var(--home-accent); mask: url('../asset/home/case-close.svg') center / contain no-repeat; }
+:root[data-theme="light"] .case-close-icon,
 .case-close:is(:hover, :focus-visible) .case-close-icon { background: #000; }
 .case-close:is(:hover, :focus-visible) { background: var(--home-accent); }
 .case-study {
@@ -45,8 +46,11 @@
 .case-details:not(:has(*)) { display: none; }
 .case-details dt { margin-bottom: 16px; font: 700 24px/1.2 "Beirut Display", Georgia, serif; color: var(--home-heading); }
 .case-details dd { margin: 0; }
-.case-visit { display: inline-block; margin-top: 40px; font-size: inherit; }
-.case-visit:is(:hover, :focus-visible) { color: var(--home-accent); text-decoration: none; }
+/* Visit company pill from Figma (node 1247:7825). */
+.case-visit { display: inline-flex; align-items: center; gap: 4px; margin-top: 40px; padding: 8px 8px 8px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.15); color: var(--home-heading); font: 400 16px/20px "Suisse Intl", Arial, sans-serif; text-decoration: none; transition: background-color 180ms ease, color 180ms ease; }
+.case-visit-icon { flex: 0 0 20px; width: 20px; height: 20px; margin-top: 4px; background: currentColor; mask: url('../asset/home/visit-arrow.svg') center / 20px 20px no-repeat; }
+:root[data-theme="light"] .case-visit { background: rgba(0, 0, 0, 0.08); }
+.case-visit:is(:hover, :focus-visible) { background: var(--home-accent); color: rgba(0, 0, 0, 0.9); text-decoration: none; }
 .case-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 16px; margin: 120px auto 0; }
 .case-gallery-item { grid-column: 1 / -1; margin: 0; overflow: hidden; border-radius: 32px; }
 .case-gallery-item--half { grid-column: span 1; align-self: center; border-radius: 16px; }
