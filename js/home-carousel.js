@@ -10,6 +10,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const desktop = matchMedia('(min-width: 721px) and (hover: hover) and (pointer: fine)');
+  const column = rail.closest('.case-more') ? document.querySelector('.case-study') : null;
   const count = originals.length;
   const modulo = value => ((value % count) + count) % count;
   // Three copies keep both sides populated while crossing either end of the list.
@@ -118,7 +119,10 @@
   const geometry = () => {
     const width = rail.clientWidth;
     const gap = width <= 720 ? 12 : 20;
-    const base = width <= 720 ? width - 80 : Math.min(660, Math.max(300, width * .32));
+    // On case studies the centre card spans the column, so each column line
+    // falls in the middle of the gap beside it.
+    const columnWidth = column?.getBoundingClientRect().width;
+    const base = width <= 720 ? width - 80 : columnWidth ? Math.max(300, Math.min(width - 2 * gap, columnWidth - gap)) : Math.min(660, Math.max(300, width * .32));
     const center = base * scale;
     const sideBase = width <= 720 ? base : Math.max(80, (width - base - (width >= 1000 ? 6 : 4) * gap) / (width >= 1000 ? 4 : 2));
     const side = sideBase * scale;
@@ -378,6 +382,16 @@
       render(); syncResize();
     });
   }).observe(rail);
+  if (column) {
+    // Follow the case study column as it is resized from its side handles.
+    let columnWidth = column.getBoundingClientRect().width;
+    new ResizeObserver(() => {
+      const next = column.getBoundingClientRect().width;
+      if (next === columnWidth) return;
+      columnWidth = next;
+      render();
+    }).observe(column);
+  }
   desktop.addEventListener('change', () => { scale = 1; render(); syncResize(); });
   reducedMotion.addEventListener('change', () => { stopPreview(); if (settling) finish(); });
   finePointer.addEventListener('change', () => { stopPreview(); hideCursor(); });
