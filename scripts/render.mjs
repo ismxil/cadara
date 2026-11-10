@@ -73,10 +73,10 @@ export function cards(projects) {
       ${project.comingSoon ? '<span class="case-card-soon">Coming soon</span>' : ''}</${tag}>`
   }).join('\n')
 }
-function socialImage($, url = `${siteUrl}/asset/og.png`, branded = true) {
+function socialImage($, url = `${siteUrl}/asset/og.jpg`, branded = true) {
   $('meta[property^="og:image"], meta[name^="twitter:image"], meta[name="twitter:card"]').remove()
   $('head').append(`<meta property="og:image" content="${escape(url)}"><meta name="twitter:image" content="${escape(url)}"><meta name="twitter:card" content="summary_large_image">`)
-  if (branded) $('head').append('<meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="668"><meta property="og:image:alt" content="Cadara wordmark on a bright green background"><meta name="twitter:image:alt" content="Cadara wordmark on a bright green background">')
+  if (branded) $('head').append('<meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Cadara — your design, strategy and product partner"><meta name="twitter:image:alt" content="Cadara — your design, strategy and product partner">')
 }
 export function shell(template, studio) {
   const $ = load(template)
