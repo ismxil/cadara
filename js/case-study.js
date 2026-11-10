@@ -8,11 +8,26 @@ if (!reducedMotion.matches && 'IntersectionObserver' in window) {
       observer.unobserve(entry.target);
     });
   }, {threshold: .08});
-  document.querySelectorAll('.case-gallery > *, .case-outcome').forEach(element => observer.observe(element));
+  document.querySelectorAll('.case-gallery > *').forEach(element => observer.observe(element));
+}
+// The expanded introduction floats over the artwork; "See less" sits at its end.
+const background = document.querySelector('.case-background');
+const collapse = background?.querySelector('.case-collapse');
+const closeBackground = () => {
+  background.open = false;
+  background.querySelector('summary').focus({preventScroll: true});
+  const top = background.closest('.case-introduction').getBoundingClientRect().top;
+  if (top < 0) scrollBy({top: top - 96, behavior: reducedMotion.matches ? 'auto' : 'smooth'});
+};
+if (collapse) {
+  collapse.hidden = false;
+  collapse.addEventListener('click', closeBackground);
+  background.classList.add('has-collapse');
 }
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !event.defaultPrevented && !event.target.closest('input, textarea, select, [contenteditable]')) {
-    location.assign(document.querySelector('.case-close').href);
+    if (background?.open) closeBackground();
+    else location.assign(document.querySelector('.case-close').href);
   }
 });
 

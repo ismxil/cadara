@@ -128,15 +128,23 @@ export function renderCase(template, studio, project, projects) {
   const defaultCadanaLead = "An identity design for a Global Payment Infrastructure for talent marketplaces, staffing platforms, international HR providers, Cadana's white-label infrastructure that enables businesses across the world to pay talents in over 100+ countries."
   const lead = project.lead || (project.slug.current === 'cadana' ? defaultCadanaLead : project.intro?.[0] || project.headline || project.summary)
   const background = (project.intro || []).filter((text, index) => index !== 0 || text !== lead)
+  // Gallery text and the outcome now read inside the expanded introduction, above the artwork.
+  const showNarrative = project.slug.current !== 'cadana'
+  const sections = showNarrative ? [
+    ...(project.gallery || []).filter(block => block._type === 'galleryText').map(block => ({heading: block.heading, paragraphs: block.paragraphs})),
+    ...(project.outcome?.length ? [{heading: project.outcomeHeading, paragraphs: project.outcome}] : []),
+  ] : []
   $('.case-introduction').html(`<h1>${escape(project.title)}</h1>
     <p class="case-summary">${escape(lead)}</p>
     <details class="case-background"><summary><span class="case-see-more">See more</span><span class="case-see-less">See less</span><span class="case-disclosure-icon" aria-hidden="true"></span></summary>
       <div class="case-overview case-narrative">
         ${project.headline && project.headline !== lead ? `<p class="case-headline">${escape(project.headline)}</p>` : ''}
         ${paragraphs(background)}
+        ${sections.map(section => `<section class="case-overview-section">${section.heading ? `<h2>${escape(section.heading)}</h2>` : ''}${paragraphs(section.paragraphs)}</section>`).join('')}
         <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
         ${project.duration ? `<div><dt>Duration</dt><dd class="case-duration">${escape(project.duration)}</dd></div>` : ''}</dl>
         ${safeUrl(project.website) ? `<a class="case-visit" href="${escape(safeUrl(project.website))}" target="_blank" rel="noopener">Visit company <span aria-hidden="true">↗</span></a>` : ''}
+        <button class="case-collapse" type="button" hidden>See less<span class="case-disclosure-icon" aria-hidden="true"></span></button>
       </div>
     </details>`)
   const dimensions = value => {
@@ -146,11 +154,9 @@ export function renderCase(template, studio, project, projects) {
   }
   const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {eager: options.eager, ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
   $('.case-gallery').html(media(project.coverImage, {eager: true}) + (project.gallery || []).map(block => {
-    if (block._type === 'galleryText') return project.slug.current === 'cadana' ? '' : `<section class="case-narrative"><h2>${escape(block.heading)}</h2>${paragraphs(block.paragraphs)}</section>`
+    if (block._type === 'galleryText') return ''
     return media(block.image, {half: block.width === 'half', contain: block.fit === 'contain', ratio: Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : undefined})
   }).join(''))
-  if (project.slug.current !== 'cadana' && project.outcome?.length) $('.case-outcome').html(`${project.outcomeHeading ? `<h2>${escape(project.outcomeHeading)}</h2>` : ''}${paragraphs(project.outcome)}`)
-  else $('.case-outcome').remove()
   const published = projects.filter(item => !item.comingSoon)
   const currentIndex = published.findIndex(item => item.slug?.current === project.slug.current)
   const initialProject = published[(currentIndex + 1) % published.length] || project

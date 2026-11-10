@@ -17,9 +17,8 @@
   pointer-events: none;
 }
 .case-close { display: grid; place-items: center; width: 48px; height: 48px; pointer-events: auto; border-radius: 50%; }
-.case-close img { display: block; filter: invert(1); }
-:root[data-theme="light"] .case-close img,
-.case-close:is(:hover, :focus-visible) img { filter: none; }
+.case-close-icon { display: block; width: 48px; height: 48px; background: var(--home-accent); mask: url('../asset/home/case-close.svg') center / contain no-repeat; }
+.case-close:is(:hover, :focus-visible) .case-close-icon { background: #000; }
 .case-close:is(:hover, :focus-visible) { background: var(--home-accent); }
 .case-study {
   position: relative;
@@ -42,19 +41,17 @@
 .case-narrative p:last-child { margin-bottom: 0; }
 .case-narrative h2 { margin: 0 0 24px; font: 700 24px/1.2 "Beirut Display", Georgia, serif; color: var(--home-heading); }
 .case-overview { width: 100%; margin-top: 24px; padding: 0; }
-.case-details { display: flex; flex-wrap: wrap; gap: 24px 48px; margin: 32px 0 24px; font-size: 13px; line-height: 1.5; }
-.case-details div { flex: 1; }
-.case-details dt { color: var(--home-heading); margin-bottom: 4px; }
+.case-details { display: flex; flex-direction: column; gap: 40px; margin: 40px 0 0; font-size: inherit; line-height: inherit; }
+.case-details:not(:has(*)) { display: none; }
+.case-details dt { margin-bottom: 16px; font: 700 24px/1.2 "Beirut Display", Georgia, serif; color: var(--home-heading); }
 .case-details dd { margin: 0; }
-.case-visit { display: inline-block; font-size: 14px; }
+.case-visit { display: inline-block; margin-top: 40px; font-size: inherit; }
 .case-visit:is(:hover, :focus-visible) { color: var(--home-accent); text-decoration: none; }
 .case-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 24px; margin: 120px auto 0; }
 .case-gallery-item { grid-column: 1 / -1; margin: 0; overflow: hidden; border-radius: 32px; }
 .case-gallery-item--half { grid-column: span 1; align-self: center; border-radius: 16px; }
 .case-gallery-item img { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; }
 .case-gallery-item--contain img { object-fit: contain; }
-.case-gallery .case-narrative { grid-column: 1 / -1; width: min(100%, 534px); padding-block: 68px; }
-.case-outcome { margin-top: 92px; }
 .case-more { margin-top: 332px; padding-bottom: 0; overflow: hidden; }
 .case-more .home-projects { background: transparent; }
 .case-more .home-projects-grid { border: 0; height: calc(var(--wheel-height, 440px) + 2 * var(--card-row-gap)); }
@@ -70,8 +67,6 @@
   .case-gallery { margin-top: 64px; gap: 24px; }
   .case-gallery-item { border-radius: 20px; }
   .case-gallery-item--half { border-radius: 10px; }
-  .case-gallery .case-narrative { padding-block: 24px; }
-  .case-outcome { margin-top: 48px; }
   .case-more { margin-top: 96px; padding-bottom: 0; }
 }
 @media (max-width: 600px) { .case-gallery-item--half { grid-column: 1 / -1; } }
@@ -100,3 +95,46 @@
 .case-study-page.is-case-resizing .case-study { border-color: var(--home-accent); }
 
 .case-resize[data-resize-side="right"] { left: auto; right: calc((100vw - min(100vw, var(--case-width))) / 2 - 10px); }
+
+/* Expanded introduction: overlays the artwork on a blurred, tinted panel
+   instead of pushing the gallery down. */
+.case-background { position: relative; z-index: 4; }
+.case-background > summary { position: relative; }
+.case-background.has-collapse[open] > summary { visibility: hidden; }
+.case-background[open] > .case-overview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-top: 0;
+  padding-bottom: 56px;
+  isolation: isolate;
+}
+.case-background[open] > .case-overview::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -32px;
+  bottom: -240px;
+  left: 50%;
+  width: calc(min(100vw, var(--case-width)) - 2px);
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, var(--home-bg) 0, color-mix(in srgb, var(--home-bg) 82%, transparent) 40%, color-mix(in srgb, var(--home-bg) 55%, transparent) 100%);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 240px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 240px), transparent);
+  pointer-events: none;
+}
+.case-overview-section { margin-top: 40px; }
+.case-overview-section h2 { margin: 0 0 16px; }
+.case-overview-section p { margin: 0 0 20px; }
+.case-overview-section p:last-child { margin-bottom: 0; }
+.case-collapse { display: flex; align-items: center; gap: 8px; margin-top: 40px; padding: 0; border: 0; background: none; color: inherit; font: 400 20px/24px "Beirut Text", Georgia, serif; cursor: var(--click-cursor, pointer); }
+.case-collapse[hidden] { display: none; }
+.case-collapse .case-disclosure-icon { flex: 0 0 20px; width: 20px; height: 20px; transform: translateY(2px) rotate(45deg); background: currentColor; mask: url('../asset/home/plus.svg') center / 24px no-repeat; }
+.case-collapse:is(:hover, :focus-visible) { color: var(--home-accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .case-background[open] > .case-overview > * { animation: case-overview-in 360ms cubic-bezier(.22, 1, .36, 1); }
+}
+@keyframes case-overview-in { from { opacity: 0; } to { opacity: 1; } }

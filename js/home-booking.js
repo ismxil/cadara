@@ -1,6 +1,6 @@
 (() => {
-  const link = document.querySelector('.home-booking');
-  if (!link) return;
+  const links = [...document.querySelectorAll('.home-booking, .home-chat')];
+  if (!links.length) return;
   let loading, opening = false;
 
   function loadCalendar() {
@@ -29,16 +29,18 @@
   }
 
   // Warm up the embed near the footer, while keeping the regular link as fallback.
+  // The header chat icon can be clicked right away, so warm up on intent too.
+  links.forEach(link => ['pointerenter', 'focus'].forEach(type => link.addEventListener(type, () => loadCalendar().catch(() => {}), {once: true})));
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       if (!entries.some(entry => entry.isIntersecting)) return;
       observer.disconnect();
       loadCalendar().catch(() => {});
     }, {rootMargin: '400px'});
-    observer.observe(link);
+    observer.observe(document.querySelector('.home-booking') || links[0]);
   }
 
-  link.addEventListener('click', async (event) => {
+  links.forEach(link => link.addEventListener('click', async (event) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     if (opening) return;
@@ -56,5 +58,5 @@
       opening = false;
       link.removeAttribute('aria-busy');
     }
-  });
+  }));
 })();

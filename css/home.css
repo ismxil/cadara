@@ -157,6 +157,7 @@ button {
 .home-view-label { display: none; }
 .home-control .home-view-icon,
 .home-control .home-theme-icon,
+.home-control .home-chat-icon,
 .home-control img { display: block; width: 48px; height: 48px; }
 .home-control img { filter: invert(1); }
 [data-theme="light"] .home-control img { filter: none; }
@@ -1221,8 +1222,9 @@ button {
 .home-view-icon { --control-glyph: url("../asset/home/folder.svg"); }
 .view-toggle[aria-pressed="true"] .home-view-icon { --control-glyph: url("../asset/home/doc.svg"); }
 .home-theme-icon { --control-glyph: url("../asset/home/dark.svg"); }
+.home-chat-icon { --control-glyph: url("../asset/home/chat.svg"); }
 .theme-toggle[aria-pressed="true"] .home-theme-icon { --control-glyph: url("../asset/home/light.svg"); }
-.home-control:is(:hover, :focus-visible) :is(.home-view-icon, .home-theme-icon) {
+.home-control:is(:hover, :focus-visible) :is(.home-view-icon, .home-theme-icon, .home-chat-icon) {
   background: currentColor;
   mask: var(--control-glyph) center / contain no-repeat;
 }
