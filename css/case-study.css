@@ -56,6 +56,10 @@
 .case-gallery-item--half { grid-column: span 1; align-self: center; border-radius: 16px; }
 .case-gallery-item img { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; }
 .case-gallery-item--contain img { object-fit: contain; }
+/* Image rows from the CMS. Pairs are two squares side by side; grids are three across. */
+.case-gallery-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: inherit; }
+.case-gallery-row--grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.case-gallery-row > .case-gallery-item--half { align-self: start; }
 /* Like the homepage: the column lines run down to the carousel, which is framed by
    full-width lines above and below. Padding (not margin) carries the column lines. */
 .case-more { position: relative; margin-top: 0; padding-top: 332px; padding-bottom: 0; overflow: hidden; }
@@ -79,7 +83,11 @@
   .case-more { margin-top: 0; padding-top: 96px; padding-bottom: 0; }
   .case-more::before { display: none; }
 }
-@media (max-width: 600px) { .case-gallery-item--half { grid-column: 1 / -1; } }
+@media (max-width: 600px) {
+  .case-gallery-item--half { grid-column: 1 / -1; }
+  .case-gallery-row > .case-gallery-item--half { grid-column: auto; }
+  .case-gallery-row--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (prefers-reduced-motion: no-preference) {
   .case-introduction { animation: case-arrive 700ms cubic-bezier(.22, 1, .36, 1) backwards; }
   .case-introduction { animation-delay: 100ms; }

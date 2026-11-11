@@ -6,32 +6,36 @@ const paragraphs = (name, title) => defineField({name, title, type: 'array', of:
 const externalUrl = (name, title) => defineField({name, title, type: 'url', validation: Rule => Rule.uri({scheme: ['http', 'https']})})
 const slug = (source, reserved = []) => defineField({name: 'slug', type: 'slug', title: 'URL slug', options: {source}, validation: Rule => Rule.required().custom(value =>
   !value?.current || (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value.current) && !reserved.includes(value.current)) ? true : 'Use lowercase letters, numbers, and hyphens; this slug must not be a reserved page name.')})
-const width = defineField({name: 'width', title: 'Layout width', type: 'string', options: {list: [{title: 'Full width', value: 'full'}, {title: 'Half width', value: 'half'}]}, initialValue: 'full', validation: required})
 const contentImage = defineType({name: 'contentImage', title: 'Image', type: 'image', options: {hotspot: true}, fields: [string('alt', 'Alternative text', true)]})
-const galleryImage = defineType({name: 'galleryImage', title: 'Gallery image', type: 'object', fields: [
-  defineField({name: 'image', type: 'contentImage', validation: required}), width,
-  defineField({name: 'aspectRatio', title: 'Aspect ratio (width / height)', type: 'number', initialValue: 16 / 9, validation: Rule => Rule.positive()}),
-  defineField({name: 'fit', title: 'Image fit', type: 'string', options: {list: ['cover', 'contain']}, initialValue: 'cover'}),
-], preview: {select: {title: 'image.alt', media: 'image'}}})
-const galleryText = defineType({name: 'galleryText', title: 'Gallery text', type: 'object', fields: [string('heading', 'Heading', true), paragraphs('paragraphs', 'Paragraphs'), width], preview: {select: {title: 'heading'}}})
+export const imageLayouts = [{title: 'Single (full width)', value: 'single'}, {title: 'Pair (two squares)', value: 'pair'}, {title: 'Grid (three across)', value: 'grid'}]
+const layoutCounts = {single: [1, 1], pair: [1, 2], grid: [3, Infinity]}
+// One row of case-study images. The layout decides the arrangement; crop each image in place to adjust framing.
+const imageRow = defineType({name: 'imageRow', title: 'Images', type: 'object', fields: [
+  defineField({name: 'layout', title: 'Layout', type: 'string', options: {list: imageLayouts, layout: 'radio', direction: 'horizontal'}, initialValue: 'single', validation: required}),
+  defineField({name: 'images', title: 'Images', type: 'array', of: [{type: 'contentImage'}], options: {layout: 'grid'}, validation: Rule => Rule.required().min(1).custom((images, context) => {
+    const [min, max] = layoutCounts[context.parent?.layout] || [1, Infinity]
+    const count = images?.length || 0
+    if (count > max) return `${context.parent.layout === 'single' ? 'A single' : 'A pair'} holds ${max} image${max > 1 ? 's' : ''}. Add another row for the rest.`
+    if (count && count < min) return 'A grid needs at least three images. Use a pair or single instead.'
+    return true
+  })}),
+], preview: {select: {layout: 'layout', images: 'images', media: 'images.0'}, prepare: ({layout, images, media}) => {
+  const count = Object.keys(images || {}).length
+  return {title: (imageLayouts.find(item => item.value === layout) || imageLayouts[0]).title, subtitle: `${count} image${count === 1 ? '' : 's'}`, media}
+}}})
+const storySection = defineType({name: 'storySection', title: 'Story section', type: 'object', fields: [string('heading', 'Heading', true), paragraphs('paragraphs', 'Paragraphs')], preview: {select: {title: 'heading', subtitle: 'paragraphs.0'}}})
 const caseStudy = defineType({name: 'caseStudy', title: 'Case study', type: 'document', fields: [
-  string('title', 'Client / project name', true), slug('title', ['work', 'offer']), text('summary', 'Card description', true),
-  defineField({name: 'cardImage', title: 'Card image', type: 'contentImage', validation: required}),
-  defineField({name: 'order', title: 'Display order', type: 'number', initialValue: 0}),
+  string('title', 'Project name', true), slug('title', ['work', 'offer']),
+  defineField({name: 'summary', title: 'Short description', type: 'text', rows: 2, description: 'One sentence. Shown under "See more" and used for search and link previews.', validation: required}),
+  defineField({name: 'cardImage', title: 'Homepage card image', type: 'contentImage', validation: required}),
   defineField({name: 'featured', title: 'Show on homepage', type: 'boolean', initialValue: true}),
-  defineField({name: 'comingSoon', title: 'Coming soon (card only)', type: 'boolean', initialValue: false}),
-  text('headline', 'Case study headline'),
-  text('lead', 'Case study introduction (above See more)'),
-  defineField({name: 'services', type: 'array', of: [{type: 'string'}]}),
-  defineField({name: 'date', title: 'Project date', type: 'date'}),
-  string('duration', 'Project duration (instead of date)'),
-  paragraphs('intro', 'Introduction paragraphs'), externalUrl('website', 'Company website'),
-  defineField({name: 'coverImage', title: 'Hero image', type: 'contentImage', validation: Rule => Rule.custom((value, context) => context.parent?.comingSoon || value?.asset ? true : 'Add a hero image for a complete case study.')}),
-  defineField({name: 'appearance', title: 'Existing project styling', type: 'string', options: {list: ['default', 'lemfi', 'foma', 'cadana', 'gomoney', 'mezovest']}, initialValue: 'default'}),
-  defineField({name: 'gallery', title: 'Gallery (drag to reorder)', type: 'array', of: [{type: 'galleryImage'}, {type: 'galleryText'}]}),
-  string('outcomeHeading', 'Closing section heading'), paragraphs('outcome', 'Closing paragraphs'),
-  defineField({name: 'nextProject', title: 'Next project', type: 'reference', to: [{type: 'caseStudy'}]}),
-  text('seoDescription', 'Search description'),
+  defineField({name: 'order', title: 'Display order', type: 'number', description: 'Lower numbers appear first.', initialValue: 0}),
+  defineField({name: 'intro', title: 'Introduction', type: 'array', of: [{type: 'text', rows: 4}], description: 'The first paragraph shows on the page; the rest appear under "See more".'}),
+  defineField({name: 'sections', title: 'Story sections', type: 'array', of: [{type: 'storySection'}], description: 'Headed sections under "See more", e.g. Objective, Outcome.'}),
+  defineField({name: 'services', type: 'array', of: [{type: 'string'}], options: {layout: 'tags'}}),
+  string('duration', 'Duration', false),
+  externalUrl('website', 'Company website'),
+  defineField({name: 'images', title: 'Images', type: 'array', of: [{type: 'imageRow'}], description: 'Drag to reorder. The first image is the hero. Choose single, pair (two squares) or grid for each row. Set a hotspot to choose what stays in frame.', validation: Rule => Rule.required().min(1)}),
 ], preview: {select: {title: 'title', media: 'cardImage', subtitle: 'summary'}}})
 const richText = defineType({name: 'richText', title: 'Article body', type: 'array', of: [
   {type: 'block', styles: [{title: 'Paragraph', value: 'normal'}, {title: 'Heading', value: 'h2'}, {title: 'Subheading', value: 'h3'}, {title: 'Quote', value: 'blockquote'}],
@@ -68,4 +72,4 @@ const studioPage = defineType({name: 'studioPage', title: 'Studio', type: 'docum
   defineField({name: 'contactEmail', type: 'string', validation: Rule => Rule.required().email()}),
   defineField({name: 'socials', title: 'Social links', type: 'array', of: [{type: 'object', name: 'socialLink', fields: [string('title', 'Label', true), externalUrl('url', 'URL')]}]}),
 ]})
-export const schemaTypes = [contentImage, galleryImage, galleryText, richText, caseStudy, insight, studioPage]
+export const schemaTypes = [contentImage, imageRow, storySection, richText, caseStudy, insight, studioPage]

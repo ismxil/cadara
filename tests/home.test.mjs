@@ -4,18 +4,18 @@ import {readFile} from 'node:fs/promises'
 import {load} from 'cheerio'
 import {renderHome} from '../scripts/home.mjs'
 const template = await readFile(new URL('../index.html', import.meta.url), 'utf8')
-const projects = [{_id: 'cadana', slug: {current: 'cadana'}, website: 'https://cadana.example/'}, {_id: 'foma', slug: {current: 'foma'}, comingSoon: true}]
+const projects = [{_id: 'cadana', slug: {current: 'cadana'}, website: 'https://cadana.example/'}, {_id: 'foma', slug: {current: 'foma'}}]
 
 test('image-only project previews keep accessible navigation and defer distinct gallery frames', () => {
   const photo = (id, width = 900, height = 600) => ({asset: {_ref: `image-${id}-${width}x${height}-jpg`}, alt: 'Project image'})
   const cover = photo('cover')
   const $ = load(renderHome(template, {}, [
-    {title: '<Client>', slug: {current: 'client'}, featured: true, cardImage: cover, coverImage: cover, gallery: [
-      {_type: 'galleryImage', image: photo('portrait', 600, 1200)},
-      {_type: 'galleryText', heading: 'Context'},
-      ...['one', 'two', 'three'].map(id => ({_type: 'galleryImage', image: photo(id)})),
+    {title: '<Client>', slug: {current: 'client'}, featured: true, cardImage: cover, images: [
+      {layout: 'single', images: [cover]},
+      {layout: 'pair', images: [photo('portrait', 600, 1200), photo('one')]},
+      {layout: 'grid', images: ['two', 'three', 'four'].map(id => photo(id))},
     ]},
-    {title: 'Upcoming', slug: {current: 'upcoming'}, featured: true, comingSoon: true, cardImage: photo('upcoming')},
+    {title: 'Second', slug: {current: 'second'}, featured: true, cardImage: photo('second')},
     {title: 'Hidden', slug: {current: 'hidden'}, featured: false},
   ]))
   const card = $('.home-project-card').first()
@@ -29,10 +29,8 @@ test('image-only project previews keep accessible navigation and defer distinct 
   assert.equal(card.find('img.is-visible').length, 1)
   assert.equal(card.find('img[data-src*="portrait"]').length, 0)
   assert.equal(card.find('img[src*="cover"]').length, 1)
-  assert.equal($('.home-project-eye').length, 1)
-  assert.equal($('.home-project-card').last().is('article'), true)
-  assert.equal($('.home-project-card').last().attr('href'), undefined)
-  assert.equal($('.home-project-card').last().attr('aria-label'), 'Upcoming — coming soon')
+  assert.equal($('.home-project-eye').length, 2)
+  assert.equal($('.home-project-card').last().attr('href'), '/cases/second')
   assert.equal($('.home-projects-grid').attr('tabindex'), '0')
 })
 
@@ -98,10 +96,10 @@ test('previously published homepage copy adopts the new defaults during a CMS bu
 
 test('the project wheel includes every featured project, including Mezovest after the fourth slot', () => {
   const titles = ['Lemfi', 'FoMA', 'Cadana', 'Gomoney', 'Mezovest', 'Sterling']
-  const $ = load(renderHome(template, {}, titles.map(title => ({title, slug: {current: title.toLowerCase()}, featured: true, comingSoon: title === 'Sterling'}))))
+  const $ = load(renderHome(template, {}, titles.map(title => ({title, slug: {current: title.toLowerCase()}, featured: true}))))
   assert.equal($('.home-project-card').length, 6)
   assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/cases/mezovest')
-  assert.equal($('.home-project-card[data-project-slug="sterling"]').is('article'), true)
+  assert.equal($('.home-project-card[data-project-slug="sterling"]').attr('href'), '/cases/sterling')
 })
 
 test('headline entrance preserves CMS text and natural word boundaries without interpreting markup', () => {

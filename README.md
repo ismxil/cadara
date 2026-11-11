@@ -6,11 +6,11 @@ Content lives in Sanity project **o47ti8nx**, dataset **production**.
 
 The Studio has three sections:
 
-- **Case studies:** client name, card copy and image, homepage visibility, display order, coming-soon status, headline, services, project date or duration, introduction, company link, hero image, ordered image/text gallery, closing section, next project, and search description.
+- **Case studies:** project name, URL slug, short description (shown under See more and used for search/link previews), homepage card image, homepage visibility, display order, introduction (first paragraph above See more), story sections (heading + paragraphs, e.g. Objective, Outcome), services, duration, company website, and **Images**. Images is one list of rows: pick **Single** (full width), **Pair** (two squares side by side, framed by the hotspot) or **Grid** (three across, cropped to the first image's shape). The first image is the hero. Use each image's crop/hotspot to adjust framing. Every published case study is live; untick *Show on homepage* to hide its card.
 - **Insights:** title, URL slug, excerpt, category, tags, cover image and caption, author name, role and photo, publication date, rich article body, and search description. Publish an article to create `/insights/<slug>`; the index is `/insights` and shows the published article count. Articles show reading time, a table of contents (when the body has two or more headings), share links, and up to three recommended reads. The importer seeds the articles in `scripts/insights.mjs`.
 - **Studio:** homepage copy, engagements, contact and social links (under **Homepage**), work headline, studio statement, services heading, services and icons, contact email, and social links. This is a singleton shared by the homepage, work, services, and article pages.
 
-Gallery blocks can be reordered and set to full or half width. Images have editable alternative text, crop, and hotspot. Coming-soon projects show a card without a detail link. Case-study slugs create `/cases/<slug>`; retain existing slugs to preserve existing URLs.
+Image rows can be reordered. Images have editable alternative text, crop, and hotspot. Documents saved with the old schema (hero + gallery + outcome) are converted at build time; `npm run migrate:case-studies` (add `-- --dry-run` to preview) moves them to the new fields permanently, turning old forced aspect ratios into visible crops. Case-study slugs create `/cases/<slug>`; retain existing slugs to preserve existing URLs.
 
 ## Local development
 
