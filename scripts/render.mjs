@@ -2,6 +2,8 @@ import {load} from 'cheerio'
 import {createImageUrlBuilder} from '@sanity/image-url'
 import {toHTML} from '@portabletext/to-html'
 const builder = createImageUrlBuilder({projectId: 'o47ti8nx', dataset: 'production'})
+// Case studies live at the site root (/lemfi), so their slugs must not collide with pages or asset folders.
+export const reservedProjectSlugs = ['index', 'projects', 'studio', 'services', 'insights', 'cases', 'work', 'offer', 'asset', 'css', 'js', 'fonts', 'api', '404']
 export const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]))
 export function safeUrl(value) {
   try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) ? url.href : '' } catch { return '' }
@@ -100,7 +102,7 @@ export const projectCards = projects => projects.map((project, index) => {
     // Only the cover loads initially; preview frames load on deliberate interaction.
     return slide === 0 ? markup : markup.replace(/ src=/, ' data-src=').replace(/ srcset=/, ' data-srcset=')
   }).join('')
-  return `<a class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(`${project.title} — view project`)}" href="/cases/${escape(slug)}">
+  return `<a class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(`${project.title} — view project`)}" href="/${escape(slug)}">
     <div class="home-project-card-content"><figure class="case-image" aria-hidden="true">${slides}</figure></div>
     <span class="home-project-eye" aria-hidden="true"></span>
   </a>`
@@ -110,7 +112,7 @@ const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join
 export function cards(projects) {
   return projects.map((project, index) => {
     const appearance = ['foma', 'cadana'].includes(project.slug.current) ? ` case-image--${project.slug.current}` : ''
-    return `<a class="case-card" href="/cases/${escape(project.slug.current)}">
+    return `<a class="case-card" href="/${escape(project.slug.current)}">
       <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, 50vw'})}</figure>
       <div class="case-meta"><h3>${escape(project.title)}</h3><p>${escape(project.summary)}</p></div></a>`
   }).join('\n')
@@ -140,6 +142,7 @@ export function shell(template, studio) {
     const url = new URL(href, 'https://cadara.local')
     url.pathname = url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/\/$/, '') || '/'
     if (url.pathname === '/cases/offer') url.pathname = '/services'
+    else if (/^\/cases\/[a-z0-9-]+$/.test(url.pathname) && url.pathname !== '/cases/work') url.pathname = url.pathname.slice(6)
     $(el).attr('href', `${url.pathname}${url.search}${url.hash}`)
   })
   $('.statement p').text(studio.statement)
@@ -164,7 +167,7 @@ export function metadata($, title, description, article = false) {
 export function renderCase(template, studio, project, projects) {
   const $ = shell(template, studio)
   metadata($, `${project.title} — Cadara Studio`, project.summary)
-  $('head').append(`<link rel="canonical" href="https://cadarastudio.com/cases/${escape(project.slug.current)}">`)
+  $('head').append(`<link rel="canonical" href="https://cadarastudio.com/${escape(project.slug.current)}">`)
   const [hero] = projectImages(project)
   if (hero) socialImage($, imageUrl(hero, 1200), false)
   $('.case-study').attr('aria-label', `${project.title} case study`)

@@ -2,7 +2,7 @@ import {mkdir, readFile, writeFile, cp, rm} from 'node:fs/promises'
 import path from 'node:path'
 import {createClient} from '@sanity/client'
 import {root} from './content.mjs'
-import {shell, cards, renderCase, renderInsight, renderInsights, normalizeProject} from './render.mjs'
+import {shell, cards, renderCase, renderInsight, renderInsights, normalizeProject, reservedProjectSlugs} from './render.mjs'
 import {renderHome} from './home.mjs'
 import {renderProjects} from './projects.mjs'
 import {optimizeStudioImages} from './assets.mjs'
@@ -13,7 +13,7 @@ export function validateContent(docs) {
     const slugs = new Set()
     for (const doc of docs.filter(d => d._type === type)) {
       const slug = doc.slug?.current
-      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug || '') || (type === 'insight' && slug === 'index') || (type === 'caseStudy' && ['work', 'offer'].includes(slug))) throw new Error(`Invalid or reserved slug for ${doc._id}`)
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug || '') || (type === 'insight' && slug === 'index') || (type === 'caseStudy' && reservedProjectSlugs.includes(slug))) throw new Error(`Invalid or reserved slug for ${doc._id}`)
       if (slugs.has(slug)) throw new Error(`Duplicate ${type} slug: ${slug}`)
       slugs.add(slug)
     }
@@ -43,7 +43,7 @@ export async function buildSite(docs, output = path.join(root, 'dist/site')) {
   offer('.intro-headline').text(studio.servicesHeading)
   offer('.intro-tagline').text(studio.servicesTagline)
   await writeFile(path.join(output, 'services.html'), offer.html())
-  for (const project of projects) await writeFile(path.join(output, 'cases', `${project.slug.current}.html`), renderCase(caseTemplate, studio, project, projects))
+  for (const project of projects) await writeFile(path.join(output, `${project.slug.current}.html`), renderCase(caseTemplate, studio, project, projects))
   await writeFile(path.join(output, 'insights/index.html'), renderInsights(workTemplate, studio, insights))
   for (const insight of insights) await writeFile(path.join(output, 'insights', `${insight.slug.current}.html`), renderInsight(articleTemplate, studio, insight, insights))
   console.log(`Built ${projects.length} project cards, ${projects.length} case studies, and ${insights.length} insights.`)

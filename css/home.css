@@ -112,10 +112,9 @@ button {
 .skip-link:focus {
   top: 16px;
 }
-.home {
-  padding-top: 32px;
-}
+/* Top spacing sits inside the column so its side lines run to the top of the page. */
 .home-column {
+  padding-top: 32px;
   width: min(100%, 720px);
   margin-inline: auto;
   border-inline: 1px solid var(--home-border);
@@ -582,10 +581,8 @@ button {
   .home-contact {
     font-size: 16px;
   }
-  .home {
-    padding-top: 24px;
-  }
   .home-column {
+    padding-top: 24px;
     padding-inline: 20px;
   }
   .home-main {

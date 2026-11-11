@@ -25,7 +25,7 @@ const imageRow = defineType({name: 'imageRow', title: 'Images', type: 'object', 
 }}})
 const storySection = defineType({name: 'storySection', title: 'Story section', type: 'object', fields: [string('heading', 'Heading', true), paragraphs('paragraphs', 'Paragraphs')], preview: {select: {title: 'heading', subtitle: 'paragraphs.0'}}})
 const caseStudy = defineType({name: 'caseStudy', title: 'Case study', type: 'document', fields: [
-  string('title', 'Project name', true), slug('title', ['work', 'offer']),
+  string('title', 'Project name', true), slug('title', ['index', 'projects', 'studio', 'services', 'insights', 'cases', 'work', 'offer', 'asset', 'css', 'js', 'fonts', 'api', '404']),
   defineField({name: 'summary', title: 'Short description', type: 'text', rows: 2, description: 'One sentence. Shown under "See more" and used for search and link previews.', validation: required}),
   defineField({name: 'cardImage', title: 'Homepage card image', type: 'contentImage', validation: required}),
   defineField({name: 'featured', title: 'Show on homepage', type: 'boolean', initialValue: true}),

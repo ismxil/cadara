@@ -5,6 +5,15 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    {"source": "/cases/offer", "destination": "/services", "permanent": true}
+    {
+      "source": "/cases/offer",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/cases/:slug((?!work$)[a-z0-9-]+)",
+      "destination": "/:slug",
+      "permanent": true
+    }
   ]
 }
