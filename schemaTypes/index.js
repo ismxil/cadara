@@ -7,7 +7,7 @@ const externalUrl = (name, title) => defineField({name, title, type: 'url', vali
 const slug = (source, reserved = []) => defineField({name: 'slug', type: 'slug', title: 'URL slug', options: {source}, validation: Rule => Rule.required().custom(value =>
   !value?.current || (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value.current) && !reserved.includes(value.current)) ? true : 'Use lowercase letters, numbers, and hyphens; this slug must not be a reserved page name.')})
 const contentImage = defineType({name: 'contentImage', title: 'Image', type: 'image', options: {hotspot: true}, fields: [string('alt', 'Alternative text', true)]})
-export const imageLayouts = [{title: 'Single (full width)', value: 'single'}, {title: 'Pair (side by side)', value: 'pair'}, {title: 'Grid (three across)', value: 'grid'}]
+export const imageLayouts = [{title: 'Single (full width)', value: 'single'}, {title: 'Pair (two squares)', value: 'pair'}, {title: 'Grid (three across)', value: 'grid'}]
 const layoutCounts = {single: [1, 1], pair: [1, 2], grid: [3, Infinity]}
 // One row of case-study images. The layout decides the arrangement; crop each image in place to adjust framing.
 const imageRow = defineType({name: 'imageRow', title: 'Images', type: 'object', fields: [
@@ -35,7 +35,7 @@ const caseStudy = defineType({name: 'caseStudy', title: 'Case study', type: 'doc
   defineField({name: 'services', type: 'array', of: [{type: 'string'}], options: {layout: 'tags'}}),
   string('duration', 'Duration', false),
   externalUrl('website', 'Company website'),
-  defineField({name: 'images', title: 'Images', type: 'array', of: [{type: 'imageRow'}], description: 'Drag to reorder. The first image is the hero. Choose single, pair or grid for each row.', validation: Rule => Rule.required().min(1)}),
+  defineField({name: 'images', title: 'Images', type: 'array', of: [{type: 'imageRow'}], description: 'Drag to reorder. The first image is the hero. Choose single, pair (two squares) or grid for each row. Set a hotspot to choose what stays in frame.', validation: Rule => Rule.required().min(1)}),
 ], preview: {select: {title: 'title', media: 'cardImage', subtitle: 'summary'}}})
 const richText = defineType({name: 'richText', title: 'Article body', type: 'array', of: [
   {type: 'block', styles: [{title: 'Paragraph', value: 'normal'}, {title: 'Heading', value: 'h2'}, {title: 'Subheading', value: 'h3'}, {title: 'Quote', value: 'blockquote'}],

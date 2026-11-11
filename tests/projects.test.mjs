@@ -62,7 +62,7 @@ test('vertical case studies preserve content, metadata and safe navigation betwe
   assert.equal($('.case-gallery-item').length, 7)
   assert.equal($('.case-gallery > .case-gallery-item').length, 1)
   assert.deepEqual($('.case-gallery-row').map((_, el) => $(el).find('.case-gallery-item').length).get(), [2, 3, 1])
-  assert.match($('.case-gallery-row--pair').first().find('.case-gallery-item').last().attr('style'), /--ratio: 1.777/)
+  assert.deepEqual($('.case-gallery-row--pair .case-gallery-item').map((_, el) => $(el).attr('style')).get(), ['--ratio: 1', '--ratio: 1', '--ratio: 1'])
   assert.equal($('.case-gallery-row--grid .case-gallery-item').filter((_, el) => /--ratio: 1.777/.test($(el).attr('style'))).length, 3)
   assert.match($('.case-gallery-row--grid img').eq(1).attr('src'), /h=/)
   assert.equal($('.case-gallery img[fetchpriority="high"]').length, 1)
@@ -94,11 +94,12 @@ test('legacy case studies convert to image rows, story sections and visible crop
     coverImage: square('cover'), outcomeHeading: 'Outcome', outcome: ['Done'], gallery: [
       {_type: 'galleryText', heading: 'Objective', paragraphs: ['Why']},
       {_type: 'galleryImage', width: 'half', aspectRatio: 2, image: square('a')}, {_type: 'galleryImage', width: 'half', image: square('b')},
-      {_type: 'galleryImage', width: 'half', image: square('c')}, {_type: 'galleryImage', width: 'full', image: square('d')}]})
+      {_type: 'galleryImage', width: 'half', image: square('c')}, {_type: 'galleryImage', width: 'full', aspectRatio: 2, image: square('d')}]})
+  assert.deepEqual(project.images[3].images[0].crop, {_type: 'sanity.imageCrop', top: 0.25, bottom: 0.25, left: 0, right: 0})
   assert.deepEqual(['comingSoon', 'headline', 'seoDescription', 'appearance', 'date', 'nextProject', 'coverImage', 'gallery', 'outcome'].filter(key => key in project), [])
   assert.equal(project.summary, 'Tagline')
   assert.deepEqual(project.images.map(row => [row.layout, row.images.map(i => i.alt).join()]), [['single', 'cover'], ['pair', 'a,b'], ['pair', 'c'], ['single', 'd']])
-  assert.deepEqual(project.images[1].images[0].crop, {_type: 'sanity.imageCrop', top: 0.25, bottom: 0.25, left: 0, right: 0})
+  assert.equal(project.images[1].images[0].crop, undefined)
   assert.ok(project.images.every(row => row._key && row._type === 'imageRow' && row.images.every(i => i._key && i._type === 'contentImage')))
   assert.deepEqual(project.sections.map(s => s.heading), ['Objective', 'Outcome'])
   assert.deepEqual(normalizeProject(project), project)

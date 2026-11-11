@@ -66,9 +66,9 @@ export function normalizeProject(project) {
     if (hasImage(project.coverImage)) add('single', [project.coverImage])
     for (const block of project.gallery || []) {
       if (block._type !== 'galleryImage' || !hasImage(block.image)) continue
-      const image = cropTo(block.image, block.aspectRatio)
-      if (block.width === 'half') { pending.push(image); if (pending.length === 2) flush() }
-      else { flush(); add('single', [image]) }
+      // Pairs are always square, so only full-width images keep their old forced ratio (as a crop).
+      if (block.width === 'half') { pending.push(block.image); if (pending.length === 2) flush() }
+      else { flush(); add('single', [cropTo(block.image, block.aspectRatio)]) }
     }
     flush()
     result.images = rows
@@ -192,12 +192,12 @@ export function renderCase(template, studio, project, projects) {
     first = false
     return `<figure class="case-gallery-item${half ? ' case-gallery-item--half' : ''}" style="--ratio: ${ratio || imageRatio(value)}">${image(value, {eager, ratio, sizes: half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>`
   }
-  // Single: full width. Pair: side by side at a shared height. Grid: three across, cropped to the first image's shape.
+  // Single: full width. Pair: two squares side by side. Grid: three across, cropped to the first image's shape.
   $('.case-gallery').html((project.images || []).map(row => {
     const images = (row.images || []).filter(value => value?.asset)
     if (!images.length) return ''
     if (row.layout === 'pair' || row.layout === 'grid') {
-      const ratio = row.layout === 'grid' ? imageRatio(images[0]) : undefined
+      const ratio = row.layout === 'grid' ? imageRatio(images[0]) : 1
       return `<div class="case-gallery-row case-gallery-row--${row.layout}">${images.map(value => figure(value, {half: true, ratio})).join('')}</div>`
     }
     return images.map(value => figure(value)).join('')

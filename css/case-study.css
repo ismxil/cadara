@@ -56,11 +56,9 @@
 .case-gallery-item--half { grid-column: span 1; align-self: center; border-radius: 16px; }
 .case-gallery-item img { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; }
 .case-gallery-item--contain img { object-fit: contain; }
-/* Image rows from the CMS. Pairs share one height (widths follow each image's shape); grids are three across. */
-.case-gallery-row { grid-column: 1 / -1; display: flex; gap: 16px; }
-.case-gallery-row--pair > .case-gallery-item { flex: var(--ratio) 1 0; min-width: 0; }
-.case-gallery-row--pair > .case-gallery-item:only-child { flex: 0 1 calc(50% - 8px); }
-.case-gallery-row--grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Image rows from the CMS. Pairs are two squares side by side; grids are three across. */
+.case-gallery-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: inherit; }
+.case-gallery-row--grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .case-gallery-row > .case-gallery-item--half { align-self: start; }
 /* Like the homepage: the column lines run down to the carousel, which is framed by
    full-width lines above and below. Padding (not margin) carries the column lines. */
@@ -87,8 +85,7 @@
 }
 @media (max-width: 600px) {
   .case-gallery-item--half { grid-column: 1 / -1; }
-  .case-gallery-row--pair { flex-direction: column; }
-  .case-gallery-row--pair > .case-gallery-item, .case-gallery-row--pair > .case-gallery-item:only-child { flex: none; }
+  .case-gallery-row > .case-gallery-item--half { grid-column: auto; }
   .case-gallery-row--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (prefers-reduced-motion: no-preference) {
