@@ -20,7 +20,7 @@ test('image-only project previews keep accessible navigation and defer distinct 
   ]))
   const card = $('.home-project-card').first()
   assert.equal($('.home-project-card').length, 2)
-  assert.equal(card.attr('href'), '/cases/client')
+  assert.equal(card.attr('href'), '/client')
   assert.equal(card.attr('aria-label'), '<Client> — view project')
   assert.equal(card.find('h3, p, ul, script, Client').length, 0)
   assert.equal(card.find('img').length, 4)
@@ -30,7 +30,7 @@ test('image-only project previews keep accessible navigation and defer distinct 
   assert.equal(card.find('img[data-src*="portrait"]').length, 0)
   assert.equal(card.find('img[src*="cover"]').length, 1)
   assert.equal($('.home-project-eye').length, 2)
-  assert.equal($('.home-project-card').last().attr('href'), '/cases/second')
+  assert.equal($('.home-project-card').last().attr('href'), '/second')
   assert.equal($('.home-projects-grid').attr('tabindex'), '0')
 })
 
@@ -98,8 +98,8 @@ test('the project wheel includes every featured project, including Mezovest afte
   const titles = ['Lemfi', 'FoMA', 'Cadana', 'Gomoney', 'Mezovest', 'Sterling']
   const $ = load(renderHome(template, {}, titles.map(title => ({title, slug: {current: title.toLowerCase()}, featured: true}))))
   assert.equal($('.home-project-card').length, 6)
-  assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/cases/mezovest')
-  assert.equal($('.home-project-card[data-project-slug="sterling"]').attr('href'), '/cases/sterling')
+  assert.equal($('.home-project-card[data-project-slug="mezovest"]').attr('href'), '/mezovest')
+  assert.equal($('.home-project-card[data-project-slug="sterling"]').attr('href'), '/sterling')
 })
 
 test('headline entrance preserves CMS text and natural word boundaries without interpreting markup', () => {

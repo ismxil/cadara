@@ -70,9 +70,9 @@ test('vertical case studies preserve content, metadata and safe navigation betwe
   assert.deepEqual($('.case-overview-section h2').map((_, el) => $(el).text()).get(), ['The challenge', 'What changed'])
   assert.match($('.case-overview').text(), /The challenge.*First paragraph.*Second paragraph.*What changed.*A clearer identity/s)
   assert.equal($('.case-overview .case-collapse').text(), 'See less')
-  assert.equal($('link[rel="canonical"]').attr('href'), 'https://cadarastudio.com/cases/client')
+  assert.equal($('link[rel="canonical"]').attr('href'), 'https://cadarastudio.com/client')
   assert.equal($('.home-projects-grid').attr('data-initial-project'), 'next')
-  assert.deepEqual($('.home-project-card').map((_, el) => $(el).attr('href')).get(), ['/cases/client', '/cases/next'])
+  assert.deepEqual($('.home-project-card').map((_, el) => $(el).attr('href')).get(), ['/client', '/next'])
   assert.equal($('.case-close').attr('href'), '/?view=work')
 })
 

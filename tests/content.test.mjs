@@ -63,7 +63,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(home('.home-services-grid .home-service').length, 3)
     assert.equal(home('.home-team-panels > div').length, 3)
     assert.equal(home('#home-projects[hidden] .case-card').length, docs.filter(doc => doc._type === 'caseStudy' && doc.featured).length)
-    assert.equal(home('[href="/cases/new-project"]').length, 0)
+    assert.equal(home('[href="/new-project"]').length, 0)
     assert.equal(home('link[href="/css/style.css"]').length, 0)
     assert.equal(home('body').hasClass('is-loading'), false)
     const studioPage = load(await readFile(path.join(output, 'studio.html'), 'utf8'))
@@ -75,7 +75,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(studioPhoto.attr('loading'), 'lazy')
     await access(path.join(output, studioPhoto.attr('src')))
     const work = load(await readFile(path.join(output, 'cases/work.html'), 'utf8'))
-    assert.equal(work('[href="/cases/new-project"]').length, 1)
+    assert.equal(work('[href="/new-project"]').length, 1)
     const firstImage = work('.case-image img').first()
     assert.equal(firstImage.attr('loading'), 'eager')
     assert.equal(firstImage.attr('fetchpriority'), 'high')
@@ -86,9 +86,9 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.doesNotMatch(firstImage.attr('srcset'), /1400w/)
     assert.equal(work('.case-image img').last().attr('loading'), 'lazy')
 
-    await access(path.join(output, 'cases/new-project.html'))
-    await access(path.join(output, 'cases/sterling.html'))
-    const casePage = load(await readFile(path.join(output, 'cases/mezovest.html'), 'utf8'))
+    await access(path.join(output, 'new-project.html'))
+    await access(path.join(output, 'sterling.html'))
+    const casePage = load(await readFile(path.join(output, 'mezovest.html'), 'utf8'))
     assert.equal(casePage('.case-duration').text(), '6 months')
     assert.equal(casePage('.case-gallery-item img').first().attr('fetchpriority'), 'high')
     assert.equal(casePage('.case-gallery-item img').eq(1).attr('loading'), 'lazy')
@@ -127,7 +127,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     }
     // Unpublishing removes a previously generated page on the next build.
     await buildSite(docs.filter(d => d._id !== 'new-project' && d._id !== 'article'), output)
-    await assert.rejects(access(path.join(output, 'cases/new-project.html')))
+    await assert.rejects(access(path.join(output, 'new-project.html')))
     await assert.rejects(access(path.join(output, 'insights/a-new-insight.html')))
   } finally { await rm(output, {recursive: true, force: true}) }
 })
