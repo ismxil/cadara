@@ -28,9 +28,61 @@ export function image(image, {className = '', width = 2000, eager = false, ratio
   const widths = [...new Set([320, 480, 640, 960, 1400, maxWidth].filter(w => w <= maxWidth))].sort((a, b) => a - b)
   return `<img src="${escape(urlFor(maxWidth))}" srcset="${escape(widths.map(w => `${urlFor(w)} ${w}w`).join(', '))}" sizes="${escape(sizes)}" width="${maxWidth}" height="${Math.max(1, Math.round(maxWidth / aspect))}" alt="${escape(image.alt)}" class="${escape(className)}" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
 }
+// Width / height of an image after its Sanity crop.
+export function imageRatio(value, fallback = 16 / 9) {
+  const size = value?.asset?._ref?.match(/-(\d+)x(\d+)-/)
+  const crop = value?.crop || {}
+  return size ? Number(size[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(size[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : fallback
+}
+// Express a forced aspect ratio as a centred Sanity crop, so editors see and adjust it in the Studio.
+function cropTo(value, ratio) {
+  const size = value?.asset?._ref?.match(/-(\d+)x(\d+)-/)
+  if (!size || !(Number(ratio) > 0) || Math.abs(imageRatio(value) - ratio) < 0.005) return value
+  const crop = {top: 0, bottom: 0, left: 0, right: 0, ...value.crop}
+  const [width, height] = [Number(size[1]), Number(size[2])]
+  const visibleWidth = width * (1 - crop.left - crop.right), visibleHeight = height * (1 - crop.top - crop.bottom)
+  if (ratio > visibleWidth / visibleHeight) {
+    const trim = (visibleHeight - visibleWidth / ratio) / height / 2
+    crop.top += trim; crop.bottom += trim
+  } else {
+    const trim = (visibleWidth - visibleHeight * ratio) / width / 2
+    crop.left += trim; crop.right += trim
+  }
+  return {...value, crop: {_type: 'sanity.imageCrop', ...Object.fromEntries(Object.entries(crop).filter(([key]) => key !== '_type').map(([key, n]) => [key, Math.round(n * 1e6) / 1e6]))}}
+}
+// The legacy importer still references local files before upload.
+const hasImage = value => Boolean(value?.asset || value?.localPath)
+const legacyFields = ['comingSoon', 'headline', 'lead', 'date', 'appearance', 'coverImage', 'gallery', 'outcomeHeading', 'outcome', 'nextProject', 'seoDescription']
+// Converts case studies saved with the old schema (hero + gallery + outcome) to image rows and story sections.
+export function normalizeProject(project) {
+  const result = Object.fromEntries(Object.entries(project).filter(([key]) => !legacyFields.includes(key)))
+  result.summary = project.summary || project.headline || ''
+  if (project.lead && project.lead !== project.intro?.[0]) result.intro = [project.lead, ...(project.intro || [])]
+  if (!project.images) {
+    const rows = []
+    let pending = []
+    const add = (layout, images) => rows.push({_key: `row-${rows.length}`, _type: 'imageRow', layout, images: images.map((image, i) => ({_key: `image-${rows.length}-${i}`, ...image, _type: 'contentImage'}))})
+    const flush = () => { if (pending.length) add('pair', pending); pending = [] }
+    if (hasImage(project.coverImage)) add('single', [project.coverImage])
+    for (const block of project.gallery || []) {
+      if (block._type !== 'galleryImage' || !hasImage(block.image)) continue
+      const image = cropTo(block.image, block.aspectRatio)
+      if (block.width === 'half') { pending.push(image); if (pending.length === 2) flush() }
+      else { flush(); add('single', [image]) }
+    }
+    flush()
+    result.images = rows
+  }
+  if (!project.sections) result.sections = [
+    ...(project.gallery || []).filter(block => block._type === 'galleryText').map(block => ({heading: block.heading, paragraphs: block.paragraphs})),
+    ...(project.outcome?.length ? [{heading: project.outcomeHeading || 'Outcome', paragraphs: project.outcome}] : []),
+  ].map((section, i) => ({_key: `section-${i}`, _type: 'storySection', ...section}))
+  return result
+}
+export const projectImages = project => (project.images || []).flatMap(row => row.images || []).filter(value => value?.asset)
 // Keep the cover first, followed by up to three distinct, similarly shaped images.
 const previewImages = project => {
-  const candidates = [project.cardImage, project.coverImage, ...(project.gallery || []).filter(block => block._type === 'galleryImage').map(block => block.image)]
+  const candidates = [project.cardImage, ...projectImages(project)]
   const seen = new Set()
   const unique = candidates.filter(value => {
     const ref = value?.asset?._ref
@@ -38,39 +90,29 @@ const previewImages = project => {
     seen.add(ref)
     return true
   })
-  const distance = value => {
-    const dimensions = value.asset._ref.match(/-(\d+)x(\d+)-/)
-    const crop = value.crop || {}
-    const ratio = dimensions ? Number(dimensions[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(dimensions[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 1.5
-    return Math.abs(Math.log(ratio / 1.5))
-  }
+  const distance = value => Math.abs(Math.log(imageRatio(value, 1.5) / 1.5))
   return unique.length ? [unique[0], ...unique.slice(1).sort((a, b) => distance(a) - distance(b))].slice(0, 4) : []
 }
 export const projectCards = projects => projects.map((project, index) => {
   const slug = project.slug.current
-  const tag = project.comingSoon ? 'article' : 'a'
-  const label = `${project.title}${project.comingSoon ? ' — coming soon' : ' — view project'}`
   const slides = previewImages(project).map((value, slide) => {
     const markup = image({...value, alt: ''}, {width: 1400, eager: index === 0 && slide === 0, ratio: 1.5, className: slide === 0 ? 'is-visible' : '', sizes: '(max-width: 720px) calc(100vw - 42px), 660px'})
     // Only the cover loads initially; preview frames load on deliberate interaction.
     return slide === 0 ? markup : markup.replace(/ src=/, ' data-src=').replace(/ srcset=/, ' data-srcset=')
   }).join('')
-  return `<${tag} class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(label)}" ${project.comingSoon ? '' : `href="/cases/${escape(slug)}"`}>
+  return `<a class="case-card home-project-card" data-project-slug="${escape(slug)}" aria-label="${escape(`${project.title} — view project`)}" href="/cases/${escape(slug)}">
     <div class="home-project-card-content"><figure class="case-image" aria-hidden="true">${slides}</figure></div>
-    ${project.comingSoon ? '' : '<span class="home-project-eye" aria-hidden="true"></span>'}
-  </${tag}>`
+    <span class="home-project-eye" aria-hidden="true"></span>
+  </a>`
 }).join('')
 
 const paragraphs = values => (values || []).map(p => `<p>${escape(p)}</p>`).join('')
 export function cards(projects) {
   return projects.map((project, index) => {
-    const tag = project.comingSoon ? 'div' : 'a'
-    const attrs = project.comingSoon ? `aria-label="${escape(project.title)} — coming soon"` : `href="/cases/${escape(project.slug.current)}"`
-    const appearance = ['foma', 'cadana'].includes(project.appearance) ? ` case-image--${project.appearance}` : ''
-    return `<${tag} class="case-card${project.comingSoon ? ' case-card--soon' : ''}" ${attrs}>
+    const appearance = ['foma', 'cadana'].includes(project.slug.current) ? ` case-image--${project.slug.current}` : ''
+    return `<a class="case-card" href="/cases/${escape(project.slug.current)}">
       <figure class="case-image${appearance}">${image(project.cardImage, {width: 1400, eager: index === 0, sizes: '(max-width: 640px) 100vw, 50vw'})}</figure>
-      <div class="case-meta"><h3>${escape(project.title)}</h3><p>${escape(project.summary)}</p></div>
-      ${project.comingSoon ? '<span class="case-card-soon">Coming soon</span>' : ''}</${tag}>`
+      <div class="case-meta"><h3>${escape(project.title)}</h3><p>${escape(project.summary)}</p></div></a>`
   }).join('\n')
 }
 function socialImage($, url = `${siteUrl}/asset/og.jpg`, branded = true) {
@@ -121,24 +163,21 @@ export function metadata($, title, description, article = false) {
 }
 export function renderCase(template, studio, project, projects) {
   const $ = shell(template, studio)
-  metadata($, `${project.title} — Cadara Studio`, project.seoDescription || project.summary)
+  metadata($, `${project.title} — Cadara Studio`, project.summary)
   $('head').append(`<link rel="canonical" href="https://cadarastudio.com/cases/${escape(project.slug.current)}">`)
-  if (project.coverImage?.asset) socialImage($, imageUrl(project.coverImage, 1200), false)
+  const [hero] = projectImages(project)
+  if (hero) socialImage($, imageUrl(hero, 1200), false)
   $('.case-study').attr('aria-label', `${project.title} case study`)
   const defaultCadanaLead = "An identity design for a Global Payment Infrastructure for talent marketplaces, staffing platforms, international HR providers, Cadana's white-label infrastructure that enables businesses across the world to pay talents in over 100+ countries."
-  const lead = project.lead || (project.slug.current === 'cadana' ? defaultCadanaLead : project.intro?.[0] || project.headline || project.summary)
+  const lead = project.slug.current === 'cadana' ? defaultCadanaLead : project.intro?.[0] || project.summary
   const background = (project.intro || []).filter((text, index) => index !== 0 || text !== lead)
-  // Gallery text and the outcome now read inside the expanded introduction, above the artwork.
-  const showNarrative = project.slug.current !== 'cadana'
-  const sections = showNarrative ? [
-    ...(project.gallery || []).filter(block => block._type === 'galleryText').map(block => ({heading: block.heading, paragraphs: block.paragraphs})),
-    ...(project.outcome?.length ? [{heading: project.outcomeHeading, paragraphs: project.outcome}] : []),
-  ] : []
+  // Story sections read inside the expanded introduction, above the artwork. Cadana shows artwork only.
+  const sections = project.slug.current === 'cadana' ? [] : project.sections || []
   $('.case-introduction').html(`<h1>${escape(project.title)}</h1>
     <p class="case-summary">${escape(lead)}</p>
     <details class="case-background"><summary><span class="case-see-more">See more</span><span class="case-see-less">See less</span><span class="case-disclosure-icon" aria-hidden="true"></span></summary>
       <div class="case-overview case-narrative">
-        ${project.headline && project.headline !== lead ? `<p class="case-headline">${escape(project.headline)}</p>` : ''}
+        ${project.summary && project.summary !== lead ? `<p class="case-headline">${escape(project.summary)}</p>` : ''}
         ${paragraphs(background)}
         ${sections.map(section => `<section class="case-overview-section">${section.heading ? `<h2>${escape(section.heading)}</h2>` : ''}${paragraphs(section.paragraphs)}</section>`).join('')}
         <dl class="case-details">${project.services?.length ? `<div><dt>Services</dt><dd>${project.services.map(escape).join(', ')}</dd></div>` : ''}
@@ -147,17 +186,23 @@ export function renderCase(template, studio, project, projects) {
         <button class="case-collapse" type="button" hidden>See less<span class="case-disclosure-icon" aria-hidden="true"></span></button>
       </div>
     </details>`)
-  const dimensions = value => {
-    const size = value?.asset?._ref?.match(/-(\d+)x(\d+)-/)
-    const crop = value?.crop || {}
-    return size ? Number(size[1]) * (1 - (crop.left || 0) - (crop.right || 0)) / (Number(size[2]) * (1 - (crop.top || 0) - (crop.bottom || 0))) : 16 / 9
+  let first = true
+  const figure = (value, {half = false, ratio} = {}) => {
+    const eager = first
+    first = false
+    return `<figure class="case-gallery-item${half ? ' case-gallery-item--half' : ''}" style="--ratio: ${ratio || imageRatio(value)}">${image(value, {eager, ratio, sizes: half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>`
   }
-  const media = (value, options = {}) => value?.asset ? `<figure class="case-gallery-item${options.half ? ' case-gallery-item--half' : ''}${options.contain ? ' case-gallery-item--contain' : ''}" style="--ratio: ${options.ratio || dimensions(value)}">${image(value, {eager: options.eager, ratio: options.contain ? undefined : options.ratio, sizes: options.half ? '(max-width: 600px) calc(100vw - 40px), 454px' : '(max-width: 980px) calc(100vw - 40px), 940px'})}</figure>` : ''
-  $('.case-gallery').html(media(project.coverImage, {eager: true}) + (project.gallery || []).map(block => {
-    if (block._type === 'galleryText') return ''
-    return media(block.image, {half: block.width === 'half', contain: block.fit === 'contain', ratio: Number(block.aspectRatio) > 0 ? Number(block.aspectRatio) : undefined})
+  // Single: full width. Pair: side by side at a shared height. Grid: three across, cropped to the first image's shape.
+  $('.case-gallery').html((project.images || []).map(row => {
+    const images = (row.images || []).filter(value => value?.asset)
+    if (!images.length) return ''
+    if (row.layout === 'pair' || row.layout === 'grid') {
+      const ratio = row.layout === 'grid' ? imageRatio(images[0]) : undefined
+      return `<div class="case-gallery-row case-gallery-row--${row.layout}">${images.map(value => figure(value, {half: true, ratio})).join('')}</div>`
+    }
+    return images.map(value => figure(value)).join('')
   }).join(''))
-  const published = projects.filter(item => !item.comingSoon)
+  const published = projects
   const currentIndex = published.findIndex(item => item.slug?.current === project.slug.current)
   const initialProject = published[(currentIndex + 1) % published.length] || project
   $('.home-projects-grid').attr('data-initial-project', initialProject.slug.current).html(projectCards(published))

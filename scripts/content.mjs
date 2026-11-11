@@ -2,6 +2,7 @@ import {readFile} from 'node:fs/promises'
 import path from 'node:path'
 import {load} from 'cheerio'
 import {insights} from './insights.mjs'
+import {normalizeProject} from './render.mjs'
 export const root = path.resolve(import.meta.dirname, '..')
 const clean = value => value.replace(/\s+/g, ' ').trim()
 const paragraphs = ($, selector) => $(selector).map((_, el) => clean($(el).text())).get()
@@ -48,7 +49,7 @@ export async function extractContent() {
           fit: $(el).hasClass('case-gallery-item--contain') ? 'contain' : 'cover'}
       })
     }
-    docs.push(doc)
+    docs.push(normalizeProject(doc))
   }
   const offer = load(await readFile(path.join(root, 'cases/offer.html'), 'utf8'))
   const work = load(await readFile(path.join(root, 'cases/work.html'), 'utf8'))

@@ -8,6 +8,7 @@
     "studio:build": "sanity build dist/studio",
     "import:content": "sanity exec scripts/import-content.mjs --with-user-token",
     "import:preview": "node scripts/import-content.mjs --dry-run",
+    "migrate:case-studies": "sanity exec scripts/migrate-case-studies.mjs --with-user-token --",
     "test": "node --test tests/*.test.mjs",
     "studio:deploy": "sanity deploy dist/studio --url cadara-content",
     "build:team": "node scripts/build-team.mjs"

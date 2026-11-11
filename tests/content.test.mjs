@@ -20,17 +20,14 @@ const fixture = async () => {
 test('migration preserves source projects, duration, image count, text and layouts', async () => {
   const docs = await extractContent()
   assert.equal(docs.length, 8)
-  assert.equal(docs.filter(d => d._type === 'caseStudy' && !d.comingSoon).length, 5)
+  assert.equal(docs.filter(d => d._type === 'caseStudy' && d.images.length).length, 5)
   const mezovest = docs.find(d => d.title === 'Mezovest')
   assert.equal(mezovest.duration, '6 months')
-  assert.equal(mezovest.date, undefined)
-  assert.equal(mezovest.gallery.length, 14)
+  assert.equal(mezovest.images.flatMap(row => row.images).length, 14)
+  assert.deepEqual(mezovest.images.slice(0, 4).map(row => row.layout), ['single', 'single', 'single', 'pair'])
   const lemfi = docs.find(d => d.title === 'Lemfi')
-  assert.equal(lemfi.date, '2023-06-23')
-  assert.equal(lemfi.gallery[2]._type, 'galleryText')
-  assert.equal(lemfi.gallery[2].width, 'half')
-  assert.equal(lemfi.gallery[0].width, 'full')
-  assert.equal(lemfi.gallery[0].aspectRatio, 3744 / 1842)
+  assert.equal(lemfi.sections[0].heading, 'Objective')
+  assert.equal(lemfi.gallery, undefined)
   const paths = new Set()
   function collect(value) {
     if (!value || typeof value !== 'object') return
@@ -90,7 +87,7 @@ test('published content generates new routes, edited copy, CMS images and safe a
     assert.equal(work('.case-image img').last().attr('loading'), 'lazy')
 
     await access(path.join(output, 'cases/new-project.html'))
-    await assert.rejects(access(path.join(output, 'cases/sterling.html')))
+    await access(path.join(output, 'cases/sterling.html'))
     const casePage = load(await readFile(path.join(output, 'cases/mezovest.html'), 'utf8'))
     assert.equal(casePage('.case-duration').text(), '6 months')
     assert.equal(casePage('.case-gallery-item img').first().attr('fetchpriority'), 'high')
